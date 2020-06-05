@@ -1,20 +1,11 @@
 #key libraries
-library(data.table)
 library(dplyr)
 library(reshape2)
 library(lubridate)
-library(openair)
 library(ggplot2)
-library(rgdal)
-library(maptools)
-library(sp)
-library(rgeos)
-library(tmap)
-library(classInt)
-library(RColorBrewer)
 
 #upload data file
-bb2020 <- fread("speedtest.csv") 
+bb2020 <- read.csv("./data/raw/speedtest.csv")
 #name columns
 names(bb2020)[1:6] <- c("datetext","speeddown","speedup","provider","lat", "lon") 
 
@@ -23,36 +14,52 @@ summary(bb2020) #2030205 obs
 #conversions needed to numeric? df$col <- as.numeric(df$col) 
 #remove empty rows or coerced to NA? df[complete.cases(df),] or df <- df[!is.na(df$col),]
 
-#remove outliers based on Riddlesden and Singleton 2014
-bb2020 <- bb2020[bb2020$speeddown<102400,]
-bb2020 <- bb2020[bb2020$speeddown>512,] #1875325 obs 
+#remove outliers based on Riddlesden and Singleton 2014 for slower end
+#check fastest upload and download speeds commercially available from Virgin Media (Gigaclear offers even faster!)
+bb2020 <- bb2020[bb2020$speeddown>512,] 
+bb2020 <- bb2020[bb2020$speeddown<362000,]
+bb2020 <- bb2020[bb2020$speedup<21000,] #1839333
 
-#remove minutes and below from date and hour and split into 2 columns
-bb2020$datetext <- strtrim(x = bb2020$datetext, width = 13) 
-bb2020$datetext <- colsplit(bb2020$datetext, pattern = " ", c("datetext", "hour"))
-bb2020$hour <- bb2020$datetext$hour
-bb2020$date <- bb2020$datetext$datetext
-#convert datetext to date and add date and hour columns to dataframe
-bb2020$date <- as.POSIXct(strptime(bb2020$date, format = "%Y-%m-%d", "GMT")) 
-#delete datetext column(s)
-bb2020 <- bb2020[ ,2:8]
+#remove below seconds, create columns for date and hour
+bb2020$datetext <- strtrim(x = bb2020$datetext, width = 19) 
+bb2020$datetext2 <- bb2020$datetext
+bb2020$datetext2 <- strtrim(x = bb2020$datetext2, width = 13)
+bb2020$datetext2 <- colsplit(bb2020$datetext2, pattern = " ", c("date", "hour"))
+bb2020$hour <- bb2020$datetext2$hour
+bb2020$date <- bb2020$datetext2$date
+#delete datetext2 column(s)
+bb2020 <- bb2020[ ,c(1:6,8:9)]
+#convert to date form datetext and date columns
+bb2020$datetext <- as.POSIXct(strptime(bb2020$datetext, format = "%Y-%m-%d %H:%M:%S", "GMT")) 
+bb2020$date <- as.POSIXct(strptime(bb2020$date, format = "%Y-%m-%d", "GMT"))
 
-#add column for day of the week and year
+#add library to explore data temporally
+library(openair)
+#add column for day of the week
 bb2020$weekday <- wday(bb2020$date, label = TRUE)
-bb2020 <- splitByDate(bb2020, dates = "1/1/2020", labels = c("2019", "2020"))
-names(bb2020) [9] <- "Year"
-bb2020$Year <- as.numeric(bb2020$Year)
+#create 2 dataframes for 2 matching periods
 Wks2019 <- selectByDate(bb2020, start = "2019-01-21", end = "2019-06-02")
+names(Wks2019)[1:2] <- c("dateOnly", "date")
 Wks2020 <- selectByDate(bb2020, start = "2020-01-20", end = "2020-05-31")
+names(Wks2020)[1:2] <- c("dateOnly", "date")
+#timeplots
+TimeVar2019 <- timeVariation(Wks2019, pollutant = "speeddown", statistic = "mean")
+TimeVar2019up <- timeVariation(Wks2019, pollutant = "speedup", statistic = "mean")
+TimeVar2020 <- timeVariation(Wks2020, pollutant = "speeddown", statistic = "mean")
+TimeVar2020up <- timeVariation(Wks2020, pollutant = "speedup", statistic = "mean")
+timePlot(Wks2019, pollutant = "speeddown", avg.time = "day", smooth = TRUE)
+timePlot(Wks2020, pollutant = "speeddown", avg.time = "day", smooth = TRUE)
+timePlot(Wks2019, pollutant = "speedup", avg.time = "day", smooth = TRUE)
+timePlot(Wks2020, pollutant = "speedup", avg.time = "day", smooth = TRUE)
 
 #frequency per date
-DateCount19 <- count(Wks2019, date)
+DateCount19 <- count(Wks2019, dateOnly)
 names(DateCount19) <- c("Date19", "tests19")
 HrCount19 <- count(Wks2019, date, hour)
 HrSpeed19 <- summarise(group_by(Wks2019, date, hour), mean(speeddown))
 HrStats19 <- left_join(HrCount19, HrSpeed19)
 names(HrStats19) <- c("Date19", "Hour19", "test19", "meanSp19")
-DateCount20 <- count(Wks2020, date)
+DateCount20 <- count(Wks2020, dateOnly)
 names(DateCount20) <- c("Date20", "tests20")
 HrCount20 <- count(Wks2020, date, hour)
 HrSpeed20 <- summarise(group_by(Wks2020, date, hour), mean(speeddown))
@@ -67,14 +74,14 @@ Plot2019 + geom_line()
 Plot2020 <- ggplot(DateCount20, aes(Date20, tests20))
 Plot2020 + geom_line()
 
-#timeplots per date
-calendarPlot(bb2020, pollutant = "speeddown", year = 2019, statistic = "mean")
-calendarPlot(bb2020, pollutant = "speeddown", year = 2020, statistic = "mean")
-timePlot(Wks2019, pollutant = "speeddown", avg.time = "day", smooth = TRUE)
-timePlot(Wks2020, pollutant = "speeddown", avg.time = "day", smooth = TRUE)
-timeVariation(Wks2019, pollutant = "speeddown", statistic = "mean")
-
-
+#add libraries to explore data spatially
+library(rgdal)
+library(maptools)
+library(sp)
+library(rgeos)
+library(tmap)
+library(classInt)
+library(RColorBrewer)
 #convert to spatial object
 coords_bb <- cbind(bb2020$lon, bb2020$lat)
 bbNUTS3 <- SpatialPointsDataFrame(coords_bb, data = data.frame(bb2020))
