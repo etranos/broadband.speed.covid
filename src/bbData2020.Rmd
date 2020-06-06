@@ -1,0 +1,156 @@
+---
+title: "descriptive anaysis"
+date: "`r format(Sys.time(), '%d %B, %Y, %H:%M')`"
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    toc_float: true
+---
+
+```{r settings, include = FALSE}
+library(dplyr)
+library(reshape2)
+library(lubridate)
+library(ggplot2)
+library(openair)
+library(rgdal)
+library(maptools)
+library(sp)
+library(rgeos)
+library(tmap)
+library(classInt)
+library(RColorBrewer)
+library(knitr)
+library(rprojroot)
+
+# knitr::opts_chunk$set(echo = FALSE
+#                       , comment = NA
+#                       , warning = FALSE
+#                       , error = FALSE
+#                       , message = FALSE
+#                       , tidy = TRUE)
+
+# knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+
+# This is the project path
+path <- find_rstudio_root_file()
+
+```
+
+
+```{r echo=FALSE, results= 'asis', message=FALSE, warning=TRUE}
+#upload data file
+path.data <- paste(path, "./data/raw/speedtest.csv", sep = "")
+
+#bb2020 <- read.csv("./data/raw/speedtest.csv")
+bb2020 <- read.csv(path.data)
+
+#name columns
+names(bb2020)[1:6] <- c("datetext","speeddown","speedup","provider","lat", "lon") 
+
+str(bb2020)
+summary(bb2020) #2030205 obs
+#conversions needed to numeric? df$col <- as.numeric(df$col) 
+#remove empty rows or coerced to NA? df[complete.cases(df),] or df <- df[!is.na(df$col),]
+
+#remove outliers based on Riddlesden and Singleton 2014 for slower end
+#check fastest upload and download speeds commercially available from Virgin Media (Gigaclear offers even faster!)
+bb2020 <- bb2020[bb2020$speeddown>512,] 
+bb2020 <- bb2020[bb2020$speeddown<362000,]
+bb2020 <- bb2020[bb2020$speedup<21000,] #1839333
+
+#remove below seconds, create columns for date and hour
+bb2020$datetext <- strtrim(x = bb2020$datetext, width = 19) 
+bb2020$datetext2 <- bb2020$datetext
+bb2020$datetext2 <- strtrim(x = bb2020$datetext2, width = 13)
+bb2020$datetext2 <- colsplit(bb2020$datetext2, pattern = " ", c("date", "hour"))
+bb2020$hour <- bb2020$datetext2$hour
+bb2020$date <- bb2020$datetext2$date
+#delete datetext2 column(s)
+bb2020 <- bb2020[ ,c(1:6,8:9)]
+#convert to date form datetext and date columns
+bb2020$datetext <- as.POSIXct(strptime(bb2020$datetext, format = "%Y-%m-%d %H:%M:%S", "GMT")) 
+bb2020$date <- as.POSIXct(strptime(bb2020$date, format = "%Y-%m-%d", "GMT"))
+```
+
+# Temporal analysis
+
+```{r echo=FALSE, results= 'asis', message=FALSE, warning=TRUE}
+#add column for day of the week
+bb2020$weekday <- wday(bb2020$date, label = TRUE)
+#create 2 dataframes for 2 matching periods
+Wks2019 <- selectByDate(bb2020, start = "2019-01-21", end = "2019-06-02")
+names(Wks2019)[1:2] <- c("dateOnly", "date")
+Wks2020 <- selectByDate(bb2020, start = "2020-01-20", end = "2020-05-31")
+names(Wks2020)[1:2] <- c("dateOnly", "date")
+#timeplots
+TimeVar2019 <- timeVariation(Wks2019, pollutant = "speeddown", statistic = "mean")
+TimeVar2019up <- timeVariation(Wks2019, pollutant = "speedup", statistic = "mean")
+TimeVar2020 <- timeVariation(Wks2020, pollutant = "speeddown", statistic = "mean")
+TimeVar2020up <- timeVariation(Wks2020, pollutant = "speedup", statistic = "mean")
+timePlot(Wks2019, pollutant = "speeddown", avg.time = "day", smooth = TRUE)
+timePlot(Wks2020, pollutant = "speeddown", avg.time = "day", smooth = TRUE)
+timePlot(Wks2019, pollutant = "speedup", avg.time = "day", smooth = TRUE)
+timePlot(Wks2020, pollutant = "speedup", avg.time = "day", smooth = TRUE)
+```
+
+# Frequency per date
+
+```{r echo=FALSE, results= 'asis', message=FALSE, warning=TRUE}
+DateCount19 <- count(Wks2019, dateOnly)
+names(DateCount19) <- c("Date19", "tests19")
+HrCount19 <- count(Wks2019, date, hour)
+HrSpeed19 <- summarise(group_by(Wks2019, date, hour), mean(speeddown))
+HrStats19 <- left_join(HrCount19, HrSpeed19)
+names(HrStats19) <- c("Date19", "Hour19", "test19", "meanSp19")
+DateCount20 <- count(Wks2020, dateOnly)
+names(DateCount20) <- c("Date20", "tests20")
+HrCount20 <- count(Wks2020, date, hour)
+HrSpeed20 <- summarise(group_by(Wks2020, date, hour), mean(speeddown))
+HrStats20 <- left_join(HrCount20, HrSpeed20)
+names(HrStats20) <- c("Date20", "Hour20", "test20", "meanSp20")
+DateCount <- cbind(DateCount19, DateCount20)
+HrStats <- cbind(HrStats19, HrStats20)  # I GET AN ERROR HERE
+write.csv(DateCount, "DailyTestFreq.csv")
+write.csv(HrStats, "HrTestFreqMean.csv")
+Plot2019 <- ggplot(DateCount19, aes(Date19, tests19))
+Plot2019 + geom_line()
+Plot2020 <- ggplot(DateCount20, aes(Date20, tests20))
+Plot2020 + geom_line()
+```
+
+# Spatial analysis
+
+```{r echo=FALSE, results= 'asis', message=FALSE, warning=TRUE}
+#convert to spatial object
+coords_bb <- cbind(bb2020$lon, bb2020$lat)
+bbNUTS3 <- SpatialPointsDataFrame(coords_bb, data = data.frame(bb2020))
+proj4string(bbNUTS3) <- CRS("+init=epsg:4326") #define projection
+
+#get NUTS3 from up a level and read in (145 NUTS3)
+NUTS3 <- readOGR("../NUTS_Level_3_January_2015_Super_Generalised_Clipped_Boundaries_in_England_and_Wales.shp") 
+NUTS3 <- spTransform(NUTS3, CRS("+init=epsg:4326"))                                
+NUTS3@data$nuts315nm <- as.character(NUTS3@data$nuts315nm)
+
+#spatial join to NUTS3
+bbNUTS3sp <- over(bbNUTS3, NUTS3[, "nuts315nm"]) #not a spatial object
+bbNUTS3$nuts315nm <- bbNUTS3sp$nuts315nm
+
+#create dataframe object to analyse (remove lat and lon?)
+bb2020sp <- bbNUTS3@data
+#% obs NA for NUTS3?
+
+#summarise by date and geography
+NUTS3datecount <- count(bb2020sp, nuts315nm, date)
+NUTS3dateAvg <- summarise(group_by(NUTS3datecount, nuts315nm), mean(n))
+
+#map NUTS3 mean test frequency per date
+NUTS3@data <- left_join(NUTS3@data, NUTS3dateAvg, by = "nuts315nm")
+var <- NUTS3@data[ ,'mean(n)']
+breaks <- classIntervals(var, n = 5, style = "quantile")
+my_colours <- brewer.pal(5, "Blues")
+plot(NUTS3, col = my_colours[findInterval(var, breaks$brks, all.inside = TRUE)], axes = FALSE,
+     border = rgb(0.8, 0.8, 0.8, 0))
+legend(x = "top", legend = leglabs(breaks$brks), fill = my_colours, bty = "n", cex = 0.5)
+```
