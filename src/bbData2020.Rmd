@@ -81,18 +81,18 @@ bb2020$date <- as.POSIXct(strptime(bb2020$date, format = "%Y-%m-%d", "GMT"))
 bb2020$weekday <- wday(bb2020$date, label = TRUE)
 #create 2 dataframes for 2 matching periods
 Wks2019 <- selectByDate(bb2020, start = "2019-01-21", end = "2019-06-02")
-names(Wks2019)[1:2] <- c("dateOnly", "date")
+names(Wks2019)[1:2] <- c("dateOnly", "date") #413788 obs
 Wks2020 <- selectByDate(bb2020, start = "2020-01-20", end = "2020-05-31")
-names(Wks2020)[1:2] <- c("dateOnly", "date")
+names(Wks2020)[1:2] <- c("dateOnly", "date") #521773 obs
 #timeplots
-TimeVar2019 <- timeVariation(Wks2019, pollutant = "speeddown", statistic = "mean")
-TimeVar2019up <- timeVariation(Wks2019, pollutant = "speedup", statistic = "mean")
-TimeVar2020 <- timeVariation(Wks2020, pollutant = "speeddown", statistic = "mean")
-TimeVar2020up <- timeVariation(Wks2020, pollutant = "speedup", statistic = "mean")
-timePlot(Wks2019, pollutant = "speeddown", avg.time = "day", smooth = TRUE)
-timePlot(Wks2020, pollutant = "speeddown", avg.time = "day", smooth = TRUE)
-timePlot(Wks2019, pollutant = "speedup", avg.time = "day", smooth = TRUE)
-timePlot(Wks2020, pollutant = "speedup", avg.time = "day", smooth = TRUE)
+TimeVar2019 <- timeVariation(Wks2019, pollutant = "speeddown", statistic = "mean", name.pol = "speedown 2019")
+TimeVar2019up <- timeVariation(Wks2019, pollutant = "speedup", statistic = "mean", name.pol = "speedup 2019")
+TimeVar2020 <- timeVariation(Wks2020, pollutant = "speeddown", statistic = "mean", name.pol = "speeddown 2020")
+TimeVar2020up <- timeVariation(Wks2020, pollutant = "speedup", statistic = "mean", name.pol = "speedup 2020")
+timePlot(Wks2019, pollutant = "speeddown", avg.time = "day", smooth = TRUE, name.pol = "speeddown 2019")
+timePlot(Wks2020, pollutant = "speeddown", avg.time = "day", smooth = TRUE, name.pol = "speeddown 2020")
+timePlot(Wks2019, pollutant = "speedup", avg.time = "day", smooth = TRUE, name.pol = "speedup 2019")
+timePlot(Wks2020, pollutant = "speedup", avg.time = "day", smooth = TRUE, name.pol = "speedup 2020")
 ```
 
 # Frequency per date
@@ -100,24 +100,35 @@ timePlot(Wks2020, pollutant = "speedup", avg.time = "day", smooth = TRUE)
 ```{r echo=FALSE, results= 'asis', message=FALSE, warning=TRUE}
 DateCount19 <- count(Wks2019, dateOnly)
 names(DateCount19) <- c("Date19", "tests19")
-HrCount19 <- count(Wks2019, date, hour)
-HrSpeed19 <- summarise(group_by(Wks2019, date, hour), mean(speeddown))
+HrCount19 <- count(Wks2019, dateOnly, hour)
+HrSpeed19 <- summarise(group_by(Wks2019, dateOnly, hour), mean(speeddown))
+HrSpeed19up <- summarise(group_by(Wks2019, dateOnly, hour), mean(speedup))
 HrStats19 <- left_join(HrCount19, HrSpeed19)
-names(HrStats19) <- c("Date19", "Hour19", "test19", "meanSp19")
+HrStats19 <- left_join(HrStats19, HrSpeed19up)
+names(HrStats19) <- c("dateOnly", "hour", "test19", "meanSp19", "meanSp19up")
 DateCount20 <- count(Wks2020, dateOnly)
 names(DateCount20) <- c("Date20", "tests20")
-HrCount20 <- count(Wks2020, date, hour)
-HrSpeed20 <- summarise(group_by(Wks2020, date, hour), mean(speeddown))
+HrCount20 <- count(Wks2020, dateOnly, hour)
+HrSpeed20 <- summarise(group_by(Wks2020, dateOnly, hour), mean(speeddown))
+HrSpeed20up <- summarise(group_by(Wks2020, dateOnly, hour), mean(speedup))
 HrStats20 <- left_join(HrCount20, HrSpeed20)
-names(HrStats20) <- c("Date20", "Hour20", "test20", "meanSp20")
+HrStats20 <- left_join(HrStats20, HrSpeed20up)
+names(HrStats20) <- c("dateOnly", "hour", "test20", "meanSp20", "meanSp20up")
 DateCount <- cbind(DateCount19, DateCount20)
-HrStats <- cbind(HrStats19, HrStats20)  # I GET AN ERROR HERE
-write.csv(DateCount, "DailyTestFreq.csv")
-write.csv(HrStats, "HrTestFreqMean.csv")
+HrStats <- cbind(HrStats19, HrStats20)
+#add columns tests per hour, mean speeddown per hr, mean speed up per hr
+Wks2019 <- left_join(Wks2019, HrStats19, by = c("dateOnly", "hour"))
+Wks2020 <- left_join(Wks2020, HrStats20, by = c("dateOnly", "hour"))
+#frequency plot
+timePlot(Wks2019, pollutant = "test19", avg.time = "hour", smooth = TRUE, name.pol = "hourlyTests 2019")
+timePlot(Wks2020, pollutant = "tests20", avg.time = "hour", smooth = TRUE, name.pol = "hourlyTests 2020")
+TimeVar2019n <- timeVariation(Wks2019, pollutant = "test19", statistic = "mean", name.pol = "hourlytests 2019")
+TimeVar2020n <- timeVariation(Wks2020, pollutant = "test20", statistic = "mean", name.pol = "hourlytests 2020")
 Plot2019 <- ggplot(DateCount19, aes(Date19, tests19))
 Plot2019 + geom_line()
 Plot2020 <- ggplot(DateCount20, aes(Date20, tests20))
 Plot2020 + geom_line()
+
 ```
 
 # Spatial analysis

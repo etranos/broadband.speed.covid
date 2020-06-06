@@ -43,36 +43,64 @@ names(Wks2019)[1:2] <- c("dateOnly", "date")
 Wks2020 <- selectByDate(bb2020, start = "2020-01-20", end = "2020-05-31")
 names(Wks2020)[1:2] <- c("dateOnly", "date")
 #timeplots
-TimeVar2019 <- timeVariation(Wks2019, pollutant = "speeddown", statistic = "mean")
-TimeVar2019up <- timeVariation(Wks2019, pollutant = "speedup", statistic = "mean")
-TimeVar2020 <- timeVariation(Wks2020, pollutant = "speeddown", statistic = "mean")
-TimeVar2020up <- timeVariation(Wks2020, pollutant = "speedup", statistic = "mean")
-timePlot(Wks2019, pollutant = "speeddown", avg.time = "day", smooth = TRUE)
-timePlot(Wks2020, pollutant = "speeddown", avg.time = "day", smooth = TRUE)
-timePlot(Wks2019, pollutant = "speedup", avg.time = "day", smooth = TRUE)
-timePlot(Wks2020, pollutant = "speedup", avg.time = "day", smooth = TRUE)
+TimeVar2019 <- timeVariation(Wks2019, pollutant = "speeddown", 
+                        statistic = "mean", name.pol = "speedown 2019")
+TimeVar2019up <- timeVariation(Wks2019, pollutant = "speedup",
+                        statistic = "mean", name.pol = "speedup 2019")
+TimeVar2020 <- timeVariation(Wks2020, pollutant = "speeddown", 
+                        statistic = "mean", name.pol = "speeddown 2020")
+TimeVar2020up <- timeVariation(Wks2020, pollutant = "speedup",
+                        statistic = "mean", name.pol = "speedup 2020")
+timePlot(Wks2019, pollutant = "speeddown", avg.time = "day", 
+         smooth = TRUE, name.pol = "speeddown 2019")
+timePlot(Wks2020, pollutant = "speeddown", avg.time = "day", 
+         smooth = TRUE, name.pol = "speeddown 2020")
+timePlot(Wks2019, pollutant = "speedup", avg.time = "day", 
+         smooth = TRUE, name.pol = "speedup 2019")
+timePlot(Wks2020, pollutant = "speedup", avg.time = "day", 
+         smooth = TRUE, name.pol = "speedup 2020")
 
 #frequency per date
 DateCount19 <- count(Wks2019, dateOnly)
 names(DateCount19) <- c("Date19", "tests19")
-HrCount19 <- count(Wks2019, date, hour)
-HrSpeed19 <- summarise(group_by(Wks2019, date, hour), mean(speeddown))
+HrCount19 <- count(Wks2019, dateOnly, hour)
+
+HrSpeed19 <- summarise(group_by(Wks2019, dateOnly, hour), mean(speeddown))
+HrSpeed19up <- summarise(group_by(Wks2019, dateOnly, hour), mean(speedup))
 HrStats19 <- left_join(HrCount19, HrSpeed19)
-names(HrStats19) <- c("Date19", "Hour19", "test19", "meanSp19")
+HrStats19 <- left_join(HrStats19, HrSpeed19up)
+names(HrStats19) <- c("dateOnly", "hour", "test19", "meanSp19", "meanSp19up")
 DateCount20 <- count(Wks2020, dateOnly)
 names(DateCount20) <- c("Date20", "tests20")
-HrCount20 <- count(Wks2020, date, hour)
-HrSpeed20 <- summarise(group_by(Wks2020, date, hour), mean(speeddown))
+HrCount20 <- count(Wks2020, dateOnly, hour)
+HrSpeed20 <- summarise(group_by(Wks2020, dateOnly, hour), mean(speeddown))
+HrSpeed20up <- summarise(group_by(Wks2020, dateOnly, hour), mean(speedup))
 HrStats20 <- left_join(HrCount20, HrSpeed20)
-names(HrStats20) <- c("Date20", "Hour20", "test20", "meanSp20")
+HrStats20 <- left_join(HrStats20, HrSpeed20up)
+names(HrStats20) <- c("dateOnly", "hour", "test20", "meanSp20", "meanSp20up")
 DateCount <- cbind(DateCount19, DateCount20)
 HrStats <- cbind(HrStats19, HrStats20)
-write.csv(DateCount, "DailyTestFreq.csv")
-write.csv(HrStats, "HrTestFreqMean.csv")
+#add columns tests per hour, mean speeddown per hr, mean speed up per hr
+Wks2019 <- left_join(Wks2019, HrStats19, by = c("dateOnly", "hour"))
+Wks2020 <- left_join(Wks2020, HrStats20, by = c("dateOnly", "hour"))
+#frequency plot
+timePlot(Wks2019, pollutant = "test19", avg.time = "hour", 
+         smooth = TRUE, name.pol = "hourlyTests 2019")
+timePlot(Wks2020, pollutant = "test20", avg.time = "hour", 
+         smooth = TRUE, name.pol = "hourlyTests 2020")
+TimeVar2019n <- timeVariation(Wks2019, pollutant = "test19", 
+                  statistic = "mean", name.pol = "hourlytests 2019")
+TimeVar2020n <- timeVariation(Wks2020, pollutant = "test20", 
+                  statistic = "mean", name.pol = "hourlytests 2020")
 Plot2019 <- ggplot(DateCount19, aes(Date19, tests19))
 Plot2019 + geom_line()
 Plot2020 <- ggplot(DateCount20, aes(Date20, tests20))
 Plot2020 + geom_line()
+#save files?
+write.csv(DateCount, "DailyTestFreq.csv")
+write.csv(HrStats, "HrTestFreqMean.csv")
+write.csv(Wks2019, "Wks2019.csv")
+write.csv(Wks2020, "Wks2020.csv")
 
 #add libraries to explore data spatially
 library(rgdal)
@@ -98,6 +126,7 @@ bbNUTS3$nuts315nm <- bbNUTS3sp$nuts315nm
 
 #create dataframe object to analyse (remove lat and lon?)
 bb2020sp <- bbNUTS3@data
+write.csv(bb2020sp, "bb2020sp.csv")
 #% obs NA for NUTS3?
 
 #summarise by date and geography
@@ -107,9 +136,11 @@ NUTS3dateAvg <- summarise(group_by(NUTS3datecount, nuts315nm), mean(n))
 #map NUTS3 mean test frequency per date
 NUTS3@data <- left_join(NUTS3@data, NUTS3dateAvg, by = "nuts315nm")
 var <- NUTS3@data[ ,'mean(n)']
-breaks <- classIntervals(var, n = 5, style = "quantile")
+breaks <- classIntervals(var, n = 5, style = "fixed", 
+                         fixedBreaks = c(10,15,20,25,30))
 my_colours <- brewer.pal(5, "Blues")
 plot(NUTS3, col = my_colours[findInterval(var, breaks$brks, all.inside = TRUE)], axes = FALSE,
      border = rgb(0.8, 0.8, 0.8, 0))
-legend(x = "top", legend = leglabs(breaks$brks), fill = my_colours, bty = "n", cex = 0.5)
+legend(x = "top", legend = leglabs(breaks$brks), fill = my_colours, 
+       bty = "n", cex = 0.5)
 
