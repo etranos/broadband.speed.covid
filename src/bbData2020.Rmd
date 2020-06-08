@@ -74,9 +74,9 @@ bb2020$datetext <- as.POSIXct(strptime(bb2020$datetext, format = "%Y-%m-%d %H:%M
 bb2020$date <- as.POSIXct(strptime(bb2020$date, format = "%Y-%m-%d", "GMT"))
 ```
 
-# Temporal analysis
+## Temporal analysis
 
-```{r echo=FALSE, results= 'asis', message=FALSE, warning=TRUE}
+```{r echo=FALSE, results= 'asis', message=FALSE, warning=TRUE, fig.height=15, fig.width=15}
 #add column for day of the week
 bb2020$weekday <- wday(bb2020$date, label = TRUE)
 #create 2 dataframes for 2 matching periods
@@ -95,9 +95,9 @@ timePlot(Wks2019, pollutant = "speedup", avg.time = "day", smooth = TRUE, name.p
 timePlot(Wks2020, pollutant = "speedup", avg.time = "day", smooth = TRUE, name.pol = "speedup 2020")
 ```
 
-# Frequency per date
+## Frequency per date
 
-```{r echo=FALSE, results= 'asis', message=FALSE, warning=TRUE}
+```{r echo=FALSE, results= 'asis', message=FALSE, warning=TRUE, fig.height=15, fig.width=15}
 DateCount19 <- count(Wks2019, dateOnly)
 names(DateCount19) <- c("Date19", "tests19")
 HrCount19 <- count(Wks2019, dateOnly, hour)
@@ -121,7 +121,7 @@ Wks2019 <- left_join(Wks2019, HrStats19, by = c("dateOnly", "hour"))
 Wks2020 <- left_join(Wks2020, HrStats20, by = c("dateOnly", "hour"))
 #frequency plot
 timePlot(Wks2019, pollutant = "test19", avg.time = "hour", smooth = TRUE, name.pol = "hourlyTests 2019")
-timePlot(Wks2020, pollutant = "tests20", avg.time = "hour", smooth = TRUE, name.pol = "hourlyTests 2020")
+timePlot(Wks2020, pollutant = "test20", avg.time = "hour", smooth = TRUE, name.pol = "hourlyTests 2020")
 TimeVar2019n <- timeVariation(Wks2019, pollutant = "test19", statistic = "mean", name.pol = "hourlytests 2019")
 TimeVar2020n <- timeVariation(Wks2020, pollutant = "test20", statistic = "mean", name.pol = "hourlytests 2020")
 Plot2019 <- ggplot(DateCount19, aes(Date19, tests19))
@@ -131,37 +131,38 @@ Plot2020 + geom_line()
 
 ```
 
-# Spatial analysis
+## Spatial analysis
 
-```{r echo=FALSE, results= 'asis', message=FALSE, warning=TRUE}
-#convert to spatial object
-coords_bb <- cbind(bb2020$lon, bb2020$lat)
-bbNUTS3 <- SpatialPointsDataFrame(coords_bb, data = data.frame(bb2020))
-proj4string(bbNUTS3) <- CRS("+init=epsg:4326") #define projection
+<!-- # Ctrl + Shift + c to remove all the below comments -->
+<!-- ```{r echo=FALSE, results= 'asis', message=FALSE, warning=TRUE, fig.height=15, fig.width=10} -->
+<!-- #convert to spatial object -->
+<!-- coords_bb <- cbind(bb2020$lon, bb2020$lat) -->
+<!-- bbNUTS3 <- SpatialPointsDataFrame(coords_bb, data = data.frame(bb2020)) -->
+<!-- proj4string(bbNUTS3) <- CRS("+init=epsg:4326") #define projection -->
 
-#get NUTS3 from up a level and read in (145 NUTS3)
-NUTS3 <- readOGR("../NUTS_Level_3_January_2015_Super_Generalised_Clipped_Boundaries_in_England_and_Wales.shp") 
-NUTS3 <- spTransform(NUTS3, CRS("+init=epsg:4326"))                                
-NUTS3@data$nuts315nm <- as.character(NUTS3@data$nuts315nm)
+<!-- #get NUTS3 from up a level and read in (145 NUTS3) -->
+<!-- NUTS3 <- readOGR("../NUTS_Level_3_January_2015_Super_Generalised_Clipped_Boundaries_in_England_and_Wales.shp") -->
+<!-- NUTS3 <- spTransform(NUTS3, CRS("+init=epsg:4326")) -->
+<!-- NUTS3@data$nuts315nm <- as.character(NUTS3@data$nuts315nm) -->
 
-#spatial join to NUTS3
-bbNUTS3sp <- over(bbNUTS3, NUTS3[, "nuts315nm"]) #not a spatial object
-bbNUTS3$nuts315nm <- bbNUTS3sp$nuts315nm
+<!-- #spatial join to NUTS3 -->
+<!-- bbNUTS3sp <- over(bbNUTS3, NUTS3[, "nuts315nm"]) #not a spatial object -->
+<!-- bbNUTS3$nuts315nm <- bbNUTS3sp$nuts315nm -->
 
-#create dataframe object to analyse (remove lat and lon?)
-bb2020sp <- bbNUTS3@data
-#% obs NA for NUTS3?
+<!-- #create dataframe object to analyse (remove lat and lon?) -->
+<!-- bb2020sp <- bbNUTS3@data -->
+<!-- #% obs NA for NUTS3? -->
 
-#summarise by date and geography
-NUTS3datecount <- count(bb2020sp, nuts315nm, date)
-NUTS3dateAvg <- summarise(group_by(NUTS3datecount, nuts315nm), mean(n))
+<!-- #summarise by date and geography -->
+<!-- NUTS3datecount <- count(bb2020sp, nuts315nm, date) -->
+<!-- NUTS3dateAvg <- summarise(group_by(NUTS3datecount, nuts315nm), mean(n)) -->
 
-#map NUTS3 mean test frequency per date
-NUTS3@data <- left_join(NUTS3@data, NUTS3dateAvg, by = "nuts315nm")
-var <- NUTS3@data[ ,'mean(n)']
-breaks <- classIntervals(var, n = 5, style = "quantile")
-my_colours <- brewer.pal(5, "Blues")
-plot(NUTS3, col = my_colours[findInterval(var, breaks$brks, all.inside = TRUE)], axes = FALSE,
-     border = rgb(0.8, 0.8, 0.8, 0))
-legend(x = "top", legend = leglabs(breaks$brks), fill = my_colours, bty = "n", cex = 0.5)
-```
+<!-- #map NUTS3 mean test frequency per date -->
+<!-- NUTS3@data <- left_join(NUTS3@data, NUTS3dateAvg, by = "nuts315nm") -->
+<!-- var <- NUTS3@data[ ,'mean(n)'] -->
+<!-- breaks <- classIntervals(var, n = 5, style = "quantile") -->
+<!-- my_colours <- brewer.pal(5, "Blues") -->
+<!-- plot(NUTS3, col = my_colours[findInterval(var, breaks$brks, all.inside = TRUE)], axes = FALSE, -->
+<!--      border = rgb(0.8, 0.8, 0.8, 0)) -->
+<!-- legend(x = "top", legend = leglabs(breaks$brks), fill = my_colours, bty = "n", cex = 0.5) -->
+<!-- ``` -->
