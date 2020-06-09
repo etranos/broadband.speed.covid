@@ -72,13 +72,27 @@ bb2020 <- bb2020[ ,c(1:6,8:9)]
 #convert to date form datetext and date columns
 bb2020$datetext <- as.POSIXct(strptime(bb2020$datetext, format = "%Y-%m-%d %H:%M:%S", "GMT")) 
 bb2020$date <- as.POSIXct(strptime(bb2020$date, format = "%Y-%m-%d", "GMT"))
+#create dataframe with number of tests, mean and standard deviation by month for adding to dataframe later
+MonthFreq <- timeAverage(bb2020, avg.time = "month", statistic = "frequency")
+MonthMean <- timeAverage(bb2020, avg.time = "month", statistic = "mean")
+MonthSD <- timeAverage(bb2020, avg.time = "month", statistic = "sd")
+MonthStats <- cbind(MonthFreq[,1:2], MonthMean[,c(3:4)], 
+                    MonthSD[,c(3:4)])
+names(MonthStats) <- c("month", "monthlyTests", "monthlyMeanSpDown", 
+                       "monthlyMeanSpUp", "monthlySDSpDown", 
+                       "monthlySDSpUp")
+MonthStats$month <- month(MonthStats$month, label = TRUE, abbr = TRUE)
+#add column for month and day of the week to create stats below
+bb2020$month <- month(bb2020$date, label = TRUE, abbr = TRUE)
+bb2020$weekday <- wday(bb2020$date, label = TRUE)
+#divide MonthStats for future join with separate 2019 and 2020 dataframes
+MonthStats19 <- MonthStats[1:6,]
+MonthStats20 <- MonthStats[13:17,]
 ```
 
-# Temporal analysis
+# Temporal analysis - explore graphically
 
 ```{r echo=FALSE, results= 'asis', message=FALSE, warning=TRUE}
-#add column for day of the week
-bb2020$weekday <- wday(bb2020$date, label = TRUE)
 #create 2 dataframes for 2 matching periods
 Wks2019 <- selectByDate(bb2020, start = "2019-01-21", end = "2019-06-02")
 names(Wks2019)[1:2] <- c("dateOnly", "date") #413788 obs
@@ -95,73 +109,198 @@ timePlot(Wks2019, pollutant = "speedup", avg.time = "day", smooth = TRUE, name.p
 timePlot(Wks2020, pollutant = "speedup", avg.time = "day", smooth = TRUE, name.pol = "speedup 2020")
 ```
 
-# Frequency per date
+# Add temporal stats as column variables
 
 ```{r echo=FALSE, results= 'asis', message=FALSE, warning=TRUE}
+#add stats for each month: test frequency, mean and standard deviation of speeddown and speedup
+#note that Jan 2019, Jun 2019 and Jan 2020 inc WHOLE month in stats and weekends and nights included
+Wks2019 <- left_join(Wks2019, MonthStats19)
+Wks2020 <- left_join(Wks2020, MonthStats20)
+#add stats for days of week, one set of stats with all hours and one set exc 00.00-06.00
+WkdyCount19 <- count(Wks2019, weekday)
+WkdyMeanSp19down <- summarise(group_by(Wks2019, weekday), mean(speeddown))
+WkdyMeanSp19up <- summarise(group_by(Wks2019, weekday), mean(speedup))
+WkdySDSp19down <- summarise(group_by(Wks2019, weekday), sd(speeddown))
+WkdySDSp19up <- summarise(group_by(Wks2019, weekday), sd(speedup))
+WkdyCount19ex <- count(Wks2019[which(Wks2019$hour != 0:5),], weekday)
+WkdyMeanSp19downex <- summarise(group_by(Wks2019[which(Wks2019$hour 
+                                != 0:5),], weekday), mean(speeddown))
+WkdyMeanSp19upex <- summarise(group_by(Wks2019[which(Wks2019$hour
+                                != 0:5),], weekday), mean(speedup))
+WkdySDSp19downex <- summarise(group_by(Wks2019[which(Wks2019$hour 
+                                != 0:5),], weekday), sd(speeddown))
+WkdySDSp19upex <- summarise(group_by(Wks2019[which(Wks2019$hour 
+                                != 0:5),], weekday), sd(speedup))
+WkdyStats19 <- cbind(WkdyCount19ex, WkdyCount19[,2], 
+                     WkdyMeanSp19downex[,2], WkdyMeanSp19down[,2],
+                     WkdyMeanSp19upex[,2], WkdyMeanSp19up[,2],
+                     WkdySDSp19downex[,2], WkdySDSp19down[,2],
+                     WkdySDSp19upex[,2],WkdySDSp19up[,2])
+names(WkdyStats19) <- c("weekday", "testsWkdyEx", "testsWkdy",
+                        "MeanSpDownWkdyEx", "MeanSpDownWkdy", 
+                        "MeanSpUpWkdyEx", "MeanSpUpWkdy", 
+                        "SDSpDownEx", "SDSpDown", "SDSpUpEx", "SDSpUp")
+Wks2019 <- left_join(Wks2019, WkdyStats19)
+WkdyCount20 <- count(Wks2020, weekday)
+WkdyMeanSp20down <- summarise(group_by(Wks2020, weekday), mean(speeddown))
+WkdyMeanSp20up <- summarise(group_by(Wks2020, weekday), mean(speedup))
+WkdySDSp20down <- summarise(group_by(Wks2020, weekday), sd(speeddown))
+WkdySDSp20up <- summarise(group_by(Wks2020, weekday), sd(speedup))
+WkdyCount20ex <- count(Wks2020[which(Wks2020$hour != 0:5),], weekday)
+WkdyMeanSp20downex <- summarise(group_by(Wks2020[which(Wks2020$hour 
+                                != 0:5),], weekday), mean(speeddown))
+WkdyMeanSp20upex <- summarise(group_by(Wks2020[which(Wks2020$hour
+                                != 0:5),], weekday), mean(speedup))
+WkdySDSp20downex <- summarise(group_by(Wks2020[which(Wks2020$hour 
+                                != 0:5),], weekday), sd(speeddown))
+WkdySDSp20upex <- summarise(group_by(Wks2020[which(Wks2020$hour 
+                                != 0:5),], weekday), sd(speedup))
+WkdyStats20 <- cbind(WkdyCount20ex, WkdyCount20[,2], 
+                     WkdyMeanSp20downex[,2], WkdyMeanSp20down[,2],
+                     WkdyMeanSp20upex[,2], WkdyMeanSp20up[,2],
+                     WkdySDSp20downex[,2], WkdySDSp20down[,2],
+                     WkdySDSp20upex[,2],WkdySDSp20up[,2])
+names(WkdyStats20) <- c("weekday", "testsWkdyEx", "testsWkdy",
+                        "MeanSpDownWkdyEx", "MeanSpDownWkdy", 
+                        "MeanSpUpWkdyEx", "MeanSpUpWkdy", 
+                        "SDSpDownEx", "SDSpDown", "SDSpUpEx", "SDSpUp")
+Wks2020 <- left_join(Wks2020, WkdyStats20)
+#add stats for hours of the day, one set with those hours from all days included and one set exc those hours on Sat-Sun
+HrCount19 <- count(Wks2019, hour)
+HrMeanSp19down <- summarise(group_by(Wks2019, hour), mean(speeddown))
+HrMeanSp19up <- summarise(group_by(Wks2019, hour), mean(speedup))
+HrSDSp19down <- summarise(group_by(Wks2019, hour), sd(speeddown))
+HrSDSp19up <- summarise(group_by(Wks2019, hour), sd(speedup))
+HrCount19ex <- count(Wks2019[which(Wks2019$weekday != "Sat" &
+                                   Wks2019$weekday != "Sun"),], hour)
+HrMeanSp19downex <- summarise(group_by(Wks2019[which(Wks2019$weekday 
+                              != "Sat" & Wks2019$weekday != "Sun"),], 
+                              hour), mean(speeddown))
+HrMeanSp19upex <- summarise(group_by(Wks2019[which(Wks2019$weekday 
+                              != "Sat" & Wks2019$weekday != "Sun"),], 
+                              hour), mean(speedup))
+HrSDSp19downex <- summarise(group_by(Wks2019[which(Wks2019$weekday 
+                              != "Sat" & Wks2019$weekday != "Sun"),], 
+                              hour), sd(speeddown))
+HrSDSp19upex <- summarise(group_by(Wks2019[which(Wks2019$weekday 
+                              != "Sat" & Wks2019$weekday != "Sun"),], 
+                              hour), sd(speedup))
+HrStats19 <- cbind(HrCount19ex, HrCount19[,2], 
+                     HrMeanSp19downex[,2], HrMeanSp19down[,2],
+                     HrMeanSp19upex[,2], HrMeanSp19up[,2],
+                     HrSDSp19downex[,2], HrSDSp19down[,2],
+                     HrSDSp19upex[,2],HrSDSp19up[,2])
+names(HrStats19) <- c("hour", "testsHrEx", "testsHr",
+                        "MeanSpDownHrEx", "MeanSpDownHr", 
+                        "MeanSpUpHrEx", "MeanSpUpHr", 
+                        "SDSpDownHrEx", "SDSpDownHr", "SDSpUpHrEx", 
+                        "SDSpUpHr")
+Wks2019 <- left_join(Wks2019, HrStats19)
+HrCount20 <- count(Wks2020, hour)
+HrMeanSp20down <- summarise(group_by(Wks2020, hour), mean(speeddown))
+HrMeanSp20up <- summarise(group_by(Wks2020, hour), mean(speedup))
+HrSDSp20down <- summarise(group_by(Wks2020, hour), sd(speeddown))
+HrSDSp20up <- summarise(group_by(Wks2020, hour), sd(speedup))
+HrCount20ex <- count(Wks2020[which(Wks2020$weekday != "Sat" &
+                               Wks2020$weekday != "Sun"),], hour)
+HrMeanSp20downex <- summarise(group_by(Wks2020[which(Wks2020$weekday 
+                               != "Sat" & Wks2020$weekday != "Sun"),], 
+                                       hour), mean(speeddown))
+HrMeanSp20upex <- summarise(group_by(Wks2020[which(Wks2020$weekday 
+                               != "Sat" & Wks2020$weekday != "Sun"),], 
+                                     hour), mean(speedup))
+HrSDSp20downex <- summarise(group_by(Wks2020[which(Wks2020$weekday 
+                               != "Sat" & Wks2020$weekday != "Sun"),], 
+                                     hour), sd(speeddown))
+HrSDSp20upex <- summarise(group_by(Wks2020[which(Wks2020$weekday 
+                                != "Sat" & Wks2020$weekday != "Sun"),],
+                                   hour), sd(speedup))
+HrStats20 <- cbind(HrCount20ex, HrCount20[,2], 
+                   HrMeanSp20downex[,2], HrMeanSp20down[,2],
+                   HrMeanSp20upex[,2], HrMeanSp20up[,2],
+                   HrSDSp20downex[,2], HrSDSp20down[,2],
+                   HrSDSp20upex[,2],HrSDSp20up[,2])
+names(HrStats20) <- c("hour", "testsHrEx", "testsHr",
+                      "MeanSpDownHrEx", "MeanSpDownHr", 
+                      "MeanSpUpHrEx", "MeanSpUpHr", 
+                      "SDSpDownHrEx", "SDSpDownHr", "SDSpUpHrEx", 
+                      "SDSpUpHr")
+Wks2020 <- left_join(Wks2020, HrStats20)
+#add daily stats - with and without 0:00-0:600
 DateCount19 <- count(Wks2019, dateOnly)
-names(DateCount19) <- c("Date19", "tests19")
-HrCount19 <- count(Wks2019, dateOnly, hour)
-HrSpeed19 <- summarise(group_by(Wks2019, dateOnly, hour), mean(speeddown))
-HrSpeed19up <- summarise(group_by(Wks2019, dateOnly, hour), mean(speedup))
-HrStats19 <- left_join(HrCount19, HrSpeed19)
-HrStats19 <- left_join(HrStats19, HrSpeed19up)
-names(HrStats19) <- c("dateOnly", "hour", "test19", "meanSp19", "meanSp19up")
+DateSp19down <- summarise(group_by(Wks2019, dateOnly), mean(speeddown))
+DateSp19up <- summarise(group_by(Wks2019, dateOnly), mean(speedup))
+DateSDSp19down <- summarise(group_by(Wks2019, dateOnly), sd(speeddown))
+DateSDSp19up <- summarise(group_by(Wks2019, dateOnly), sd(speedup))
+DateCount19ex <- count(Wks2019[which(Wks2019$hour
+                      != 0:5),], dateOnly)
+DateSp19downEx <- summarise(group_by(Wks2019[which(Wks2019$hour
+                      != 0:5),], dateOnly), mean(speeddown))
+DateSp19upEx <- summarise(group_by(Wks2019[which(Wks2019$hour
+                      != 0:5),], dateOnly), mean(speedup))
+DateSDSp19downEx <- summarise(group_by(Wks2019[which(Wks2019$hour
+                      != 0:5),], dateOnly), sd(speeddown))
+DateSDSp19upEx <- summarise(group_by(Wks2019[which(Wks2019$hour
+                      != 0:5),], dateOnly), sd(speedup))
+DateStats19 <- cbind(DateCount19ex, DateCount19[,2], 
+                   DateSp19downEx[,2], DateSp19down[,2],
+                   DateSp19upEx[,2], DateSp19up[,2],
+                   DateSDSp19downEx[,2], DateSDSp19down[,2],
+                   DateSDSp19upEx[,2], DateSDSp19up[,2])
+names(DateStats19) <- c("dateOnly", "test19ex", "tests19",
+                      "MeanSpDownDateEx", "MeanSpDownDate", 
+                      "MeanSpUpDateEx", "MeanSpUpDate", 
+                      "SDSpDownDateEx", "SDSpDownDate", "SDSpUpDateEx", 
+                      "SDSpUpDate")
+Wks2019 <- left_join(Wks2019, DateStats19)
 DateCount20 <- count(Wks2020, dateOnly)
-names(DateCount20) <- c("Date20", "tests20")
-HrCount20 <- count(Wks2020, dateOnly, hour)
-HrSpeed20 <- summarise(group_by(Wks2020, dateOnly, hour), mean(speeddown))
-HrSpeed20up <- summarise(group_by(Wks2020, dateOnly, hour), mean(speedup))
-HrStats20 <- left_join(HrCount20, HrSpeed20)
-HrStats20 <- left_join(HrStats20, HrSpeed20up)
-names(HrStats20) <- c("dateOnly", "hour", "test20", "meanSp20", "meanSp20up")
-DateCount <- cbind(DateCount19, DateCount20)
-HrStats <- cbind(HrStats19, HrStats20)
-#add columns tests per hour, mean speeddown per hr, mean speed up per hr
-Wks2019 <- left_join(Wks2019, HrStats19, by = c("dateOnly", "hour"))
-Wks2020 <- left_join(Wks2020, HrStats20, by = c("dateOnly", "hour"))
+DateSp20down <- summarise(group_by(Wks2020, dateOnly), mean(speeddown))
+DateSp20up <- summarise(group_by(Wks2020, dateOnly), mean(speedup))
+DateSDSp20down <- summarise(group_by(Wks2020, dateOnly), sd(speeddown))
+DateSDSp20up <- summarise(group_by(Wks2020, dateOnly), sd(speedup))
+DateCount20ex <- count(Wks2020[which(Wks2020$hour != 0:5),], dateOnly)
+DateSp20downEx <- summarise(group_by(Wks2020[which(Wks2020$hour
+                              != 0:5),], dateOnly), mean(speeddown))
+DateSp20upEx <- summarise(group_by(Wks2020[which(Wks2020$hour
+                                   != 0:5),], dateOnly), mean(speedup))
+DateSDSp20downEx <- summarise(group_by(Wks2020[which(Wks2020$hour
+                              != 0:5),], dateOnly), sd(speeddown))
+DateSDSp20upEx <- summarise(group_by(Wks2020[which(Wks2020$hour
+                            != 0:5),], dateOnly), sd(speedup))
+DateStats20 <- cbind(DateCount20ex, DateCount20[,2], 
+                     DateSp20downEx[,2], DateSp20down[,2],
+                     DateSp20upEx[,2], DateSp20up[,2],
+                     DateSDSp20downEx[,2], DateSDSp20down[,2],
+                     DateSDSp20upEx[,2], DateSDSp20up[,2])
+names(DateStats20) <- c("dateOnly", "test20ex", "tests20",
+                        "MeanSpDownDateEx", "MeanSpDownDate", 
+                        "MeanSpUpDateEx", "MeanSpUpDate", 
+                        "SDSpDownDateEx", "SDSpDownDate", "SDSpUpDateEx", 
+                        "SDSpUpDate")
+Wks2020 <- left_join(Wks2020, DateStats20)
 #frequency plot
-timePlot(Wks2019, pollutant = "test19", avg.time = "hour", smooth = TRUE, name.pol = "hourlyTests 2019")
-timePlot(Wks2020, pollutant = "tests20", avg.time = "hour", smooth = TRUE, name.pol = "hourlyTests 2020")
-TimeVar2019n <- timeVariation(Wks2019, pollutant = "test19", statistic = "mean", name.pol = "hourlytests 2019")
-TimeVar2020n <- timeVariation(Wks2020, pollutant = "test20", statistic = "mean", name.pol = "hourlytests 2020")
-Plot2019 <- ggplot(DateCount19, aes(Date19, tests19))
+Plot2019 <- ggplot(Wks2019, aes(dateOnly, tests19))
 Plot2019 + geom_line()
-Plot2020 <- ggplot(DateCount20, aes(Date20, tests20))
+Plot2020 <- ggplot(Wks2020, aes(dateOnly, tests20))
 Plot2020 + geom_line()
+HrDateCount19 <- count(Wks2019, dateOnly, hour)
+HrDateCount20 <- count(Wks2020, dateOnly, hour)
+names(HrDateCount19)[3] <- "testFreq19"
+names(HrDateCount20)[3] <- "testFreq20"
+Wks2019 <- left_join(Wks2019, HrDateCount19)
+Wks2020 <- left_join(Wks2020, HrDateCount20)
+TimeVar2019n <- timeVariation(Wks2019, pollutant = "testFreq19", 
+                    statistic = "mean")
+TimeVar2020n <- timeVariation(Wks2020, pollutant = "testFreq20", 
+                              statistic = "mean")
+#save files
+write.csv(Wks2019, "Wks2019.csv")
+write.csv(Wks2020, "Wks2020.csv")
 
 ```
 
 # Spatial analysis
 
 ```{r echo=FALSE, results= 'asis', message=FALSE, warning=TRUE}
-#convert to spatial object
-coords_bb <- cbind(bb2020$lon, bb2020$lat)
-bbNUTS3 <- SpatialPointsDataFrame(coords_bb, data = data.frame(bb2020))
-proj4string(bbNUTS3) <- CRS("+init=epsg:4326") #define projection
 
-#get NUTS3 from up a level and read in (145 NUTS3)
-NUTS3 <- readOGR("../NUTS_Level_3_January_2015_Super_Generalised_Clipped_Boundaries_in_England_and_Wales.shp") 
-NUTS3 <- spTransform(NUTS3, CRS("+init=epsg:4326"))                                
-NUTS3@data$nuts315nm <- as.character(NUTS3@data$nuts315nm)
-
-#spatial join to NUTS3
-bbNUTS3sp <- over(bbNUTS3, NUTS3[, "nuts315nm"]) #not a spatial object
-bbNUTS3$nuts315nm <- bbNUTS3sp$nuts315nm
-
-#create dataframe object to analyse (remove lat and lon?)
-bb2020sp <- bbNUTS3@data
-#% obs NA for NUTS3?
-
-#summarise by date and geography
-NUTS3datecount <- count(bb2020sp, nuts315nm, date)
-NUTS3dateAvg <- summarise(group_by(NUTS3datecount, nuts315nm), mean(n))
-
-#map NUTS3 mean test frequency per date
-NUTS3@data <- left_join(NUTS3@data, NUTS3dateAvg, by = "nuts315nm")
-var <- NUTS3@data[ ,'mean(n)']
-breaks <- classIntervals(var, n = 5, style = "quantile")
-my_colours <- brewer.pal(5, "Blues")
-plot(NUTS3, col = my_colours[findInterval(var, breaks$brks, all.inside = TRUE)], axes = FALSE,
-     border = rgb(0.8, 0.8, 0.8, 0))
-legend(x = "top", legend = leglabs(breaks$brks), fill = my_colours, bty = "n", cex = 0.5)
 ```
