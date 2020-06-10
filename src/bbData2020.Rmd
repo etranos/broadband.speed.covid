@@ -92,7 +92,10 @@ MonthStats20 <- MonthStats[13:17,]
 
 # Temporal analysis - explore graphically
 
-```{r echo=FALSE, results= 'asis', message=FALSE, warning=TRUE}
+```{r echo=FALSE, results= 'asis', message=FALSE, warning=TRUE, fig.height=15, fig.width=15}
+#OLD# #add column for day of the week
+#OLD# bb2020$weekday <- wday(bb2020$date, label = TRUE)
+
 #create 2 dataframes for 2 matching periods
 Wks2019 <- selectByDate(bb2020, start = "2019-01-21", end = "2019-06-02")
 names(Wks2019)[1:2] <- c("dateOnly", "date") #413788 obs
@@ -111,7 +114,7 @@ timePlot(Wks2020, pollutant = "speedup", avg.time = "day", smooth = TRUE, name.p
 
 # Add temporal stats as column variables
 
-```{r echo=FALSE, results= 'asis', message=FALSE, warning=TRUE}
+```{r echo=FALSE, results= 'asis', message=FALSE, warning=TRUE, fig.height=15, fig.width=15}
 #add stats for each month: test frequency, mean and standard deviation of speeddown and speedup
 #note that Jan 2019, Jun 2019 and Jan 2020 inc WHOLE month in stats and weekends and nights included
 Wks2019 <- left_join(Wks2019, MonthStats19)
@@ -280,6 +283,13 @@ names(DateStats20) <- c("dateOnly", "test20ex", "tests20",
 Wks2020 <- left_join(Wks2020, DateStats20)
 #frequency plot
 Plot2019 <- ggplot(Wks2019, aes(dateOnly, tests19))
+
+#OLD# timePlot(Wks2019, pollutant = "test19", avg.time = "hour", smooth = TRUE, name.pol = "hourlyTests 2019")
+#OLD# timePlot(Wks2020, pollutant = "test20", avg.time = "hour", smooth = TRUE, name.pol = "hourlyTests 2020")
+#OLD# TimeVar2019n <- timeVariation(Wks2019, pollutant = "test19", statistic = "mean", name.pol = "hourlytests 2019")
+#OLD# TimeVar2020n <- timeVariation(Wks2020, pollutant = "test20", statistic = "mean", name.pol = "hourlytests 2020")
+#OLD# Plot2019 <- ggplot(DateCount19, aes(Date19, tests19))
+
 Plot2019 + geom_line()
 Plot2020 <- ggplot(Wks2020, aes(dateOnly, tests20))
 Plot2020 + geom_line()
@@ -299,8 +309,38 @@ write.csv(Wks2020, "Wks2020.csv")
 
 ```
 
-# Spatial analysis
+## Spatial analysis
 
-```{r echo=FALSE, results= 'asis', message=FALSE, warning=TRUE}
+<!-- # Ctrl + Shift + c to remove all the below comments -->
+<!-- ```{r echo=FALSE, results= 'asis', message=FALSE, warning=TRUE, fig.height=15, fig.width=10} -->
+<!-- #convert to spatial object -->
+<!-- coords_bb <- cbind(bb2020$lon, bb2020$lat) -->
+<!-- bbNUTS3 <- SpatialPointsDataFrame(coords_bb, data = data.frame(bb2020)) -->
+<!-- proj4string(bbNUTS3) <- CRS("+init=epsg:4326") #define projection -->
 
-```
+<!-- #get NUTS3 from up a level and read in (145 NUTS3) -->
+<!-- NUTS3 <- readOGR("../NUTS_Level_3_January_2015_Super_Generalised_Clipped_Boundaries_in_England_and_Wales.shp") -->
+<!-- NUTS3 <- spTransform(NUTS3, CRS("+init=epsg:4326")) -->
+<!-- NUTS3@data$nuts315nm <- as.character(NUTS3@data$nuts315nm) -->
+
+<!-- #spatial join to NUTS3 -->
+<!-- bbNUTS3sp <- over(bbNUTS3, NUTS3[, "nuts315nm"]) #not a spatial object -->
+<!-- bbNUTS3$nuts315nm <- bbNUTS3sp$nuts315nm -->
+
+<!-- #create dataframe object to analyse (remove lat and lon?) -->
+<!-- bb2020sp <- bbNUTS3@data -->
+<!-- #% obs NA for NUTS3? -->
+
+<!-- #summarise by date and geography -->
+<!-- NUTS3datecount <- count(bb2020sp, nuts315nm, date) -->
+<!-- NUTS3dateAvg <- summarise(group_by(NUTS3datecount, nuts315nm), mean(n)) -->
+
+<!-- #map NUTS3 mean test frequency per date -->
+<!-- NUTS3@data <- left_join(NUTS3@data, NUTS3dateAvg, by = "nuts315nm") -->
+<!-- var <- NUTS3@data[ ,'mean(n)'] -->
+<!-- breaks <- classIntervals(var, n = 5, style = "quantile") -->
+<!-- my_colours <- brewer.pal(5, "Blues") -->
+<!-- plot(NUTS3, col = my_colours[findInterval(var, breaks$brks, all.inside = TRUE)], axes = FALSE, -->
+<!--      border = rgb(0.8, 0.8, 0.8, 0)) -->
+<!-- legend(x = "top", legend = leglabs(breaks$brks), fill = my_colours, bty = "n", cex = 0.5) -->
+<!-- ``` -->
