@@ -203,6 +203,57 @@ hwl_pca$x %>%
   geom_point()
 
 
+
+# on our data using tsfeatures
+hwl.bb <- bind_cols(
+  tsfeatures(ts.wide[,-1],
+             c("acf_features","entropy","lumpiness",
+               "flat_spots","crossing_points")),
+  tsfeatures(ts.wide[,-1],"stl_features", s.window='periodic', robust=TRUE),
+  tsfeatures(ts.wide[,-1], "max_kl_shift", width=48),
+  tsfeatures(ts.wide[,-1],
+             c("mean","var"), scale=FALSE, na.rm=TRUE),
+  tsfeatures(ts.wide[,-1],
+             c("max_level_shift","max_var_shift"), trim=TRUE)) %>%
+  select(mean, var, x_acf1, trend, linearity, curvature,
+         #     seasonal_strength, peak, trough,
+         entropy, lumpiness, spike, max_level_shift, max_var_shift, flat_spots,
+         crossing_points, max_kl_shift, time_kl_shift)
+head(hwl.bb)
+glimpse(hwl.bb)
+
+# remove nperiods and seasonal_period
+#hwl.bb <- hwl.bb[,-(11:12)]
+
+hwl.bb <- hwl.bb[,-(14:15)]
+
+library(ggplot2)
+hwl_pca <- hwl.bb %>%
+  na.omit() %>%
+  prcomp(scale=T)
+hwl_pca$x %>%
+  as_tibble() %>%
+  ggplot(aes(x=PC1, y=PC2)) +
+  geom_point()
+
+features <- tsfeatures(ts.wide[,-1], na.action = na.omit) # -1 to drop ts.wide$date
+# bring LADs
+features$lads <- names(ts.wide[-1])
+head(features)
+dim(features)
+glimpse(features)
+
+range(features$entropy, na.rm = T)
+entropy1 <- features[features$entropy==1,]
+dim(entropy1)
+unique(entropy1$lads)
+unique(features$lads)
+
+entropy(ts.wide[,-1])
+
+
+
+
 library(babynames)
 # Load dataset from github
 data <- babynames %>% 
@@ -213,3 +264,5 @@ head(data)
 tmp <- data %>%
   mutate(name2=name)
 head(tmp)
+
+

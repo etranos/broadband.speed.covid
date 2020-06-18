@@ -6,6 +6,9 @@ output:
     df_print: paged
     toc: true
     toc_float: true
+knit: (function(inputFile, encoding) {
+    rmarkdown::render(inputFile, encoding = encoding, output_dir = "../output")
+  })
 ---
 
 ```{r settings, include = FALSE}
