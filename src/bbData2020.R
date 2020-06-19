@@ -74,11 +74,14 @@ timePlot(Wks2019, pollutant = "speedup", avg.time = "day",
          smooth = TRUE, name.pol = "speedup 2019")
 timePlot(Wks2020, pollutant = "speedup", avg.time = "day", 
          smooth = TRUE, name.pol = "speedup 2020")
-
-#add temporal stats, first all months
+#add stats for each month: 
+#test frequency, mean and standard deviation of speeddown and speedup
+#note that Jan 2019, Jun 2019 and Jan 2020 inc WHOLE month in stats 
+#weekends and nights included
 Wks2019 <- left_join(Wks2019, MonthStats19)
 Wks2020 <- left_join(Wks2020, MonthStats20)
-#add temporal stats for days of week, all hours and exc 00.00-06.00
+#add stats for days of week, one set of stats with all hours 
+#one set exc 00.00-06.00
 WkdyCount19 <- count(Wks2019, weekday)
 WkdyMeanSp19down <- summarise(group_by(Wks2019, weekday), mean(speeddown))
 WkdyMeanSp19up <- summarise(group_by(Wks2019, weekday), mean(speedup))
@@ -129,7 +132,9 @@ names(WkdyStats20) <- c("weekday", "testsWkdyEx", "testsWkdy",
                         "SDSpDownWkdyEx", "SDSpDownWkdy", "SDSpUpWkdyEx",
                         "SDSpUpWkdy")
 Wks2020 <- left_join(Wks2020, WkdyStats20)
-#add temporal stats for hours of the day, all days and exc Sat-Sun
+#add stats for hours of the day, 
+#one set with those hours from all days included
+#one set exc those hours on Sat-Sun
 HrCount19 <- count(Wks2019, hour)
 HrMeanSp19down <- summarise(group_by(Wks2019, hour), mean(speeddown))
 HrMeanSp19up <- summarise(group_by(Wks2019, hour), mean(speedup))

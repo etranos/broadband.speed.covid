@@ -250,8 +250,7 @@ DateStats19 <- cbind(DateCount19ex, DateCount19[,2],
 names(DateStats19) <- c("dateOnly", "test19ex", "tests19",
                       "MeanSpDownDateEx", "MeanSpDownDate", 
                       "MeanSpUpDateEx", "MeanSpUpDate", 
-                      "SDSpDownDateEx", "SDSpDownDate", "SDSpUpDateEx", 
-                      "SDSpUpDate")
+                      "SDSpDownDateEx", "SDSpDownDate", "SDSpUpDateEx",                       "SDSpUpDate")
 Wks2019 <- left_join(Wks2019, DateStats19)
 DateCount20 <- count(Wks2020, dateOnly)
 DateSp20down <- summarise(group_by(Wks2020, dateOnly), mean(speeddown))
