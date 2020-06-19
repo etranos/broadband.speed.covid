@@ -1,0 +1,375 @@
+---
+title: "Time series clusters"
+date: "`r format(Sys.time(), '%d %B, %Y, %H:%M')`"
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    toc_float: true
+knit: (function(inputFile, encoding) {
+    rmarkdown::render(inputFile, encoding = encoding, output_dir = "../output")
+  })
+---
+
+```{r settings, include = FALSE}
+library(tsbox)
+library(ggplot2)
+library(tidyverse)
+library(geojsonio)
+library(tsfeatures)
+library(rprojroot)
+library(openair)
+library(reshape2)
+library(lubridate)
+library(rgdal)
+library(maptools)
+library(sp)
+library(rgeos)
+library(classInt)
+library(RColorBrewer)
+library(knitr)
+library(rprojroot)
+library(viridis)
+library(hrbrthemes)
+library(imputeTS)
+library(tsbox)
+library(dtwclust)
+
+# This is the project path
+path <- find_rstudio_root_file()
+```
+
+```{r include = FALSE}
+
+# load and clean the data.
+# copied from bbData2020.Rmd
+
+#upload data file
+path.data <- paste(path, "./data/raw/speedtest.csv", sep = "")
+
+#bb2020 <- read.csv("./data/raw/speedtest.csv")
+bb2020 <- read.csv(path.data)
+
+#name columns
+names(bb2020)[1:6] <- c("datetext","speeddown","speedup","provider","lat", "lon") 
+
+str(bb2020)
+summary(bb2020) #2030205 obs
+#conversions needed to numeric? df$col <- as.numeric(df$col) 
+#remove empty rows or coerced to NA? df[complete.cases(df),] or df <- df[!is.na(df$col),]
+
+#remove outliers based on Riddlesden and Singleton 2014 for slower end
+#check fastest upload and download speeds commercially available from Virgin Media (Gigaclear offers even faster!)
+bb2020 <- bb2020[bb2020$speeddown>512,] 
+bb2020 <- bb2020[bb2020$speeddown<362000,]
+bb2020 <- bb2020[bb2020$speedup<21000,] #1839333
+
+#remove below seconds, create columns for date and hour
+bb2020$datetext <- strtrim(x = bb2020$datetext, width = 19) 
+bb2020$datetext2 <- bb2020$datetext
+bb2020$datetext2 <- strtrim(x = bb2020$datetext2, width = 13)
+bb2020$datetext2 <- colsplit(bb2020$datetext2, pattern = " ", c("date", "hour"))
+bb2020$hour <- bb2020$datetext2$hour
+bb2020$date <- bb2020$datetext2$date
+#delete datetext2 column(s)
+bb2020 <- bb2020[ ,c(1:6,8:9)]
+#convert to date form datetext and date columns
+bb2020$datetext <- as.POSIXct(strptime(bb2020$datetext, format = "%Y-%m-%d %H:%M:%S", "GMT")) 
+bb2020$date <- as.POSIXct(strptime(bb2020$date, format = "%Y-%m-%d", "GMT"))
+#create dataframe with number of tests, mean and standard deviation by month for adding to dataframe later
+MonthFreq <- timeAverage(bb2020, avg.time = "month", statistic = "frequency")
+MonthMean <- timeAverage(bb2020, avg.time = "month", statistic = "mean")
+MonthSD <- timeAverage(bb2020, avg.time = "month", statistic = "sd")
+MonthStats <- cbind(MonthFreq[,1:2], MonthMean[,c(3:4)], 
+                    MonthSD[,c(3:4)])
+names(MonthStats) <- c("month", "monthlyTests", "monthlyMeanSpDown", 
+                       "monthlyMeanSpUp", "monthlySDSpDown", 
+                       "monthlySDSpUp")
+MonthStats$month <- month(MonthStats$month, label = TRUE, abbr = TRUE)
+#add column for month and day of the week to create stats below
+bb2020$month <- month(bb2020$date, label = TRUE, abbr = TRUE)
+bb2020$weekday <- wday(bb2020$date, label = TRUE)
+#divide MonthStats for future join with separate 2019 and 2020 dataframes
+MonthStats19 <- MonthStats[1:6,]
+MonthStats20 <- MonthStats[13:17,]
+```
+
+## Structured time series
+
+```{r eval=TRUE, echo=FALSE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
+
+# convert to spatial object
+coords_bb <- cbind(bb2020$lon, bb2020$lat)
+bb.la <- SpatialPointsDataFrame(coords_bb, data = data.frame(bb2020))
+proj4string(bb.la) <- CRS("+init=epsg:4326") #define projection
+
+# get LA 
+# (i) directly from the web
+#la <- readOGR("http://geoportal1-ons.opendata.arcgis.com/datasets/b6d2e15801de45328b760a4f55d74318_0.geojson?outSR={%22latestWkid%22:3857,%22wkid%22:102100}")#, layer="OGRGeoJSON")
+# or, (ii) from the json I saved locally
+path.json <- paste(path, "./data/raw/Local_Authority_Districts_(April_2019)_Boundaries_UK_BFE.geojson", sep = "")
+la <- readOGR(path.json)#, layer="OGRGeoJSON")
+# UK BGC la <- readOGR("https://opendata.arcgis.com/datasets/0e07a8196454415eab18c40a54dfbbef_0.geojson")
+# UK BFC la <- readOGR("https://opendata.arcgis.com/datasets/1d78d47c87df4212b79fe2323aae8e08_0.geojson") 
+
+# source: https://data.gov.uk/dataset/7c387c64-d25f-474a-b07e-b933578caea2/local-authority-districts-april-2019-boundaries-uk-bfe
+
+# spatial transformations
+la <- spTransform(la, CRS("+init=epsg:4326"))
+la@data$LAD19NM <- as.character(la@data$LAD19NM)
+
+# spatial join to LAD
+bb.la.sp <- over(bb.la, la[, "LAD19NM"]) #not a spatial object
+bb.la$LAD19NM <- bb.la.sp$LAD19NM
+
+# create dataframe object to analyse (remove lat and lon?)
+bb2020sp <- bb.la@data
+
+# drop NAs
+bb2020sp <- bb2020sp[!is.na(bb2020sp$LAD19NM),]
+#13431/1839332 = .0073 NA LAD19NM, coord outside UK
+
+# summarise by date and geography
+la.date.count <- count(bb2020sp, LAD19NM, date)
+la.dateAvg <- summarise(group_by(la.date.count, LAD19NM), mean(n))
+range(la.dateAvg$`mean(n)`)
+
+# map LA mean test frequency per date
+la@data <- left_join(la@data, la.dateAvg, by = "LAD19NM")
+var <- la@data[ ,'mean(n)']
+breaks <- classIntervals(var, n = 5, style = "quantile")
+my_colours <- brewer.pal(5, "Blues")
+plot(la, col = my_colours[findInterval(var, breaks$brks, all.inside = TRUE)], axes = FALSE,
+                 border = rgb(0.8, 0.8, 0.8, 0))
+
+```
+
+## Keep working hours and days
+
+The time series are based on mean upload and download speeds as well as the total number of tests for working days and during working hours
+
+```{r include=TRUE, echo=FALSE, results= 'markup', message=FALSE, warning = FALSE, fig.height=600, fig.width=14}
+
+bb2020sp <- bb2020sp %>% arrange(datetext)
+
+# keep working hours
+bb2020sp <- bb2020sp[bb2020sp$hour>=9 & bb2020sp$hour<17,]
+
+# drop w/e
+bb2020sp <- bb2020sp %>%
+  filter(bb2020sp$weekday!="Sat" & bb2020sp$weekday!="Sun")
+
+head(bb2020sp)
+```
+
+## Time series clusters
+
+I create clusters based on upload, download and number of tests time series for tests working hours and days from 16/2/2020 onwards.
+
+More work needs to be done to select the optimal *k* as well as the clustering methods.
+The `dtwclust` package comes with quite some readings, saved in the `.\literature\`.
+
+Also, we need to think about upload / download / differnces / period + **imputation**.
+
+```{r include=TRUE, echo=FALSE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
+
+# download
+ts.down <- bb2020sp %>%
+  group_by(date,LAD19NM) %>%
+  summarise(mean.down = mean(speeddown))#, mean.down = mean(speeddown), n.tests = n())
+
+# upload
+ts.up <- bb2020sp %>%
+  group_by(date,LAD19NM) %>%
+  summarise(mean.up = mean(speedup))
+
+# tests
+ts.tests <- bb2020sp %>%
+  group_by(date,LAD19NM) %>%
+  summarise(n.tests = n())
+```
+
+### Upload speed
+
+```{r eval=TRUE, echo=TRUE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
+
+# upload working hours and days
+
+ts.wide <- ts.up %>%
+  select(date, LAD19NM, mean.up) %>%
+  filter(date > "2020-2-15")
+
+# turn to a wide format
+ts.wide <- ts_wide(ts.wide)
+
+# impute with means
+library(imputeTS)
+ts.wide <- na_mean(ts.wide)
+#sapply(ts.wide, function(x) sum(is.na(x)))
+
+# extract names
+ts.wide.names <- names(ts.wide[,-1])
+ts.wide <- ts.wide[,-1]
+
+# standardise
+ts.wide <- zscore(ts.wide)
+
+# convert to list for tsclust
+ts.wide <- split(ts.wide, rep(1:ncol(ts.wide), each = nrow(ts.wide)))
+
+# 5 - 20 cluster sollutions
+pc_k <- tsclust(ts.wide, k = c(5,10,15,20), seed = 94L,
+                type="partitional",
+                distance = "dtw_basic", centroid = "pam", trace = T, 
+                args = tsclust_args(dist = list(window.size = 20L)))
+
+# decide k, see RJ-2019-023 for max/min
+names(pc_k) <- paste0("k_", c("5","10","15", "20"))
+sapply(pc_k, cvi, type = "internal")
+
+# I need to work on the selection
+
+pc_k <- tsclust(ts.wide, k = 20, seed = 94L, 
+                type="partitional", 
+                distance = "dtw_basic", centroid = "pam", trace = T, 
+                args = tsclust_args(dist = list(window.size = 20L)))
+
+
+plot(pc_k)
+
+cluster_up <- data.frame(LAD=ts.wide.names,
+                           cluster=pc_k@cluster)
+```
+
+### Download speed
+
+```{r eval=TRUE, echo=TRUE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
+
+# downlad working hours and days
+
+ts.wide <- ts.down %>%
+  select(date, LAD19NM, mean.down) %>%
+  filter(date > "2020-2-15")
+
+# turn to a wide format
+ts.wide <- ts_wide(ts.wide)
+
+# impute with means
+library(imputeTS)
+ts.wide <- na_mean(ts.wide)
+#sapply(ts.wide, function(x) sum(is.na(x)))
+
+# extract names
+ts.wide.names <- names(ts.wide[,-1])
+ts.wide <- ts.wide[,-1]
+
+# standardise
+ts.wide <- zscore(ts.wide)
+
+# convert to list for tsclust
+ts.wide <- split(ts.wide, rep(1:ncol(ts.wide), each = nrow(ts.wide)))
+
+# 5 - 20 cluster sollutions
+pc_k <- tsclust(ts.wide, k = c(5,10,15,20), seed = 94L,
+                type="partitional",
+                distance = "dtw_basic", centroid = "pam", trace = T, 
+                args = tsclust_args(dist = list(window.size = 20L)))
+
+# decide k, see RJ-2019-023 for max/min
+names(pc_k) <- paste0("k_", c("5","10","15", "20"))
+sapply(pc_k, cvi, type = "internal")
+
+# I need to work on the selection
+
+pc_k <- tsclust(ts.wide, k = 20, seed = 94L, 
+                type="partitional", 
+                distance = "dtw_basic", centroid = "pam", trace = T, 
+                args = tsclust_args(dist = list(window.size = 20L)))
+
+
+plot(pc_k)
+
+cluster_down <- data.frame(LAD=ts.wide.names,
+                         cluster=pc_k@cluster)
+```
+
+### N. of speeds
+
+```{r eval=TRUE, echo=TRUE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
+
+# tests working hours and days
+
+ts.wide <- ts.tests %>%
+  select(date, LAD19NM, n.tests) %>%
+  filter(date > "2020-2-15")
+
+# turn to a wide format
+ts.wide <- ts_wide(ts.wide)
+
+# impute with means
+library(imputeTS)
+ts.wide <- na_mean(ts.wide)
+#sapply(ts.wide, function(x) sum(is.na(x)))
+
+# extract names
+ts.wide.names <- names(ts.wide[,-1])
+ts.wide <- ts.wide[,-1]
+
+# standardise
+ts.wide <- zscore(ts.wide)
+
+# convert to list for tsclust
+ts.wide <- split(ts.wide, rep(1:ncol(ts.wide), each = nrow(ts.wide)))
+
+# 5 - 20 cluster sollutions
+pc_k <- tsclust(ts.wide, k = c(5,10,15,20), seed = 94L,
+                type="partitional",
+                distance = "dtw_basic", centroid = "pam", trace = T, 
+                args = tsclust_args(dist = list(window.size = 20L)))
+
+# decide k, see RJ-2019-023 for max/min
+names(pc_k) <- paste0("k_", c("5","10","15", "20"))
+sapply(pc_k, cvi, type = "internal")
+
+# I need to work on the selection
+
+pc_k <- tsclust(ts.wide, k = 15, seed = 94L, 
+                type="partitional", 
+                distance = "dtw_basic", centroid = "pam", trace = T, 
+                args = tsclust_args(dist = list(window.size = 20L)))
+
+
+plot(pc_k)
+
+cluster_tests <- data.frame(LAD=ts.wide.names,
+                           cluster=pc_k@cluster)
+
+clusters <- merge(cluster_up, cluster_down, by = "LAD")
+names(clusters)[2] <- "cluster.up"
+names(clusters)[3] <- "cluster.down"
+clusters <- merge(clusters, cluster_tests, by = "LAD")
+names(clusters)[4] <- "cluster.tests"
+#sapply(clusters, function(x) sum(is.na(x)))
+
+clusters  %>% arrange(cluster.up) %>% kable() 
+```
+
+## Mapping the clusters
+
+```{r include=TRUE, echo=FALSE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
+
+la@data <- merge(la@data, clusters, by.x = "LAD19NM", by.y = "LAD")
+
+var <- la@data[ ,'cluster.up']
+plot(la, col = var, main = "Upload clusters",
+     border = rgb(0.8, 0.8, 0.8, 0))
+
+var <- la@data[ ,'cluster.down']
+plot(la, col = var, main = "Download clusters",
+     border = rgb(0.8, 0.8, 0.8, 0))
+
+var <- la@data[ ,'cluster.tests']
+plot(la, col = var, main = "Tests clusters",
+     border = rgb(0.8, 0.8, 0.8, 0))
+
+```

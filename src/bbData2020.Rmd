@@ -6,6 +6,9 @@ output:
     df_print: paged
     toc: true
     toc_float: true
+knit: (function(inputFile, encoding) {
+    rmarkdown::render(inputFile, encoding = encoding, output_dir = "../output")
+  })
 ---
 
 ```{r settings, include = FALSE}
@@ -303,9 +306,10 @@ TimeVar2019n <- timeVariation(Wks2019, pollutant = "testFreq19",
 TimeVar2020n <- timeVariation(Wks2020, pollutant = "testFreq20", 
                               statistic = "mean")
 #save files
-write.csv(Wks2019, "Wks2019.csv")
-write.csv(Wks2020, "Wks2020.csv")
-
+out.Wks2019 <- paste(path, "./data/temp/Wks2019.csv", sep = "")
+out.Wks2020 <- paste(path, "./data/temp/Wks2020.csv", sep = "")
+write.csv(Wks2019, out.Wks2019)
+write.csv(Wks2020, out.Wks2020)
 ```
 
 ## Spatial analysis
