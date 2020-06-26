@@ -1,0 +1,173 @@
+---
+title: "Data_Spatial"
+date: "`r format(Sys.time(), '%d %B, %Y, %H:%M')`"
+output: html_document
+df_print: paged
+    toc: true
+    toc_float: true
+knit: (function(inputFile, encoding) {
+    rmarkdown::render(inputFile, encoding = encoding, output_dir = "../output")
+  })
+---
+
+```{r settings, include = FALSE}
+library(tsbox)
+library(ggplot2)
+library(tidyverse)
+library(geojsonio)
+library(tsfeatures)
+library(rprojroot)
+library(openair)
+library(reshape2)
+library(lubridate)
+library(rgdal)
+library(maptools)
+library(sp)
+library(rgeos)
+library(classInt)
+library(RColorBrewer)
+library(knitr)
+library(rprojroot)
+library(viridis)
+library(hrbrthemes)
+
+# This is the project path
+path <- find_rstudio_root_file()
+```
+
+
+```{r include = FALSE}
+
+# load and clean the data.
+# copied from bbData2020.Rmd
+
+#upload data file
+path.data <- paste(path, "./data/raw/speedtest.csv", sep = "")
+
+#bb2020 <- read.csv("./data/raw/speedtest.csv")
+bb2020 <- read.csv(path.data)
+
+#name columns
+names(bb2020)[1:6] <- c("datetext","speeddown","speedup","provider","lat", "lon") 
+
+str(bb2020)
+summary(bb2020) #2030205 obs
+#conversions needed to numeric? df$col <- as.numeric(df$col) 
+#remove empty rows or coerced to NA? df[complete.cases(df),] or df <- df[!is.na(df$col),]
+
+#remove outliers based on Riddlesden and Singleton 2014 for slower end
+#check fastest upload and download speeds commercially available from Virgin Media (Gigaclear offers even faster!)
+bb2020 <- bb2020[bb2020$speeddown>512,] 
+bb2020 <- bb2020[bb2020$speeddown<362000,]
+bb2020 <- bb2020[bb2020$speedup<21000,] #1839333
+
+#remove below seconds, create columns for date and hour
+bb2020$datetext <- strtrim(x = bb2020$datetext, width = 19) 
+bb2020$datetext2 <- bb2020$datetext
+bb2020$datetext2 <- strtrim(x = bb2020$datetext2, width = 13)
+bb2020$datetext2 <- colsplit(bb2020$datetext2, pattern = " ", c("date", "hour"))
+bb2020$hour <- bb2020$datetext2$hour
+bb2020$date <- bb2020$datetext2$date
+#delete datetext2 column(s)
+bb2020 <- bb2020[ ,c(1:6,8:9)]
+#convert to date form datetext and date columns
+bb2020$datetext <- as.POSIXct(strptime(bb2020$datetext, format = "%Y-%m-%d %H:%M:%S", "GMT")) 
+bb2020$date <- as.POSIXct(strptime(bb2020$date, format = "%Y-%m-%d", "GMT"))
+#add column for month and day of the week to create stats below
+bb2020$month <- month(bb2020$date, label = TRUE, abbr = TRUE)
+bb2020$weekday <- wday(bb2020$date, label = TRUE)
+#create 2 dataframes for 2 matching periods
+Wks2019 <- selectByDate(bb2020, start = "2019-01-21", end = "2019-06-02")
+names(Wks2019)[1:2] <- c("dateOnly", "date") #413788 obs
+Wks2019$Year <- rep(2019)
+Wks2020 <- selectByDate(bb2020, start = "2020-01-20", end = "2020-05-31")
+names(Wks2020)[1:2] <- c("dateOnly", "date") #521773 obs
+Wks2020$Year <- rep(2020)
+TSbb19_20 <- rbind(Wks2019, Wks2020) #935561 obs
+#exclude obs from Saturdays, Sundays, bank holidays and midnight-6am
+TSbb19_20 <- selectByDate(TSbb19_20, day = "weekday", hour = 6:23) #641830 obs
+TSbb19_20$dateOnly <- as.character(TSbb19_20$dateOnly)
+TSbb19_20 <- TSbb19_20[which(TSbb19_20$dateOnly != "2019-04-19" &
+                               TSbb19_20$dateOnly != "2019-04-22" &
+                               TSbb19_20$dateOnly != "2019-05-06" &
+                               TSbb19_20$dateOnly != "2019-05-27" &
+                               TSbb19_20$dateOnly != "2020-04-10" &
+                               TSbb19_20$dateOnly != "2020-04-13" &
+                               TSbb19_20$dateOnly != "2020-05-08" &
+                     TSbb19_20$dateOnly != "2020-05-25"),] #619821 obs
+rm(bb2020)
+rm(Wks2019)
+rm(Wks2020)
+```
+
+```{r include=TRUE, echo=FALSE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
+
+# Structured TS
+
+# convert to spatial object
+coords_bb <- cbind(TSbb19_20$lon, TSbb19_20$lat)
+bb.la <- SpatialPointsDataFrame(coords_bb, data = data.frame(TSbb19_20))
+proj4string(bb.la) <- CRS("+init=epsg:4326") #define projection
+
+# get LA 
+# (i) directly from the web
+#la <- readOGR("http://geoportal1-ons.opendata.arcgis.com/datasets/b6d2e15801de45328b760a4f55d74318_0.geojson?outSR={%22latestWkid%22:3857,%22wkid%22:102100}")#, layer="OGRGeoJSON")
+# or, (ii) from the json I saved locally
+path.json <- paste(path, "./data/raw/Local_Authority_Districts_(April_2019)_Boundaries_UK_BFE.geojson", sep = "")
+la <- readOGR(path.json)#, layer="OGRGeoJSON")
+# UK BGC la <- readOGR("https://opendata.arcgis.com/datasets/0e07a8196454415eab18c40a54dfbbef_0.geojson")
+# UK BFC la <- readOGR("https://opendata.arcgis.com/datasets/1d78d47c87df4212b79fe2323aae8e08_0.geojson") 
+
+# source: https://data.gov.uk/dataset/7c387c64-d25f-474a-b07e-b933578caea2/local-authority-districts-april-2019-boundaries-uk-bfe
+
+# spatial transformations
+la <- spTransform(la, CRS("+init=epsg:4326"))
+la@data$LAD19NM <- as.character(la@data$LAD19NM)
+
+# spatial join to LAD
+bb.la.sp <- over(bb.la, la[, "LAD19NM"]) #not a spatial object
+bb.la$LAD19NM <- bb.la.sp$LAD19NM
+
+# create dataframe object to analyse (remove lat and lon?)
+TSbb19_20sp <- bb.la@data
+
+# drop NAs
+TSbb19_20sp <- TSbb19_20sp[!is.na(TSbb19_20sp$LAD19NM),]
+#NA LAD19NM, coord outside UK =  615516 obs (99.3% of obs retained)
+```
+
+```{r include=TRUE, echo=FALSE, results= 'markup', message=FALSE, warning = FALSE, fig.height=600, fig.width=14}
+#split by year before create stats by each hour of each day of the week
+TS2019 <- selectByDate(TSbb19_20sp, year = 2019) #272248 obs
+TS2020 <- selectByDate(TSbb19_20sp, year = 2020) #343268 obs
+
+#5 weekdays x 18 hours x 382 LA = 34,380 obs
+ts.tests <- TS2020 %>%
+  group_by(weekday, hour, LAD19NM) %>%
+  summarise(n.tests = n())
+sapply(ts.tests, function(x) sum(is.na(x)))
+
+# summarise by frequency of tests and geography
+la.dateAvg <- summarise(group_by(ts.tests, LAD19NM), mean(n.tests))
+range(la.dateAvg$`mean(n.tests)`)
+#exclude LAs with average of less than 3 tests per hour per weekday
+la.exc <- la.dateAvg[which(la.dateAvg$`mean(n.tests)` <3),]
+la.dateAvg <- la.dateAvg[which(la.dateAvg$`mean(n.tests)` >=3),] #374 or 98% of LADs, so sufficient to keep 90 data points in ts
+la.exc
+#remove 8 LAD from TS2019 and TS2020?
+
+# map LA mean test frequency per date
+la@data <- left_join(la@data, la.dateAvg, by = "LAD19NM")
+var <- la@data[ ,"mean(n.tests)"]
+breaks <- classIntervals(var, n = 5, style = "quantile")
+my_colours <- brewer.pal(5, "Blues")
+plot(la, col = my_colours[findInterval(var, breaks$brks, all.inside = TRUE)], axes = FALSE,
+                 border = rgb(0.8, 0.8, 0.8, 0))
+
+#look at 2019?
+ts.tests <- TS2019 %>%
+  group_by(weekday, hour, LAD19NM) %>%
+  summarise(n.tests = n())
+sapply(ts.tests, function(x) sum(is.na(x)))
+
+```
