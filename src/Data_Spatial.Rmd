@@ -68,14 +68,18 @@ bb2020$datetext2 <- strtrim(x = bb2020$datetext2, width = 13)
 bb2020$datetext2 <- colsplit(bb2020$datetext2, pattern = " ", c("date", "hour"))
 bb2020$hour <- bb2020$datetext2$hour
 bb2020$date <- bb2020$datetext2$date
+
 #delete datetext2 column(s)
 bb2020 <- bb2020[ ,c(1:6,8:9)]
+
 #convert to date form datetext and date columns
 bb2020$datetext <- as.POSIXct(strptime(bb2020$datetext, format = "%Y-%m-%d %H:%M:%S", "GMT")) 
 bb2020$date <- as.POSIXct(strptime(bb2020$date, format = "%Y-%m-%d", "GMT"))
+
 #add column for month and day of the week to create stats below
 bb2020$month <- month(bb2020$date, label = TRUE, abbr = TRUE)
 bb2020$weekday <- wday(bb2020$date, label = TRUE)
+
 #create 2 dataframes for 2 matching periods
 Wks2019 <- selectByDate(bb2020, start = "2019-01-21", end = "2019-06-02")
 names(Wks2019)[1:2] <- c("dateOnly", "date") #413788 obs
@@ -84,6 +88,7 @@ Wks2020 <- selectByDate(bb2020, start = "2020-01-20", end = "2020-05-31")
 names(Wks2020)[1:2] <- c("dateOnly", "date") #521773 obs
 Wks2020$Year <- rep(2020)
 TSbb19_20 <- rbind(Wks2019, Wks2020) #935561 obs
+
 #exclude obs from Saturdays, Sundays, bank holidays and midnight-6am
 TSbb19_20 <- selectByDate(TSbb19_20, day = "weekday", hour = 6:23) #641830 obs
 TSbb19_20$dateOnly <- as.character(TSbb19_20$dateOnly)
@@ -115,9 +120,6 @@ proj4string(bb.la) <- CRS("+init=epsg:4326") #define projection
 # or, (ii) from the json I saved locally
 path.json <- paste(path, "./data/raw/Local_Authority_Districts_(April_2019)_Boundaries_UK_BFE.geojson", sep = "")
 la <- readOGR(path.json)#, layer="OGRGeoJSON")
-# UK BGC la <- readOGR("https://opendata.arcgis.com/datasets/0e07a8196454415eab18c40a54dfbbef_0.geojson")
-# UK BFC la <- readOGR("https://opendata.arcgis.com/datasets/1d78d47c87df4212b79fe2323aae8e08_0.geojson") 
-
 # source: https://data.gov.uk/dataset/7c387c64-d25f-474a-b07e-b933578caea2/local-authority-districts-april-2019-boundaries-uk-bfe
 
 # spatial transformations
@@ -137,6 +139,7 @@ TSbb19_20sp <- TSbb19_20sp[!is.na(TSbb19_20sp$LAD19NM),]
 ```
 
 ```{r include=TRUE, echo=FALSE, results= 'markup', message=FALSE, warning = FALSE, fig.height=600, fig.width=14}
+
 #split by year before create stats by each hour of each day of the week
 TS2019 <- selectByDate(TSbb19_20sp, year = 2019) #272248 obs
 TS2020 <- selectByDate(TSbb19_20sp, year = 2020) #343268 obs
