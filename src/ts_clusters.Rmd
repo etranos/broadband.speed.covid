@@ -174,18 +174,18 @@ Also, we need to think about upload / download / differnces / period + **imputat
 ```{r include=TRUE, echo=FALSE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
 
 # download
-ts.down <- bb2020sp %>%
-  group_by(date,LAD19NM) %>%
+ts.down <- TS2020 %>%
+  group_by(weekday, hour, LAD19NM) %>%
   summarise(mean.down = mean(speeddown))#, mean.down = mean(speeddown), n.tests = n())
 
 # upload
-ts.up <- bb2020sp %>%
-  group_by(date,LAD19NM) %>%
+ts.up <- TS2020 %>%
+  group_by(weekday, hour, LAD19NM) %>%
   summarise(mean.up = mean(speedup))
 
 # tests
-ts.tests <- bb2020sp %>%
-  group_by(date,LAD19NM) %>%
+ts.tests <- TS2020 %>%
+  group_by(weekday, hour, LAD19NM) %>%
   summarise(n.tests = n())
 ```
 
@@ -245,7 +245,7 @@ cluster_up <- data.frame(LAD=ts.wide.names,
 
 ```{r eval=TRUE, echo=TRUE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
 
-# downlad working hours and days
+# download working hours and days
 
 ts.wide <- ts.down %>%
   select(date, LAD19NM, mean.down) %>%
