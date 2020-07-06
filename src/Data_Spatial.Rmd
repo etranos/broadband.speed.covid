@@ -136,6 +136,10 @@ TSbb19_20sp <- bb.la@data
 # drop NAs
 TSbb19_20sp <- TSbb19_20sp[!is.na(TSbb19_20sp$LAD19NM),]
 #NA LAD19NM, coord outside UK =  615516 obs (99.3% of obs retained)
+
+#save files
+out.TSbb19_20sp <- paste(path, "./data/temp/TSbb19_20sp.csv", sep = "")
+write_csv(TSbb19_20sp, out.TSbb19_20sp)
 ```
 
 ```{r include=TRUE, echo=FALSE, results= 'markup', message=FALSE, warning = FALSE, fig.height=600, fig.width=14}
