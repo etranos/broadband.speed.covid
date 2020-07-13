@@ -1,8 +1,9 @@
 ---
 title: "Data_Spatial"
 date: "`r format(Sys.time(), '%d %B, %Y, %H:%M')`"
-output: html_document
-df_print: paged
+output: 
+  html_document:
+    df_print: paged
     toc: true
     toc_float: true
 knit: (function(inputFile, encoding) {

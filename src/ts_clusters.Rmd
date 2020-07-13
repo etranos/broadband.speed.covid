@@ -101,11 +101,11 @@ ts.tests2019 <- TS2019 %>%
 ```{r eval=TRUE, echo=TRUE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
 
 # create a 'fake' week for a ts id
-help.dates <- tibble(help.date.time = c(make_datetime(year = 2020, month = 2, day = 3),
-                make_datetime(year = 2020, month = 2, day = 4),
-                make_datetime(year = 2020, month = 2, day = 5),
-                make_datetime(year = 2020, month = 2, day = 6),
-                make_datetime(year = 2020, month = 2, day = 7)),
+help.dates <- tibble(help.date.time = c(make_datetime(year = 2020, month = 3, day = 2),
+                make_datetime(year = 2020, month = 3, day = 3),
+                make_datetime(year = 2020, month = 3, day = 4),
+                make_datetime(year = 2020, month = 3, day = 5),
+                make_datetime(year = 2020, month = 3, day = 6)),
                 weekday = c("Mon", "Tue", "Wed", "Thu", "Fri"))
 ts.wide <- merge(ts.up2020, help.dates, by = "weekday")
 ts.wide$hour <- paste(ts.wide$hour, ":00", sep="")
@@ -120,7 +120,6 @@ ts.wide <- ts_wide(ts.wide)
 
 # impute with means of each TS
 # TODO check sensitivity
-library(imputeTS)
 ts.wide <- na_mean(ts.wide)
 #sapply(ts.wide, function(x) sum(is.na(x)))
 
@@ -196,7 +195,6 @@ ts.wide <- ts_wide(ts.wide)
 
 # impute with means of each TS
 # TODO check sensitivity
-library(imputeTS)
 ts.wide <- na_mean(ts.wide)
 #sapply(ts.wide, function(x) sum(is.na(x)))
 
@@ -273,7 +271,6 @@ ts.wide <- ts_wide(ts.wide)
 
 # impute with means of each TS
 # TODO check sensitivity
-library(imputeTS)
 ts.wide <- na_mean(ts.wide)
 #sapply(ts.wide, function(x) sum(is.na(x)))
 
@@ -339,11 +336,11 @@ cluster_tests <- data.frame(LAD=ts.wide.names,
 # 2020 copied from above
 
 # create a 'fake' week for a ts id
-help.dates <- tibble(help.date.time = c(make_datetime(year = 2020, month = 2, day = 3),
-                make_datetime(year = 2020, month = 2, day = 4),
-                make_datetime(year = 2020, month = 2, day = 5),
-                make_datetime(year = 2020, month = 2, day = 6),
-                make_datetime(year = 2020, month = 2, day = 7)),
+help.dates <- tibble(help.date.time = c(make_datetime(year = 2020, month = 3, day = 2),
+                make_datetime(year = 2020, month = 3, day = 3),
+                make_datetime(year = 2020, month = 3, day = 4),
+                make_datetime(year = 2020, month = 3, day = 5),
+                make_datetime(year = 2020, month = 3, day = 6)),
                 weekday = c("Mon", "Tue", "Wed", "Thu", "Fri"))
 ts.wide <- merge(ts.up2020, help.dates, by = "weekday")
 ts.wide$hour <- paste(ts.wide$hour, ":00", sep="")
@@ -358,17 +355,16 @@ ts.wide <- ts_wide(ts.wide)
 
 # impute with means of each TS
 # TODO check sensitivity
-library(imputeTS)
 ts.wide <- na_mean(ts.wide)
 
 # 2019
 
 # create a 'fake' week for a ts id
-help.dates <- tibble(help.date.time = c(make_datetime(year = 2019, month = 2, day = 4),
-                make_datetime(year = 2019, month = 2, day = 5),
-                make_datetime(year = 2019, month = 2, day = 6),
-                make_datetime(year = 2019, month = 2, day = 7),
-                make_datetime(year = 2019, month = 2, day = 8)),
+help.dates <- tibble(help.date.time = c(make_datetime(year = 2019, month = 3, day = 4),
+                make_datetime(year = 2019, month = 3, day = 5),
+                make_datetime(year = 2019, month = 3, day = 6),
+                make_datetime(year = 2019, month = 3, day = 7),
+                make_datetime(year = 2019, month = 3, day = 8)),
                 weekday = c("Mon", "Tue", "Wed", "Thu", "Fri"))
 ts.wide2019 <- merge(ts.up2019, help.dates, by = "weekday")
 ts.wide2019$hour <- paste(ts.wide2019$hour, ":00", sep="")
@@ -383,7 +379,6 @@ ts.wide2019 <- ts_wide(ts.wide2019)
 
 # impute with means of each TS
 # TODO check sensitivity
-library(imputeTS)
 ts.wide2019 <- na_mean(ts.wide2019)
 #sapply(ts.wide, function(x) sum(is.na(x)))
 
@@ -454,11 +449,11 @@ cluster_up.diff <- data.frame(LAD=ts.wide.names,
 # 2020 copied from above
 
 # create a 'fake' week for a ts id
-help.dates <- tibble(help.date.time = c(make_datetime(year = 2020, month = 2, day = 3),
-                make_datetime(year = 2020, month = 2, day = 4),
-                make_datetime(year = 2020, month = 2, day = 5),
-                make_datetime(year = 2020, month = 2, day = 6),
-                make_datetime(year = 2020, month = 2, day = 7)),
+help.dates <- tibble(help.date.time = c(make_datetime(year = 2020, month = 3, day = 2),
+                make_datetime(year = 2020, month = 3, day = 3),
+                make_datetime(year = 2020, month = 3, day = 4),
+                make_datetime(year = 2020, month = 3, day = 5),
+                make_datetime(year = 2020, month = 3, day = 6)),
                 weekday = c("Mon", "Tue", "Wed", "Thu", "Fri"))
 ts.wide <- merge(ts.down2020, help.dates, by = "weekday")
 ts.wide$hour <- paste(ts.wide$hour, ":00", sep="")
@@ -473,17 +468,16 @@ ts.wide <- ts_wide(ts.wide)
 
 # impute with means of each TS
 # TODO check sensitivity
-library(imputeTS)
 ts.wide <- na_mean(ts.wide)
 
 # 2019
 
 # create a 'fake' week for a ts id
-help.dates <- tibble(help.date.time = c(make_datetime(year = 2019, month = 2, day = 4),
-                make_datetime(year = 2019, month = 2, day = 5),
-                make_datetime(year = 2019, month = 2, day = 6),
-                make_datetime(year = 2019, month = 2, day = 7),
-                make_datetime(year = 2019, month = 2, day = 8)),
+help.dates <- tibble(help.date.time = c(make_datetime(year = 2019, month = 3, day = 4),
+                make_datetime(year = 2019, month = 3, day = 5),
+                make_datetime(year = 2019, month = 3, day = 6),
+                make_datetime(year = 2019, month = 3, day = 7),
+                make_datetime(year = 2019, month = 3, day = 8)),
                 weekday = c("Mon", "Tue", "Wed", "Thu", "Fri"))
 ts.wide2019 <- merge(ts.down2019, help.dates, by = "weekday")
 ts.wide2019$hour <- paste(ts.wide2019$hour, ":00", sep="")
@@ -498,7 +492,6 @@ ts.wide2019 <- ts_wide(ts.wide2019)
 
 # impute with means of each TS
 # TODO check sensitivity
-library(imputeTS)
 ts.wide2019 <- na_mean(ts.wide2019)
 #sapply(ts.wide, function(x) sum(is.na(x)))
 
