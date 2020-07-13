@@ -636,6 +636,7 @@ factpal.down.diff <- colorFactor("RdYlBu", la@data$cluster.down.diff)
 factpal.tests <- colorFactor("RdYlBu", la@data$cluster.tests)
 
 leaflet(la) %>%
+  # add polygons as groups
   addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
     color = ~factpal.up(cluster.up), group = "cluster.up") %>%
   addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
@@ -646,19 +647,42 @@ leaflet(la) %>%
     color = ~factpal.down.diff(cluster.down.diff), group = "cluster.down.diff") %>%
   addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
     color = ~factpal.tests(cluster.tests), group = "cluster.tests") %>%
+  # hide groups, so they don't appear all on in the begining 
   hideGroup("cluster.up") %>%
   hideGroup("cluster.down") %>%
   hideGroup("cluster.up.diff") %>%
   hideGroup("cluster.down.diff") %>%
-  #addLegend("topright",
-  #            pal = factpal,
-  #            values = la@data$cluster.up,
-  #            title = "Clusters") %>%
+  hideGroup("cluster.tests") %>%
+  # layer control
   addLayersControl(
     #baseGroups = c("Upload)", "Download"),
     overlayGroups = c("cluster.up","cluster.down", "cluster.down", "cluster.up.diff", "cluster.down.diff", "cluster.tests"),
-    options = layersControlOptions(collapsed = FALSE)) #%>%
-  #addLegend(values = 1, group = "cluster.up", position = "bottomleft", colors= ~factpal.up(cluster.up)) #%>% 
-  #addLegend(values = 2, group = "cluster.down", position = "bottomleft", labels = "2" ,colors= "blue")
+    options = layersControlOptions(collapsed = FALSE)) %>%
+  # add different legends
+  addLegend(pal = factpal.up, 
+            values = la@data$cluster.up,
+            opacity = 1,
+            group = "cluster.up",
+            title = "Upload clusters") %>%
+  addLegend(pal = factpal.down, 
+            values = la@data$cluster.down,
+            opacity = 1,
+            group = "cluster.down",
+            title = "Download clusters") %>%
+  addLegend(pal = factpal.up.diff, 
+            values = la@data$cluster.up.diff,
+            opacity = 1,
+            group = "cluster.up.diff",
+            title = "Upload diff. clusters") %>%
+  addLegend(pal = factpal.down.diff, 
+            values = la@data$cluster.down.diff,
+            opacity = 1,
+            group = "cluster.down.diff",
+            title = "Download diff. clusters") %>%
+  addLegend(pal = factpal.tests, 
+            values = la@data$cluster.tests,
+            opacity = 1,
+            group = "cluster.tests",
+            title = "Test clusters") 
 
 ```
