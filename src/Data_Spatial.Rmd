@@ -81,10 +81,10 @@ bb2020$month <- month(bb2020$date, label = TRUE, abbr = TRUE)
 bb2020$weekday <- wday(bb2020$date, label = TRUE)
 
 #create 2 dataframes for 2 matching periods
-Wks2019 <- selectByDate(bb2020, start = "2019-01-21", end = "2019-06-02")
+Wks2019 <- selectByDate(bb2020, start = "2019-03-04", end = "2019-05-31")
 names(Wks2019)[1:2] <- c("dateOnly", "date") #413788 obs
 Wks2019$Year <- rep(2019)
-Wks2020 <- selectByDate(bb2020, start = "2020-01-20", end = "2020-05-31")
+Wks2020 <- selectByDate(bb2020, start = "2020-03-02", end = "2020-05-29")
 names(Wks2020)[1:2] <- c("dateOnly", "date") #521773 obs
 Wks2020$Year <- rep(2020)
 TSbb19_20 <- rbind(Wks2019, Wks2020) #935561 obs
