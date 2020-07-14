@@ -61,29 +61,40 @@ TS2020 <- left_join(TS2020, clusters)
 LAD.cluster.tests <- clusters %>%
   group_by(cluster.tests) %>%
   summarise(n.LADs = n())
-LAD.cluster.tests$Total <- TS2020 %>%
+LAD.cluster.testsTotal <- TS2020 %>%
   group_by(cluster.tests) %>%
   summarise(n.cluster = n())
+LAD.cluster.tests <- left_join(LAD.cluster.tests, LAD.cluster.testsTotal)
 LAD.cluster.up <- clusters %>%
   group_by(cluster.up) %>%
   summarise(up.LADs = n())
-LAD.cluster.up$Mean <- summarise(group_by(TS2020, cluster.up),
+LAD.cluster.upMean <- summarise(group_by(TS2020, cluster.up),
   mean(speedup))
-LAD.cluster.up$SD <- summarise(group_by(TS2020, cluster.up),
+LAD.cluster.upSD <- summarise(group_by(TS2020, cluster.up),
   sd(speedup))
+LAD.cluster.up <- cbind(LAD.cluster.up, LAD.cluster.upMean[,2], LAD.cluster.upSD[,2])
 LAD.cluster.down <- clusters %>%
   group_by(cluster.down) %>%
   summarise(down.LADs = n())
-LAD.cluster.down$Mean <- summarise(group_by(TS2020, cluster.down),
+LAD.cluster.downMean <- summarise(group_by(TS2020, cluster.down),
   mean(speeddown))
-LAD.cluster.down$SD <- summarise(group_by(TS2020, cluster.down),
+LAD.cluster.downSD <- summarise(group_by(TS2020, cluster.down),
   sd(speeddown))
+LAD.cluster.down <- cbind(LAD.cluster.down, LAD.cluster.downMean[,2], LAD.cluster.downSD[,2])
 LAD.cluster.diffUp <- clusters %>%
   group_by(cluster.up.diff) %>%
   summarise(diffUp.LADs = n())
 LAD.cluster.diffDown <- clusters %>%
   group_by(cluster.down.diff) %>%
   summarise(diffDown.LADs = n())
+
+#write csvs to outputs
+out.clustersLAD <- paste(path, "./data/temp/LAD.cluster.tests.csv", sep = "")
+write_csv(LAD.cluster.tests, out.clustersLAD)
+out.clustersLADup <- paste(path, "./data/temp/LAD.cluster.up.csv", sep = "")
+write_csv(LAD.cluster.up, out.clustersLADup)
+out.clustersLADdown <- paste(path, "./data/temp/LAD.cluster.down.csv", sep = "")
+write_csv(LAD.cluster.down, out.clustersLADdown)
 
 ```
 
