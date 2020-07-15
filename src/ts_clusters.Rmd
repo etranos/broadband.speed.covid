@@ -559,7 +559,7 @@ cluster_down.diff <- data.frame(LAD=ts.wide.names,
 
 ```{r include=TRUE, echo=FALSE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
 
-# clusters data frame
+# all clusters data frame
 clusters <- merge(cluster_up, cluster_down, by = "LAD")
 names(clusters)[2] <- "cluster.up"
 names(clusters)[3] <- "cluster.down"
@@ -577,8 +577,23 @@ names(clusters)[6] <- "cluster.tests"
 clusters  %>% arrange(cluster.up) %>% kable() 
 
 # save clusters file
-out.clusters <- paste(path, "./data/temp/clusters.csv", sep = "")
+out.clusters <- paste(path, "/data/temp/clusters_all.csv", sep = "")
 write_csv(clusters, out.clusters)
+
+# clusters data frame WITHOUT the diff clusters
+clusters.nodiff <- merge(cluster_up, cluster_down, by = "LAD")
+names(clusters.nodiff)[2] <- "cluster.up"
+names(clusters.nodiff)[3] <- "cluster.down"
+
+clusters.nodiff <- merge(clusters.nodiff, cluster_tests, by = "LAD")
+names(clusters.nodiff)[4] <- "cluster.tests"
+#sapply(clusters, function(x) sum(is.na(x)))
+
+clusters.nodiff  %>% arrange(cluster.up) %>% kable() 
+
+# save clusters file
+out.clusters <- paste(path, "/data/temp/clusters_nodiff.csv", sep = "")
+write_csv(clusters.nodiff, out.clusters)
 
 # get LA 
 # this is the heaviest version:
