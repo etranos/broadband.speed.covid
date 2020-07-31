@@ -95,7 +95,7 @@ LAD.cluster.downSD <- summarise(group_by(TS2020, cluster.down),
   sd(speeddown))
 LAD.cluster.downAM <- summarise(group_by(TS2020[which(TS2020$hour == 10 | TS2020$hour == 11),], cluster.down), mean(speeddown))
 LAD.cluster.downPM <- summarise(group_by(TS2020[which(TS2020$hour == 19 | TS2020$hour == 20),], cluster.down), mean(speeddown))
-LAD.cluster.down <- cbind(LAD.cluster.down, LAD.cluster.downMean[,2], LAD.cluster.downSD[,2], LAD.cluster.downAM[,2], LAD.cluster.downAM[,2])
+LAD.cluster.down <- cbind(LAD.cluster.down, LAD.cluster.downMean[,2], LAD.cluster.downSD[,2], LAD.cluster.downAM[,2], LAD.cluster.downPM[,2])
 names(LAD.cluster.down)[3:6] <- c("downMean", "downSD", "downAMmean",
                                   "downPMmean")
 # commented to run the script
