@@ -60,6 +60,7 @@ TS2019 <- left_join(TS2019, clusters)
 #remove NAs? - otherwise cannot create unified dataframes for below stats
 
 #summarise by LADs per cluster and Total tests / Mean speed per cluster
+#Test Frequency cluster
 LAD.cluster.tests <- clusters %>%
   group_by(cluster.tests) %>%
   summarise(n.LADs = n())
@@ -71,6 +72,7 @@ LAD.cluster.tests19 <- TS2019 %>%
   summarise(n.cluster19 = n()) 
 LAD.cluster.tests <- cbind(LAD.cluster.tests, LAD.cluster.testsTotal[,2], LAD.cluster.tests19[,2])
 LAD.cluster.tests$n.20_19.diff <- LAD.cluster.tests$n.cluster - LAD.cluster.tests$n.cluster19
+#Upload Speed Clusters
 LAD.cluster.up <- clusters %>%
   group_by(cluster.up) %>%
   summarise(up.LADs = n())
@@ -81,6 +83,9 @@ LAD.cluster.upSD <- summarise(group_by(TS2020, cluster.up),
 LAD.cluster.upAM <- summarise(group_by(TS2020[which(TS2020$hour == 10 | TS2020$hour == 11),], cluster.up), mean(speedup))
 LAD.cluster.upPM <- summarise(group_by(TS2020[which(TS2020$hour == 19 | TS2020$hour == 20),], cluster.up), mean(speedup))
 LAD.cluster.up <- cbind(LAD.cluster.up, LAD.cluster.upMean[,2], LAD.cluster.upSD[,2], LAD.cluster.upAM[,2], LAD.cluster.upPM[,2])
+names(LAD.cluster.up) [3:6] <- c("upMean", "upSD", "upAMmean",
+                                 "upPMmean")
+#Download speed clusters  
 LAD.cluster.down <- clusters %>%
   group_by(cluster.down) %>%
   summarise(down.LADs = n())
@@ -91,7 +96,8 @@ LAD.cluster.downSD <- summarise(group_by(TS2020, cluster.down),
 LAD.cluster.downAM <- summarise(group_by(TS2020[which(TS2020$hour == 10 | TS2020$hour == 11),], cluster.down), mean(speeddown))
 LAD.cluster.downPM <- summarise(group_by(TS2020[which(TS2020$hour == 19 | TS2020$hour == 20),], cluster.down), mean(speeddown))
 LAD.cluster.down <- cbind(LAD.cluster.down, LAD.cluster.downMean[,2], LAD.cluster.downSD[,2], LAD.cluster.downAM[,2], LAD.cluster.downAM[,2])
-
+names(LAD.cluster.down)[3:6] <- c("downMean", "downSD", "downAMmean",
+                                  "downPMmean")
 # commented to run the script
 # LAD.cluster.diffUp <- clusters %>%
 #   group_by(cluster.up.diff) %>%
