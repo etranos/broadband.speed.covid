@@ -72,6 +72,9 @@ LAD.cluster.tests19 <- TS2019 %>%
   summarise(n.cluster19 = n()) 
 LAD.cluster.tests <- cbind(LAD.cluster.tests, LAD.cluster.testsTotal[,2], LAD.cluster.tests19[,2])
 LAD.cluster.tests$n.20_19.diff <- LAD.cluster.tests$n.cluster - LAD.cluster.tests$n.cluster19
+LAD.cluster.tests$perCent.change <- LAD.cluster.tests$n.20_19.diff/
+  LAD.cluster.tests$n.cluster19
+LAD.cluster.tests$perCent.change <- paste(round(100*LAD.cluster.tests$perCent.change, 2), "%", sep="")
 #Upload Speed Clusters
 LAD.cluster.up <- clusters %>%
   group_by(cluster.up) %>%
@@ -80,7 +83,7 @@ LAD.cluster.upMean <- summarise(group_by(TS2020, cluster.up),
   mean(speedup))
 LAD.cluster.upSD <- summarise(group_by(TS2020, cluster.up),
   sd(speedup))
-LAD.cluster.upAM <- summarise(group_by(TS2020[which(TS2020$hour == 10 | TS2020$hour == 11),], cluster.up), mean(speedup))
+LAD.cluster.upAM <- summarise(group_by(TS2020[which(TS2020$hour == 9 | TS2020$hour == 10),], cluster.up), mean(speedup))
 LAD.cluster.upPM <- summarise(group_by(TS2020[which(TS2020$hour == 19 | TS2020$hour == 20),], cluster.up), mean(speedup))
 LAD.cluster.up <- cbind(LAD.cluster.up, LAD.cluster.upMean[,2], LAD.cluster.upSD[,2], LAD.cluster.upAM[,2], LAD.cluster.upPM[,2])
 names(LAD.cluster.up) [3:6] <- c("upMean", "upSD", "upAMmean",
@@ -93,7 +96,7 @@ LAD.cluster.downMean <- summarise(group_by(TS2020, cluster.down),
   mean(speeddown))
 LAD.cluster.downSD <- summarise(group_by(TS2020, cluster.down),
   sd(speeddown))
-LAD.cluster.downAM <- summarise(group_by(TS2020[which(TS2020$hour == 10 | TS2020$hour == 11),], cluster.down), mean(speeddown))
+LAD.cluster.downAM <- summarise(group_by(TS2020[which(TS2020$hour == 9 | TS2020$hour == 10),], cluster.down), mean(speeddown))
 LAD.cluster.downPM <- summarise(group_by(TS2020[which(TS2020$hour == 19 | TS2020$hour == 20),], cluster.down), mean(speeddown))
 LAD.cluster.down <- cbind(LAD.cluster.down, LAD.cluster.downMean[,2], LAD.cluster.downSD[,2], LAD.cluster.downAM[,2], LAD.cluster.downPM[,2])
 names(LAD.cluster.down)[3:6] <- c("downMean", "downSD", "downAMmean",
@@ -116,7 +119,8 @@ write_csv(LAD.cluster.down, out.clustersLADdown)
 
 ```
 
-
+As people came to rely more on their broadband services, it is unsurprising that the rate of testing increased in 2020 compared to 2019. This increase was greatest in cluster 2, where 56% more tests were run compared to the same period in 2019. Cluster 2 also has the most local authorities, 148, so the sum of tests run in all these authorities is much higher than in all the other clusters, both in 2019 and 2020. Cluster 1 has the second most local authorities, with 93, but the frequency of testing in these authorities is much lower in 2019 and 2020 and there was the lowest rate of increase between the two time periods at just 33%. In comparison, cluster 5 has the fewest local authorities, at 28, but the second highest total number of tests and the second largest increase in testing between 2019 and 2020, at 52%. A possible explanation is that cluster 5 contains some of the most populous local authorities in the country, including the cities of Birmingham, Manchester, Leeds, Sheffield, Glasgow and Edinburgh. However, this cluster also includes large rural counties, such as Cornwall and Northumberland.
+Yet the temporal profile in 2020 is very different to 2019, as can be seen in graphs [.] and [.]. The number of broadband speed tests run in local authorities in cluster 2 peaked each Monday to Thursday in the hour 19.00-19.59 in March through May 2019. On Fridays, the peak was slightly earlier. A similar, although less stark pattern could be seen in the other clusters, along with much smaller peaks around the beginning of the working day, at either 9.00-9.59 or 10.00-10.59.
 
 ```{r }
 #summarise test frequency clusters by hour of each weekday and plot
@@ -145,7 +149,32 @@ TestCluster + geom_line() + labs(x = "Weekdays March-May") +
                     "2020-03-05 15:00:00", "2020-03-06 15:00:00"), 
                     labels = "%a"), labels = 
                      c("Mon", "Tues", "Weds", "Thurs", "Fri")) + geom_point()
-
+#summarise test frequency clusters by hour of each weekday 2019 and plot
+cluster.tests19 <- TS2019 %>%
+  group_by(cluster.tests, weekday, hour) %>%
+  summarise(n.tests = n())
+names(cluster.tests19)[1] <- "clusterID"
+cluster.tests19$clusterID <- as.factor(cluster.tests19$clusterID)
+#add fake dates for plotting
+help.dates <- tibble(help.date.time = c(
+  make_datetime(year = 2019, month = 3, day = 4),
+  make_datetime(year = 2019, month = 3, day = 5),
+  make_datetime(year = 2019, month = 3, day = 6),
+  make_datetime(year = 2019, month = 3, day = 7),
+  make_datetime(year = 2019, month = 3, day = 8)),
+                     weekday = c("Mon", "Tue", "Wed", "Thu", "Fri"))
+cluster.tests19 <- merge(cluster.tests19, help.dates, by = "weekday")
+cluster.tests19$hour <- paste(cluster.tests19$hour, ":00", sep="")
+cluster.tests19$help.date.time <- with(cluster.tests19, as.POSIXct(paste(help.date.time, hour), format="%Y-%m-%d %H:%M"))
+#plot cluster statistic for number tests
+TestCluster19 <- ggplot(cluster.tests19, aes(help.date.time, n.tests, 
+                                         colour = clusterID))
+TestCluster19 + geom_line() + labs(x = "Weekdays March-May 2019") + 
+  scale_x_datetime(breaks = as.POSIXct(c("2020-03-02 15:00:00", 
+                    "2020-03-03 15:00:00", "2020-03-04 15:00:00",
+                    "2020-03-05 15:00:00", "2020-03-06 15:00:00"), 
+                    labels = "%a"), labels = 
+                     c("Mon", "Tues", "Weds", "Thurs", "Fri")) + geom_point()
 #summarise upload speed clusters by hour of each weekday and plot
 cluster.up <- TS2020 %>%
   group_by(cluster.up, weekday, hour) %>%
