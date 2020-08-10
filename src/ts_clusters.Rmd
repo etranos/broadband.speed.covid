@@ -35,6 +35,7 @@ library(imputeTS)
 library(tsbox)
 library(dtwclust)
 library(leaflet)
+library(ggmap)
 
 # This is the project path
 path <- find_rstudio_root_file()
@@ -574,7 +575,7 @@ clusters <- merge(clusters, cluster_tests, by = "LAD")
 names(clusters)[6] <- "cluster.tests"
 #sapply(clusters, function(x) sum(is.na(x)))
 
-clusters  %>% arrange(cluster.up) %>% kable() 
+# clusters  %>% arrange(cluster.up) %>% kable() 
 
 # save clusters file
 out.clusters <- paste(path, "/data/temp/clusters_all.csv", sep = "")
@@ -613,41 +614,85 @@ la <- spTransform(la, CRS("+init=epsg:4326"))
 #la@data$LAD19NM <- as.character(la@data$LAD19NM)
 la@data$lad19nm <- as.character(la@data$lad19nm)
 
-#la@data <- merge(la@data, clusters, by.x = "LAD19NM", by.y = "LAD")
-la@data <- merge(la@data, clusters, by.x = "lad19nm", by.y = "LAD")
+# ggplot2 maps
+la.f <- fortify(la, region = "lad19nm")
+la.f <- merge(la.f, clusters.nodiff, by.x = "id", by.y = "LAD")
+la.f <- la.f[order(la.f$order),] # if i don't order merge.nuts.f loses order and the map has gaps
 
-# plot maps
-# var <- la@data[ ,'cluster.up']
-# plot(la, col = var, main = "Upload clusters",
-#      border = rgb(0.8, 0.8, 0.8, 0))
-# 
-# var <- la@data[ ,'cluster.up.diff']
-# plot(la, col = var, main = "Upload difference clusters",
-#      border = rgb(0.8, 0.8, 0.8, 0))
-# 
-# 
-# var <- la@data[ ,'cluster.down']
-# plot(la, col = var, main = "Download clusters",
-#      border = rgb(0.8, 0.8, 0.8, 0))
-# 
-# var <- la@data[ ,'cluster.tests']
-# plot(la, col = var, main = "Tests clusters",
-#      border = rgb(0.8, 0.8, 0.8, 0))
+ggplot(la.f, aes(x = long, y = lat)) +
+  geom_polygon(aes( group = group, fill = as.factor(cluster.tests))) +
+  theme_nothing(legend = TRUE) +
+  labs(title = "Test clusters") +
+  scale_fill_viridis_d()+
+  theme_void()
 
+ggplot(la.f, aes(x = long, y = lat)) +
+  geom_polygon(aes( group = group, fill = as.factor(cluster.up))) +
+  theme_nothing(legend = TRUE) +
+  labs(title = "Upload clusters") +
+  scale_fill_viridis_d()+
+  theme_void()
+
+ggplot(la.f, aes(x = long, y = lat)) +
+  geom_polygon(aes( group = group, fill = as.factor(cluster.down))) +
+  theme_nothing(legend = TRUE) +
+  labs(title = "Download clusters") +
+  scale_fill_viridis_d()+
+  theme_void()
+
+```
+
+```{r, eval=FALSE}
 # leaflet maps
+
+# !!!WRONG CATEGORY VISUALISATION!!!
+
+#la@data <- merge(la@data, clusters, by.x = "LAD19NM", by.y = "LAD")
+la@data <- merge(la@data, clusters.nodiff, by.x = "lad19nm", by.y = "LAD")
+
+# from handbook
+la@data$cluster.tests <- as.factor(la@data$cluster.tests)
+factpal <- colorFactor(topo.colors(5), la@data$cluster.tests)
+
+leaflet(la) %>%
+  addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
+    color = ~factpal(la@data$cluster.tests)) %>%
+  addMarkers(lng=la$long, lat=la$lat, popup=la@data$lad19nm) %>%
+  addLegend(pal = factpal, 
+            values = ~la@data$cluster.tests,
+            opacity = 1,
+            #group = "cluster.tests",
+            title = "Test clusters") 
+
+leaflet(la) %>%
+  addPolygons(
+    fillColor = factpal(la$cluster.tests),
+    weight = 2,
+    opacity = 1,
+    color = "white",
+    dashArray = "3",
+    fillOpacity = 0.7) %>%
+  addMarkers(lng=la$long, lat=la$lat, popup=la@data$lad19nm)
+
+# circles
+leaflet(la@data) %>%
+  addTiles() %>%
+  addCircles(lng = ~long, lat = ~lat, weight = 1, 
+             radius = 500L, popup = ~lad19nm, color = ~factpal(cluster.tests))
+
 
 # factors
 la@data$cluster.up <- as.factor(la@data$cluster.up)
 la@data$cluster.down <- as.factor(la@data$cluster.down)
-la@data$cluster.up.diff <- as.factor(la@data$cluster.up.diff)
-la@data$cluster.down.diff <- as.factor(la@data$cluster.down.diff)
+#la@data$cluster.up.diff <- as.factor(la@data$cluster.up.diff)
+#la@data$cluster.down.diff <- as.factor(la@data$cluster.down.diff)
 la@data$cluster.tests <- as.factor(la@data$cluster.tests)
 
 # palettes
 factpal.up <- colorFactor("RdYlBu", la@data$cluster.up)
 factpal.down <- colorFactor("RdYlBu", la@data$cluster.down)
-factpal.up.diff <- colorFactor("RdYlBu", la@data$cluster.up.diff)
-factpal.down.diff <- colorFactor("RdYlBu", la@data$cluster.down.diff)
+#factpal.up.diff <- colorFactor("RdYlBu", la@data$cluster.up.diff)
+#factpal.down.diff <- colorFactor("RdYlBu", la@data$cluster.down.diff)
 factpal.tests <- colorFactor("RdYlBu", la@data$cluster.tests)
 
 leaflet(la) %>%
@@ -656,22 +701,23 @@ leaflet(la) %>%
     color = ~factpal.up(cluster.up), group = "cluster.up") %>%
   addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
     color = ~factpal.down(cluster.down), group = "cluster.down") %>%
-  addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
-    color = ~factpal.up.diff(cluster.up.diff), group = "cluster.up.diff") %>%
-  addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
-    color = ~factpal.down.diff(cluster.down.diff), group = "cluster.down.diff") %>%
+  #addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
+  #  color = ~factpal.up.diff(cluster.up.diff), group = "cluster.up.diff") %>%
+  #addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
+  #  color = ~factpal.down.diff(cluster.down.diff), group = "cluster.down.diff") %>%
   addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
     color = ~factpal.tests(cluster.tests), group = "cluster.tests") %>%
+  addMarkers(lng=la$long, lat=la$lat, popup=la$lad19nm) %>%
   # hide groups, so they don't appear all on in the begining 
   hideGroup("cluster.up") %>%
   hideGroup("cluster.down") %>%
-  hideGroup("cluster.up.diff") %>%
-  hideGroup("cluster.down.diff") %>%
+  #hideGroup("cluster.up.diff") %>%
+  #hideGroup("cluster.down.diff") %>%
   hideGroup("cluster.tests") %>%
   # layer control
   addLayersControl(
     #baseGroups = c("Upload)", "Download"),
-    overlayGroups = c("cluster.up","cluster.down", "cluster.down", "cluster.up.diff", "cluster.down.diff", "cluster.tests"),
+    overlayGroups = c("cluster.up","cluster.down", "cluster.down", "cluster.tests"), #"cluster.up.diff", "cluster.down.diff", 
     options = layersControlOptions(collapsed = FALSE)) %>%
   # add different legends
   addLegend(pal = factpal.up, 
@@ -684,16 +730,16 @@ leaflet(la) %>%
             opacity = 1,
             group = "cluster.down",
             title = "Download clusters") %>%
-  addLegend(pal = factpal.up.diff, 
-            values = la@data$cluster.up.diff,
-            opacity = 1,
-            group = "cluster.up.diff",
-            title = "Upload diff. clusters") %>%
-  addLegend(pal = factpal.down.diff, 
-            values = la@data$cluster.down.diff,
-            opacity = 1,
-            group = "cluster.down.diff",
-            title = "Download diff. clusters") %>%
+  #addLegend(pal = factpal.up.diff, 
+  #          values = la@data$cluster.up.diff,
+  #          opacity = 1,
+  #          group = "cluster.up.diff",
+  #          title = "Upload diff. clusters") %>%
+  #addLegend(pal = factpal.down.diff, 
+  #          values = la@data$cluster.down.diff,
+  #          opacity = 1,
+  #          group = "cluster.down.diff",
+  #          title = "Download diff. clusters") %>%
   addLegend(pal = factpal.tests, 
             values = la@data$cluster.tests,
             opacity = 1,
@@ -701,3 +747,4 @@ leaflet(la) %>%
             title = "Test clusters") 
 
 ```
+
