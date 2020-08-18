@@ -305,9 +305,9 @@ m <- cor(data.cor, use = "pairwise.complete.obs")
 corrplot(m, type="upper",method = "number", number.cex = .5, tl.cex = .75)
 ```
 
-## Auxiliary Regression
+## Auxiliary regression, dep. var.: upload clusters
 
-```{r regressions, results= 'asis', message=F, error=F, warning=F}
+```{r upload regression, results= 'asis', message=F, error=F, warning=F}
 # helpful sources: http://www.princeton.edu/~otorres/LogitR101.pdf
 # https://thestatsgeek.com/2014/02/08/r-squared-in-logistic-regression/
 
@@ -329,9 +329,9 @@ stargazer(aux, type = "html",
 
 ```
 
-## Auxiliary Regression without upload variables
+## Auxiliary regression, dep. var.: upload clusters, without upload variables
 
-```{r regressions no upload and test, results= 'asis', message=F, error=F, warning=F}
+```{r upload regression no upload and test, results= 'asis', message=F, error=F, warning=F}
 # helpful sources: http://www.princeton.edu/~otorres/LogitR101.pdf
 # https://thestatsgeek.com/2014/02/08/r-squared-in-logistic-regression/
 
@@ -352,3 +352,30 @@ stargazer(aux, type = "html",
 
 ```
 
+## Auxiliary regression, dep. var.: download clusters
+
+```{r download regression, results= 'asis', message=F, error=F, warning=F}
+# helpful sources: http://www.princeton.edu/~otorres/LogitR101.pdf
+# https://thestatsgeek.com/2014/02/08/r-squared-in-logistic-regression/
+
+aux <- multinom(cluster.down ~ LAD.down.am20 + LAD.down.pm20 + LAD.tests.pm20 + #  LAD.down.am20 + LAD.down.pm20
+                   pop + pop16_64 + # how about young population share
+                   managers + tech + skilled +
+                   earnings + total.busi, data = data, 
+                trace = F) # to avoid messages 
+
+# McFadden's R squared
+aux.null <- multinom(cluster.down ~ 1, data = data)
+r2 <- 1-logLik(aux)/logLik(aux.null)
+
+stargazer(aux, type = "html",
+          add.lines = list(c("McFadden's R squared",                    # use rownames as line name. in this case Weak insterumetns
+                              round(r2[1],3), round(r2[1],3), round(r2[1],3),
+                              round(r2[1],3), round(r2[1],3), round(r2[1],3),
+                              round(r2[1],3), round(r2[1],3), round(r2[1],3),
+                              round(r2[1],3), round(r2[1],3), round(r2[1],3),
+                              round(r2[1],3), round(r2[1],3), round(r2[1],3),
+                              round(r2[1],3), round(r2[1],3), round(r2[1],3),
+                              round(r2[1],3))))
+
+```
