@@ -24,6 +24,7 @@ library(openair)
 library(rgdal)
 library(corrplot)
 library(DescTools)
+library(geosphere)
 
 # This is the project path
 path <- find_rstudio_root_file()
@@ -144,6 +145,84 @@ sapply(lad, function(x) sum(is.na(x)))
 lad <- lad %>% 
   reduce(inner_join, by = "LAD19NM")
 sapply(lad, function(x) sum(is.na(x)))
+```
+
+## Distance to Metro Area
+
+```{r}
+# get LA 
+# (i) directly from the web
+#la <- readOGR("http://geoportal1-ons.opendata.arcgis.com/datasets/b6d2e15801de45328b760a4f55d74318_0.geojson?outSR={%22latestWkid%22:3857,%22wkid%22:102100}")#, layer="OGRGeoJSON")
+# or, (ii) from the json I saved locally
+path.json <- paste(path, "./data/raw/Local_Authority_Districts_(April_2019)_Boundaries_UK_BFE.geojson", sep = "")
+la <- readOGR(path.json)#, layer="OGRGeoJSON")
+# source: https://data.gov.uk/dataset/7c387c64-d25f-474a-b07e-b933578caea2/local-authority-districts-april-2019-boundaries-uk-bfe
+
+# spatial transformations
+la <- spTransform(la, CRS("+init=epsg:4326"))
+la@data$LAD19NM <- as.character(la@data$LAD19NM)
+ladDist <- la@data[,c("LAD19CD", "LAD19NM")]
+names(ladDist)[1] <- "lad19cd"
+
+#distance from London and other 
+coords_LAD <- la@data[,c("LONG", "LAT")]
+London <- la[which(la@data$LAD19NM == "City of London"),]
+London <- gCentroid(London)
+distLondon <- distm(coords_LAD, London, fun=distCosine) 
+#result in meters - change to km
+distLondon <- round((distLondon/1000),2)
+Birmingham <- la[which(la@data$LAD19NM == "Birmingham"),]
+Birmingham <- gCentroid(Birmingham)
+distBham <- distm(coords_LAD, Birmingham, fun=distCosine)
+distBham <- round((distBham/1000),2)
+Manchester <- la[which(la@data$LAD19NM == "Manchester"),]
+Manchester <- gCentroid(Manchester)
+distManc <- distm(coords_LAD, Manchester, fun=distCosine)
+distManc <- round((distManc/1000),2)
+Leeds <- la[which(la@data$LAD19NM == "Leeds"),]
+Leeds <- gCentroid(Leeds)
+distLeeds <- distm(coords_LAD, Leeds, fun=distCosine)
+distLeeds <- round((distLeeds/1000),2)
+Liverpool <- la[which(la@data$LAD19NM == "Liverpool"),]
+Liverpool <- gCentroid(Liverpool)
+distLivp <- distm(coords_LAD, Liverpool, fun=distCosine)
+distLivp <- round((distLivp/1000),2)
+Newcastle <- la[which(la@data$LAD19NM == "Newcastle upon Tyne"),]
+Newcastle <- gCentroid(Newcastle)
+distNewc <- distm(coords_LAD, Newcastle, fun=distCosine)
+distNewc <- round((distNewc/1000),2)
+Sheffield <- la[which(la@data$LAD19NM == "Sheffield"),]
+Sheffield <- gCentroid(Sheffield)
+distShef <- distm(coords_LAD, Sheffield, fun=distCosine)
+distShef <- round((distShef/1000),2)
+SouthHants <- la[which(la@data$LAD19NM == "Fareham"),]
+SouthHants <- gCentroid(SouthHants)
+distSHam <- distm(coords_LAD, SouthHants, fun=distCosine)
+distSHam <- round((distSHam/1000),2)
+Nottingham <- la[which(la@data$LAD19NM == "Nottingham"),]
+Nottingham <- gCentroid(Nottingham)
+distNotts <- distm(coords_LAD, Nottingham, fun=distCosine)
+distNotts <- round((distNotts/1000),2)
+Bristol <- la[which(la@data$LAD19NM == "Bristol, City of"),]
+Bristol <- gCentroid(Bristol)
+distBris <- distm(coords_LAD, Bristol, fun=distCosine)
+distBris <- round((distBris/1000),2)
+Cardiff <- la[which(la@data$LAD19NM == "Cardiff"),]
+Cardiff <- gCentroid(Cardiff)
+distCard <- distm(coords_LAD, Cardiff, fun=distCosine)
+distCard <- round((distCard/1000),2)
+Glasgow <- la[which(la@data$LAD19NM == "Glasgow City"),]
+Glasgow <- gCentroid(Glasgow)
+distGlas <- distm(coords_LAD, Glasgow, fun=distCosine) 
+distGlas <- round((distGlas/1000),2)
+
+ladDist <- cbind(ladDist, distLondon, distBham, distManc, distLeeds,
+                 distLivp, distNewc, distShef, distSHam, distNotts, 
+                 distBris, distCard, distGlas)
+
+ladDist$distMet <- apply(ladDist[,3:14], 1, min)
+
+#test <- left_join(lad, ladDist)
 ```
 
 ## Job density
