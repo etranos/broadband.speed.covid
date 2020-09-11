@@ -25,6 +25,8 @@ library(rgdal)
 library(corrplot)
 library(DescTools)
 library(geosphere)
+library(rgeos)
+library(raster)
 
 # This is the project path
 path <- find_rstudio_root_file()
@@ -57,7 +59,7 @@ TS2019 <- selectByDate(TSbb19_20sp, year = 2019)
 # UK BGC: 
 la <- readOGR("https://opendata.arcgis.com/datasets/0e07a8196454415eab18c40a54dfbbef_0.geojson")
 codes <- la@data %>%
-  select(lad19cd, lad19nm) %>%
+  dplyr::select(lad19cd, lad19nm) %>%
   rename(LAD19NM = lad19nm)
 
 # LAD broadband characteristics AM
@@ -221,13 +223,17 @@ ladDist <- cbind(ladDist, distLondon, distBham, distManc, distLeeds,
                  distBris, distCard, distGlas)
 
 ladDist$distMet <- apply(ladDist[,3:14], 1, min)
+ladDist <- ladDist %>%
+  dplyr::select(lad19cd, distLondon, distMet)
+
 
 #test <- left_join(lad, ladDist)
 ```
 
-## Job density
+## Job density 2018
 
 ```{r}
+
 job.dens <- read_csv("https://www.nomisweb.co.uk/api/v01/dataset/NM_57_1.data.csv?geography=1816133633...1816133848,1820327937...1820328318&date=latest&item=3&measures=20100")
 
 job.dens <- job.dens %>%
@@ -239,7 +245,7 @@ job.dens <- job.dens %>%
 # test <- left_join(lad, job.dens, by = "lad19cd")
 ```
 
-## Population
+## Population 2018
 
 ```{r}
 # pop <- read_csv("https://www.nomisweb.co.uk/api/v01/dataset/NM_31_1.data.csv?geography=1807745025...1807745028,1807745030...1807745032,1807745034...1807745155,1807745157...1807745164,1807745166...1807745170,1807745172...1807745177,1807745179...1807745194,1807745196,1807745197,1807745199,1807745201...1807745218,1807745221,1807745222,1807745224,1807745226...1807745231,1807745233,1807745234,1807745236...1807745244,1807745271...1807745281,1811939329...1811939332,1811939334...1811939336,1811939338...1811939497,1811939499...1811939501,1811939503,1811939505...1811939507,1811939509...1811939517,1811939519,1811939520,1811939524...1811939570,1811939575...1811939599,1811939601...1811939628,1811939630...1811939634,1811939636...1811939647,1811939649,1811939655...1811939664,1811939667...1811939680,1811939682,1811939683,1811939685,1811939687...1811939704,1811939707,1811939708,1811939710,1811939712...1811939717,1811939719,1811939720,1811939722...1811939730,1811939757...1811939767&date=latestMINUS1-latest&sex=7&age=0,22&measures=20100")
@@ -258,9 +264,55 @@ pop <- pop %>%
 # sapply(test, function(x) sum(is.na(x)))
 ```
 
-## Labour supply
+## Population density 2018
 
 ```{r}
+
+# this is just population
+pop.dens <- read_csv("https://www.nomisweb.co.uk/api/v01/dataset/NM_31_1.data.csv?geography=1820327937...1820328318,1816133633...1816133848&date=latestMINUS1-latest&sex=7&age=0,22&measures=20100")
+
+pop.dens <- pop.dens %>%
+  dplyr::select(GEOGRAPHY_CODE, GEOGRAPHY_NAME, AGE_NAME, OBS_VALUE) %>%
+  distinct(GEOGRAPHY_CODE, AGE_NAME, .keep_all = T) %>% 
+  spread(AGE_NAME, OBS_VALUE) %>% 
+  rename(pop16_64 = `Aged 16 - 64`) %>%
+  rename(pop = `All ages`) %>%
+  rename(lad19cd = GEOGRAPHY_CODE) %>%
+  dplyr::select(-pop16_64)
+
+crs(la)
+la$area_sqkm <- area(la) / 1000000
+
+pop.dens <- merge(pop.dens, la@data, by.x = "lad19cd", by.y = "LAD19CD", all.x = T)
+
+pop.dens <- pop.dens %>%
+  mutate(pop.dens = pop/area_sqkm) %>%
+  dplyr::select(lad19cd,pop.dens)
+
+# sapply(pop.dens, function(x) sum(is.na(x)))
+# test <- pop.dens[is.na(pop.dens$area_sqkm),]
+```
+
+## N/S divide
+
+```{r}
+
+# It only includes only the south
+ 
+ns <- read_csv("https://opendata.arcgis.com/datasets/3ba3daf9278f47daba0f561889c3521a_0.csv") %>%
+  mutate(south = ifelse(RGN19NM=="London" | 
+                        RGN19NM=="South West" |
+                        RGN19NM=="East of England" |
+                        RGN19NM=="South East", 1, 0)) %>%
+  dplyr::select(LAD19CD, south) %>% 
+  dplyr::filter(south==1) %>%
+  rename(lad19cd = LAD19CD)
+```
+
+## Labour supply March 2020
+
+```{r}
+
 labour <- read_csv("https://www.nomisweb.co.uk/api/v01/dataset/NM_17_5.data.csv?geography=1816133633...1816133837,1820327937...1820328307&date=latest&variable=18,1532...1540,290,720&measures=20599,21001,21002,21003")
 
 labour <- labour %>%
@@ -285,9 +337,10 @@ labour <- labour %>%
 # sapply(test, function(x) sum(is.na(x)))
 ```
 
-## Earnings
+## Earnings 2019
 
 ```{r}
+
 earnings <- read_csv("https://www.nomisweb.co.uk/api/v01/dataset/NM_30_1.data.csv?geography=1946157348,2092957698,2013265929,1816133633...1816133837,1820327937...1820328307&date=latest&sex=8&item=2&pay=1&measures=20100,20701")
 
 earnings <- earnings %>%
@@ -301,9 +354,10 @@ earnings <- earnings %>%
 # sapply(test, function(x) sum(is.na(x)))
 ```
 
-## Business counts
+## Business counts 2019
 
 ```{r}
+
 # busi <- read_csv("https://www.nomisweb.co.uk/api/v01/dataset/NM_141_1.data.csv?geography=1816133633...1816133848,1820327937...1820328318,1870659585...1870659791,1870659801,1870659792...1870659800,1879048193...1879048573,1879048583,1879048574...1879048582&date=latest&industry=163577857...163577874&employment_sizeband=0&legal_status=0&measures=20100")
 
 busi <- read_csv("https://www.nomisweb.co.uk/api/v01/dataset/NM_141_1.data.csv?geography=1816133633...1816133848,1820327937...1820328318,1870659585...1870659791,1870659801,1870659792...1870659800,1879048193...1879048573,1879048583,1879048574...1879048582&date=latest&industry=150994945...150994965&employment_sizeband=0&legal_status=0&measures=20100")
@@ -343,7 +397,7 @@ busi <- busi %>%
 ## merge
 
 ```{r}
-data <- list(lad, job.dens, pop, labour, earnings, busi)
+data <- list(lad, ladDist, job.dens, pop, pop.dens, labour, earnings, busi) # ns 
 sapply(data, function(x) dim(x))
 sapply(data, function(x) names(x))
 
@@ -353,6 +407,9 @@ data <- data %>%
   #distinct(.keep_all = T)
   unique()
 sapply(data, function(x) sum(is.na(x)))
+
+data <- merge(data, ns, all.x = T)
+data$south <- ifelse(is.na(data$south),0, data$south)
 ```
 
 ## Descriptive statistics and correlations
@@ -360,7 +417,7 @@ sapply(data, function(x) sum(is.na(x)))
 There is surprisingly low correlation between upload and download, morning and night. 
 Number of tests are the most correlated variables.
 
-```{r correlations}
+```{r correlations, results = 'asis'}
 data.cor <- data %>%
   dplyr::select(LAD.up.am19, LAD.down.am19,  
                 LAD.tests.am19, LAD.up.pm19, 
@@ -373,39 +430,44 @@ m <- cor(data.cor)
 corrplot(m, type="upper",method = "number", number.cex = .5, tl.cex = .75)
 
 data.cor <- data %>%
-  dplyr::select(LAD.up.am20, LAD.up.pm20,
-                LAD.tests.pm20,
+  dplyr::select(LAD.tests.am20,
                 pop, pop16_64,
                 managers, tech,
                 skilled, earnings,
                 total.busi)
 
+
+data.cor <- data %>%
+  dplyr::select(pop16_64, 
+                pop.dens,
+                job.dens2018, 
+                distMet,
+                distLondon,
+                south,
+                managers, 
+                tech,
+                skilled,
+                prof,
+                admin, 
+                caring,
+                plant,
+                earnings,
+                total.busi,
+                LAD.tests.am20,
+                pop) %>%
+  mutate('LAD.tests.am20/pop' = LAD.tests.am20/pop) %>%
+    mutate('total.busi/pop' = total.busi/pop) %>%
+  dplyr::select(-LAD.tests.am20,-pop, -total.busi)
+
+
 m <- cor(data.cor, use = "pairwise.complete.obs")
 corrplot(m, type="upper",method = "number", number.cex = .5, tl.cex = .75)
-```
 
-## Auxiliary regression, dep. var.: upload clusters
-
-```{r upload regression, results= 'asis', message=F, error=F, warning=F}
-# helpful sources: http://www.princeton.edu/~otorres/LogitR101.pdf
-# https://thestatsgeek.com/2014/02/08/r-squared-in-logistic-regression/
-
-aux <- multinom(cluster.up ~ LAD.up.am20 + LAD.up.pm20 + LAD.tests.pm20 + #  LAD.down.am20 + LAD.down.pm20
-                   pop + pop16_64 + # how about young population share
-                   managers + tech + skilled +
-                   earnings + total.busi, data = data, 
-                trace = F) # to avoid messages 
-
-# McFadden's R squared
-aux.null <- multinom(cluster.up ~ 1, data = data)
-r2 <- 1-logLik(aux)/logLik(aux.null)
-
-stargazer(aux, type = "html",
-          add.lines = list(c("McFadden's R squared",                    # use rownames as line name. in this case Weak insterumetns
-                              round(r2[1],3), round(r2[1],3), round(r2[1],3),
-                              round(r2[1],3), round(r2[1],3), round(r2[1],3),
-                              round(r2[1],3), round(r2[1],3), round(r2[1],3))))
-
+stargazer(data.cor,
+          type="html",
+          #type="text", 
+          summary = T,
+          nobs = T)
 ```
 
 ## Auxiliary regression, dep. var.: upload clusters, without upload variables
@@ -414,47 +476,50 @@ stargazer(aux, type = "html",
 # helpful sources: http://www.princeton.edu/~otorres/LogitR101.pdf
 # https://thestatsgeek.com/2014/02/08/r-squared-in-logistic-regression/
 
-aux <- multinom(cluster.up ~ pop + pop16_64 + # how about young population share
-                  managers + tech + skilled +
-                  earnings + total.busi, data = data, 
+# convert dependent variable to factor
+data$cluster.up <- as.factor(data$cluster.up)
+data$cluster.up <- relevel(data$cluster.up, "5") # base category: cluster 5
+
+aux <- multinom(as.factor(cluster.up) ~ pop16_64 + # how about young population share, pop +
+                  pop.dens + job.dens2018 + # pop.dens is still insignificant when job.dens is excluded
+                  distMet + distLondon + south +
+                  managers + tech + skilled + prof + admin + caring + plant +
+                  earnings + I(total.busi/pop) +
+                  I(LAD.tests.am20/pop), data = data, 
                 trace = F) # to avoid messages 
 
 # McFadden's R squared
 aux.null <- multinom(cluster.up ~ 1, data = data)
 r2 <- 1-logLik(aux)/logLik(aux.null)
 
-stargazer(aux, type = "html",
-          add.lines = list(c("McFadden's R squared",                    # use rownames as line name. in this case Weak insterumetns
-                              round(r2[1],3), round(r2[1],3), round(r2[1],3),
-                              round(r2[1],3), round(r2[1],3), round(r2[1],3),
-                              round(r2[1],3), round(r2[1],3), round(r2[1],3))))
+stargazer(aux, 
+          type = "html",
+          #type = "text",
+          nobs = T,
+          covariate.labels=c("pop. 16-64, 2018",
+                             "pop. densuty, 2018",
+                             "job density, 2018",
+                             "distance to nearest met. area",
+                             "distance to London",
+                             "South of the UK",
+                             "% of managerial jobs, 2020",
+                             "% of tech jobs, 2020",
+                             "% of skilled trade jobs, 2020",
+                             "% of professional jobs, 2020",
+                             "% of dministrative jobs, 2020",
+                             "% of leisure jobs, 2020",
+                             "% of machine operation jobs, 2020",
+                             "earnings, 2019",
+                             "n. business est. per hab., 2019",
+                             "n. of AM broadband tests per hab., 2019"),
+          add.lines = list(c("McFadden's R squared",
+                             round(r2[1],3), round(r2[1],3), round(r2[1],3),
+                             round(r2[1],3), round(r2[1],3), round(r2[1],3),
+                             round(r2[1],3), round(r2[1],3), round(r2[1],3)),
+                           (c("N",
+                            nrow(data), nrow(data), nrow(data),
+                            nrow(data), nrow(data), nrow(data),
+                            nrow(data), nrow(data), nrow(data)))))
 
 ```
 
-## Auxiliary regression, dep. var.: download clusters
-
-```{r download regression, results= 'asis', message=F, error=F, warning=F}
-# helpful sources: http://www.princeton.edu/~otorres/LogitR101.pdf
-# https://thestatsgeek.com/2014/02/08/r-squared-in-logistic-regression/
-
-aux <- multinom(cluster.down ~ LAD.down.am20 + LAD.down.pm20 + LAD.tests.pm20 + #  LAD.down.am20 + LAD.down.pm20
-                   pop + pop16_64 + # how about young population share
-                   managers + tech + skilled +
-                   earnings + total.busi, data = data, 
-                trace = F) # to avoid messages 
-
-# McFadden's R squared
-aux.null <- multinom(cluster.down ~ 1, data = data)
-r2 <- 1-logLik(aux)/logLik(aux.null)
-
-stargazer(aux, type = "html",
-          add.lines = list(c("McFadden's R squared",                    # use rownames as line name. in this case Weak insterumetns
-                              round(r2[1],3), round(r2[1],3), round(r2[1],3),
-                              round(r2[1],3), round(r2[1],3), round(r2[1],3),
-                              round(r2[1],3), round(r2[1],3), round(r2[1],3),
-                              round(r2[1],3), round(r2[1],3), round(r2[1],3),
-                              round(r2[1],3), round(r2[1],3), round(r2[1],3),
-                              round(r2[1],3), round(r2[1],3), round(r2[1],3),
-                              round(r2[1],3))))
-
-```
