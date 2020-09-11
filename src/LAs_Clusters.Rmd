@@ -410,6 +410,11 @@ sapply(data, function(x) sum(is.na(x)))
 
 data <- merge(data, ns, all.x = T)
 data$south <- ifelse(is.na(data$south),0, data$south)
+
+# NOT RUN
+# export file for future reference / backup
+# data.out.path <- paste0(path, "/data/temp/data_for_aux.csv")
+# write.csv(data, data.out.path)
 ```
 
 ## Descriptive statistics and correlations
@@ -496,6 +501,7 @@ stargazer(aux,
           type = "html",
           #type = "text",
           nobs = T,
+          digits = 3,
           covariate.labels=c("pop. 16-64, 2018",
                              "pop. densuty, 2018",
                              "job density, 2018",

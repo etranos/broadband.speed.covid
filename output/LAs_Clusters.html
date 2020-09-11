@@ -1633,7 +1633,7 @@ summary {
 
 
 <h1 class="title toc-ignore">LAs_clusters</h1>
-<h4 class="date">11 September, 2020, 09:22</h4>
+<h4 class="date">11 September, 2020, 09:58</h4>
 
 </div>
 
@@ -2087,7 +2087,12 @@ sapply(data, function(x) sum(is.na(x)))</code></pre>
 ##                  T                  U         total.busi 
 ##                  0                  0                  0</code></pre>
 <pre class="r"><code>data &lt;- merge(data, ns, all.x = T)
-data$south &lt;- ifelse(is.na(data$south),0, data$south)</code></pre>
+data$south &lt;- ifelse(is.na(data$south),0, data$south)
+
+# NOT RUN
+# export file for future reference / backup
+# data.out.path &lt;- paste0(path, &quot;/data/temp/data_for_aux.csv&quot;)
+# write.csv(data, data.out.path)</code></pre>
 </div>
 <div id="descriptive-statistics-and-correlations" class="section level2">
 <h2>Descriptive statistics and correlations</h2>
@@ -2628,6 +2633,7 @@ stargazer(aux,
           type = &quot;html&quot;,
           #type = &quot;text&quot;,
           nobs = T,
+          digits = 3,
           covariate.labels=c(&quot;pop. 16-64, 2018&quot;,
                              &quot;pop. densuty, 2018&quot;,
                              &quot;job density, 2018&quot;,
