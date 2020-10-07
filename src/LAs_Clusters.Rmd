@@ -124,6 +124,22 @@ LAD.tests.pm20 <- TS2020 %>%
   group_by(LAD19NM) %>%
   summarise(LAD.tests.pm20 = n())
 
+# this is a share of Virgin provider variable
+virgin <- TS2020 %>%
+  filter(provider == "Virgin Media") %>%
+  group_by(LAD19NM) %>%
+  summarise(virgin = n())
+
+virgin.denom <- TS2020 %>%
+  #filter(provider == "Virgin Media") %>%
+  group_by(LAD19NM) %>%
+  summarise(virgin.denom = n())
+
+virgin <- merge(virgin.denom, virgin, by = "LAD19NM", all.x = T)
+virgin$virgin <- ifelse(is.na(virgin$virgin), 0, virgin$virgin)
+virgin$virgin <- virgin$virgin/virgin.denom$virgin.denom
+virgin$virgin.denom <- NULL
+
 # LAD characteristcs merge
 lad <- list(codes,
             clusters,
@@ -138,7 +154,8 @@ lad <- list(codes,
             LAD.down.pm19,
             LAD.down.pm20,
             LAD.tests.pm19,
-            LAD.tests.pm20)
+            LAD.tests.pm20,
+            virgin)
 
 sapply(lad, function(x) dim(x))
 sapply(lad, function(x) sum(is.na(x)))
@@ -459,7 +476,8 @@ data.cor <- data %>%
                 earnings,
                 total.busi,
                 LAD.tests.am20,
-                pop) %>%
+                pop,
+                virgin) %>%
   mutate('LAD.tests.am20/pop' = LAD.tests.am20/pop) %>%
     mutate('total.busi/pop' = total.busi/pop) %>%
   dplyr::select(-LAD.tests.am20,-pop, -total.busi)
@@ -483,7 +501,7 @@ stargazer(data.cor,
 
 # convert dependent variable to factor
 data$cluster.up <- as.factor(data$cluster.up)
-data$cluster.up <- relevel(data$cluster.up, "5") # base category: cluster 5
+data$cluster.up <- relevel(data$cluster.up, "3") # base category: cluster 3
 
 aux <- multinom(cluster.up ~ 
                   #pop16_64 + # non sign, while pop is
@@ -493,7 +511,8 @@ aux <- multinom(cluster.up ~
                   distMet + distLondon + south +
                   managers + tech + skilled + prof + admin + caring + plant +
                   earnings + I(total.busi/pop) +
-                  I(LAD.tests.am20/pop) # non sensitive to addition of other tests pm
+                  I(LAD.tests.am20/pop) + # non sensitive to addition of other tests pm
+                  virgin
                 , data = data, 
                 trace = F) # to avoid messages 
 
@@ -524,7 +543,8 @@ stargazer(aux,
                              "% of machine operation jobs, 2020",
                              "earnings, 2019",
                              "n. business est. per hab., 2019",
-                             "n. of AM broadband tests per hab., 2019"),
+                             "n. of AM broadband tests per hab., 2019",
+                             "% of Virgin Media connections"),
           add.lines = list(c("McFadden's R squared",
                              round(r2[1],3), round(r2[1],3), round(r2[1],3),
                              round(r2[1],3), round(r2[1],3), round(r2[1],3),
@@ -554,7 +574,8 @@ aux <- multinom(cluster.tests ~
                   distMet + distLondon + south +
                   managers + tech + skilled + prof + admin + caring + plant +
                   earnings + I(total.busi/pop) +
-                  I(LAD.tests.am20/pop) # non sensitive to addition of other tests pm
+                  I(LAD.tests.am20/pop) + # non sensitive to addition of other tests pm
+                  virgin
                 , data = data, 
                 trace = F) # to avoid messages 
 
@@ -584,7 +605,8 @@ stargazer(aux,
                              "% of machine operation jobs, 2020",
                              "earnings, 2019",
                              "n. business est. per hab., 2019",
-                             "n. of AM broadband tests per hab., 2019"),
+                             "n. of AM broadband tests per hab., 2019",
+                             "% of Virgin Media connections"),
           add.lines = list(c("McFadden's R squared",
                              round(r2[1],3), round(r2[1],3), round(r2[1],3),
                              round(r2[1],3)),
@@ -612,7 +634,8 @@ aux <- multinom(cluster.down ~
                   distMet + distLondon + south +
                   managers + tech + skilled + prof + admin + caring + plant +
                   earnings + I(total.busi/pop) +
-                  I(LAD.tests.am20/pop) # non sensitive to addition of other tests pm
+                  I(LAD.tests.am20/pop) + # non sensitive to addition of other tests pm
+                  virgin
                 , data = data, 
                 trace = F) # to avoid messages 
 
@@ -642,7 +665,8 @@ stargazer(aux,
                              "% of machine operation jobs, 2020",
                              "earnings, 2019",
                              "n. business est. per hab., 2019",
-                             "n. of AM broadband tests per hab., 2019"),
+                             "n. of AM broadband tests per hab., 2019",
+                             "% of Virgin Media connections"),
           add.lines = list(c("McFadden's R squared",
                              round(r2[1],3), round(r2[1],3), round(r2[1],3),
                              round(r2[1],3), round(r2[1],3), round(r2[1],3),
