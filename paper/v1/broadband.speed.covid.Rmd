@@ -1,0 +1,103 @@
+---
+title: |
+  WFH and broadband speed (title needs rework) 
+type: ARTICLE TEMPLATE
+author:
+  - name: A. N. Author
+    affil: a
+    email: latex.helpdesk@tandf.co.uk
+  - name: John Smith
+    affil: b
+    email: john.smith@uni-freiburg.de
+affiliation:
+  - num: a
+    address: |
+      Taylor & Francis, 4 Park Square, Milton Park, Abingdon, UK
+  - num: b
+    address: |
+      Institut für Informatik, Albert-Ludwigs-Universität, Freiburg, Germany
+bibliography: bibliography.bib
+appendix: appendix.tex
+abstract: |
+  TBC
+keywords: |
+  covid; internet; working from home; broadband speed; time series clusters
+header-includes: |
+  \usepackage{hyperref}
+  \usepackage[utf8]{inputenc}
+  \def\tightlist{}
+output: rticles::tf_article
+---
+
+# Introduction
+
+[our Google doc](https://docs.google.com/document/d/1PWjkmgzWGYKR9wFogKYw7l-8mZLoORt593x-Tu-f2-M/edit#heading=h.i5om1o8wpcd9)
+
+**PARA1**: working from home is a challenge and maybe an opportunity [use arguments from @BUDNITZ2020102713]
+It has been altered dramatically because of covid
+
+**PARA2**: covind and working from home, cities, urban structure
+Potentially useful readings for covid and cities:
+
+- https://www.coronavirusandtheeconomy.com/question/why-has-coronavirus-affected-cities-more-rural-areas
+- https://www.coronavirusandtheeconomy.com/question/will-coronavirus-cause-big-city-exodus
+- [EPB commentaries](https://journals.sagepub.com/toc/EPB/current)
+- https://journals.sagepub.com/doi/full/10.1177/2399808320926912?casa_token=gh3SgKFCZ44AAAAA:MjjMWJ61DqlmxzkWQyy_wxPnU20QdyQYkC4fVFpHLPfLk7McwmQGkJ7x2Q7LZOjTf6vcYaqNwug
+- [WFM and covid, econ](https://www.coronavirusandtheeconomy.com/question/what-has-coronavirus-taught-us-about-working-home)
+- [productivity and WFM](https://www.coronavirusandtheeconomy.com/question/who-can-work-home-and-how-does-it-affect-their-productivity) 
+
+It is important to become aware of working from home patterns because of:
+- transport planning reasons (see para 1)
+- WFM might increase coparing to pre-covid level
+
+**PARA3**: How can we observe observe WFM? 
+Directly through surveys (@felstead2020homeworking).
+Add survey limitations (cost, reprentativeness, time lag between survey and data availability)
+Data gap.
+Passive data collection through internet speeds
+Another option could be mobility data.
+How is internet speed data a better source than mobility?
+
+**PARA4**: Contention
+
+**PARA5**: Data and methods
+
+**PARA6**: Contribution:
+
+# Literature review
+
+## broadband studies, divides, broadband tech stuff
+
+## from telecommuting to #WFH
+
+Some new papers google recommended to me:
+
+- https://urbanstudies.uva.nl/binaries/content/assets/subsites/centre-for-urban-studies/working-paper-series/wps_43.pdf
+- https://link.springer.com/article/10.1007/s11116-020-10136-6
+- https://www.sciencedirect.com/science/article/pii/S0966692319311305
+- check who cites the above and what they cite
+
+# Time series clustering
+
+Desription of the method
+
+# Data and descriptive statistics
+
+Data details and some figures, descriptive stats
+
+# Results
+
+Clusters, cluster description and aux regressions
+
+# Conclusions
+
+# Acknowledgement(s) {-}
+
+An unnumbered section, e.g.\ `\section*{Acknowledgements}`, may be used for thanks, etc.\ if required and included _in the non-anonymous version_ before any Notes or References.
+
+# Funding {-}
+
+An unnumbered section, e.g.\ `\section*{Funding}`, may be used for grant details, etc.\ if required and included _in the non-anonymous version_ before any Notes or References.
+
+# References
+

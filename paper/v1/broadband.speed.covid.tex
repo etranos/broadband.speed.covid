@@ -1,0 +1,176 @@
+% interactcadsample.tex
+% v1.03 - April 2017
+
+\documentclass[]{interact}
+
+\usepackage{epstopdf}% To incorporate .eps illustrations using PDFLaTeX, etc.
+\usepackage{subfigure}% Support for small, `sub' figures and tables
+%\usepackage[nolists,tablesfirst]{endfloat}% To `separate' figures and tables from text if required
+
+\usepackage{natbib}% Citation support using natbib.sty
+\bibpunct[, ]{(}{)}{;}{a}{}{,}% Citation support using natbib.sty
+\renewcommand\bibfont{\fontsize{10}{12}\selectfont}% Bibliography support using natbib.sty
+
+\theoremstyle{plain}% Theorem-like structures provided by amsthm.sty
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+\newtheorem{notation}{Notation}
+
+% see https://stackoverflow.com/a/47122900
+
+
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+\def\tightlist{}
+
+\begin{document}
+
+\articletype{ARTICLE TEMPLATE}
+
+\title{WFH and broadband speed (title needs rework)}
+
+
+\author{\name{A. N. Author$^{a}$, John Smith$^{b}$}
+\affil{$^{a}$Taylor \& Francis, 4 Park Square, Milton Park, Abingdon, UK; $^{b}$Institut für Informatik, Albert-Ludwigs-Universität, Freiburg, Germany}
+}
+
+\thanks{CONTACT A. N. Author. Email: \href{mailto:latex.helpdesk@tandf.co.uk}{\nolinkurl{latex.helpdesk@tandf.co.uk}}, John Smith. Email: \href{mailto:john.smith@uni-freiburg.de}{\nolinkurl{john.smith@uni-freiburg.de}}}
+
+\maketitle
+
+\begin{abstract}
+TBC
+\end{abstract}
+
+\begin{keywords}
+covid; internet; working from home; broadband speed; time series
+clusters
+\end{keywords}
+
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
+
+\href{https://docs.google.com/document/d/1PWjkmgzWGYKR9wFogKYw7l-8mZLoORt593x-Tu-f2-M/edit\#heading=h.i5om1o8wpcd9}{our
+Google doc}
+
+\textbf{PARA1}: working from home is a challenge and maybe an
+opportunity \citep[use arguments from][]{BUDNITZ2020102713} It has been
+altered dramatically because of covid
+
+\textbf{PARA2}: covind and working from home, cities, urban structure
+Potentially useful readings for covid and cities:
+
+\begin{itemize}
+\tightlist
+\item
+  \url{https://www.coronavirusandtheeconomy.com/question/why-has-coronavirus-affected-cities-more-rural-areas}
+\item
+  \url{https://www.coronavirusandtheeconomy.com/question/will-coronavirus-cause-big-city-exodus}
+\item
+  \href{https://journals.sagepub.com/toc/EPB/current}{EPB commentaries}
+\item
+  \url{https://journals.sagepub.com/doi/full/10.1177/2399808320926912?casa_token=gh3SgKFCZ44AAAAA:MjjMWJ61DqlmxzkWQyy_wxPnU20QdyQYkC4fVFpHLPfLk7McwmQGkJ7x2Q7LZOjTf6vcYaqNwug}
+\item
+  \href{https://www.coronavirusandtheeconomy.com/question/what-has-coronavirus-taught-us-about-working-home}{WFM
+  and covid, econ}
+\item
+  \href{https://www.coronavirusandtheeconomy.com/question/who-can-work-home-and-how-does-it-affect-their-productivity}{productivity
+  and WFM}
+\end{itemize}
+
+It is important to become aware of working from home patterns because
+of: - transport planning reasons (see para 1) - WFM might increase
+coparing to pre-covid level
+
+\textbf{PARA3}: How can we observe observe WFM? Directly through surveys
+(\citet{felstead2020homeworking}). Add survey limitations (cost,
+reprentativeness, time lag between survey and data availability) Data
+gap. Passive data collection through internet speeds Another option
+could be mobility data. How is internet speed data a better source than
+mobility?
+
+\textbf{PARA4}: Contention
+
+\textbf{PARA5}: Data and methods
+
+\textbf{PARA6}: Contribution:
+
+\hypertarget{literature-review}{%
+\section{Literature review}\label{literature-review}}
+
+\hypertarget{broadband-studies-divides-broadband-tech-stuff}{%
+\subsection{broadband studies, divides, broadband tech
+stuff}\label{broadband-studies-divides-broadband-tech-stuff}}
+
+\hypertarget{from-telecommuting-to-wfh}{%
+\subsection{from telecommuting to
+\#WFH}\label{from-telecommuting-to-wfh}}
+
+Some new papers google recommended to me:
+
+\begin{itemize}
+\tightlist
+\item
+  \url{https://urbanstudies.uva.nl/binaries/content/assets/subsites/centre-for-urban-studies/working-paper-series/wps_43.pdf}
+\item
+  \url{https://link.springer.com/article/10.1007/s11116-020-10136-6}
+\item
+  \url{https://www.sciencedirect.com/science/article/pii/S0966692319311305}
+\item
+  check who cites the above and what they cite
+\end{itemize}
+
+\hypertarget{time-series-clustering}{%
+\section{Time series clustering}\label{time-series-clustering}}
+
+Desription of the method
+
+\hypertarget{data-and-descriptive-statistics}{%
+\section{Data and descriptive
+statistics}\label{data-and-descriptive-statistics}}
+
+Data details and some figures, descriptive stats
+
+\hypertarget{results}{%
+\section{Results}\label{results}}
+
+Clusters, cluster description and aux regressions
+
+\hypertarget{conclusions}{%
+\section{Conclusions}\label{conclusions}}
+
+\hypertarget{acknowledgements}{%
+\section*{Acknowledgement(s)}\label{acknowledgements}}
+\addcontentsline{toc}{section}{Acknowledgement(s)}
+
+An unnumbered section,
+e.g.~\texttt{\textbackslash{}section*\{Acknowledgements\}}, may be used
+for thanks, etc.~if required and included \emph{in the non-anonymous
+version} before any Notes or References.
+
+\hypertarget{funding}{%
+\section*{Funding}\label{funding}}
+\addcontentsline{toc}{section}{Funding}
+
+An unnumbered section,
+e.g.~\texttt{\textbackslash{}section*\{Funding\}}, may be used for grant
+details, etc.~if required and included \emph{in the non-anonymous
+version} before any Notes or References.
+
+\bibliographystyle{tfcad}
+\bibliography{bibliography.bib}
+
+
+\input{"appendix.tex"}
+
+
+\end{document}
