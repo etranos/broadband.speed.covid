@@ -1,6 +1,6 @@
 ---
 title: |
-  WFH and broadband speed (title needs rework) 
+  WFH and broadband speed (title needs rework)
 type: ARTICLE TEMPLATE
 author:
   - name: A. N. Author
@@ -33,8 +33,35 @@ output: rticles::tf_article
 
 [our Google doc](https://docs.google.com/document/d/1PWjkmgzWGYKR9wFogKYw7l-8mZLoORt593x-Tu-f2-M/edit#heading=h.i5om1o8wpcd9)
 
-**PARA1**: working from home is a challenge and maybe an opportunity [use arguments from @BUDNITZ2020102713]
-It has been altered dramatically because of covid
+<!-- **PARA1**: working from home is a challenge and maybe an opportunity [use arguments from @BUDNITZ2020102713] -->
+<!-- It has been altered dramatically because of covid -->
+
+During the pandemic, working from home using Information and Communication
+Technologies (ICT), whether partially or exclusively, was transformed from a
+niche means of accessing work, albeit one that had been on a slow, upward trend,
+to a widespread way of life in many countries.
+The ability to work from home or telecommute meant millions retained their jobs
+and, to a varying extent, maintained productivity during periods of strict
+lockdown around the world.
+However, this ability was not evenly distributed socially or spatially, creating
+a new type of digital divide -- one of economic resilience and personal safety on
+one side and unemployment or essential front-line work on the other.
+The ability to telecommute is partly a product of whether the majority of work
+tasks in an occupation can be performed independently of being in a particular
+location or co-locating with colleagues.
+It is also a product of the quality of ICT services, particularly home internet
+connections, sufficient to successfully complete work tasks with a minimum of
+delay or interruption.
+Therefore, in this paper, we aim to look at patterns of broadband speed tests
+and upload speeds in the UK in order to gain insights into both the quality and
+reliability of broadband services across the country and the distribution of
+telecommuting at the time when the population were told to work from home if
+possible.
+From this analysis, we provide a greater understanding of how telecommuting and
+technology intersect at a time of extreme demand, and what lessons this time has
+for a future where telecommuting is likely to remain a common means of accessing
+work and broadband services, as well as infrastructure, must be fit for purpose.
+
 
 **PARA2**: covind and working from home, cities, urban structure
 Potentially useful readings for covid and cities:
@@ -44,13 +71,13 @@ Potentially useful readings for covid and cities:
 - [EPB commentaries](https://journals.sagepub.com/toc/EPB/current)
 - https://journals.sagepub.com/doi/full/10.1177/2399808320926912?casa_token=gh3SgKFCZ44AAAAA:MjjMWJ61DqlmxzkWQyy_wxPnU20QdyQYkC4fVFpHLPfLk7McwmQGkJ7x2Q7LZOjTf6vcYaqNwug
 - [WFM and covid, econ](https://www.coronavirusandtheeconomy.com/question/what-has-coronavirus-taught-us-about-working-home)
-- [productivity and WFM](https://www.coronavirusandtheeconomy.com/question/who-can-work-home-and-how-does-it-affect-their-productivity) 
+- [productivity and WFM](https://www.coronavirusandtheeconomy.com/question/who-can-work-home-and-how-does-it-affect-their-productivity)
 
 It is important to become aware of working from home patterns because of:
 - transport planning reasons (see para 1)
 - WFM might increase coparing to pre-covid level
 
-**PARA3**: How can we observe observe WFM? 
+**PARA3**: How can we observe observe WFM?
 Directly through surveys (@felstead2020homeworking).
 Add survey limitations (cost, reprentativeness, time lag between survey and data availability)
 Data gap.
@@ -100,4 +127,3 @@ An unnumbered section, e.g.\ `\section*{Acknowledgements}`, may be used for than
 An unnumbered section, e.g.\ `\section*{Funding}`, may be used for grant details, etc.\ if required and included _in the non-anonymous version_ before any Notes or References.
 
 # References
-
