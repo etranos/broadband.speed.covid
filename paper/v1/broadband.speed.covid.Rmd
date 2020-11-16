@@ -1,6 +1,6 @@
 ---
 title: |
-  WFH and broadband speed (title needs rework) 
+  WFH and broadband speed (title needs rework)
 type: ARTICLE TEMPLATE
 author:
   - name: A. N. Author
@@ -33,6 +33,7 @@ output: rticles::tf_article
 
 **PARA1**During the pandemic, working from home using Information and Communication Technologies (ICT), whether partially or exclusively, was transformed from a niche means of accessing work, albeit one that had been on a slow, upward trend, to a widespread way of life in many countries (Felstead and Reuschke, 2020; **insert further refs from elsewhere**). The ability to work from home or telecommute has enabled millions to retain their jobs and, to a varying extent, maintain productivity during periods of strict lockdown around the world. However, this ability has not been evenly distributed socially or spatially, creating a new type of digital divide. On one side are those who can work from home and have been able to enjoy both economic resilience and greater personal safety. On the other side, previously employed individuals have been forced to accept furlough or redundancy packages unless they are part of the cadre of essential workers, who are potentially at high risk of infection. Using the UK as a case study, this paper aims to improve our understanding of the spatial and social dimensions of this new digital divide by assessing the resilience of broadband speeds in terms of both quality and reliability of service, and whether this reinforces or redresses prior digital divisions.
 
+HB
 **PARA2**The capability to work from home has previously been studied from the perspective of whether work tasks in a given occupation both can be and are allowed to be performed independently of location or co-location with colleagues, including supervisors (**insert refs**). However, successful telecommuting also requires that the quality and reliability of ICT services, particularly home internet connection speeds, enable the completion of work tasks with a minimum of delay or interruption. In reality, the performance of broadband speeds with respect to telecommuters has never been tested before at scale, as working from home and connecting to colleagues and workplace resources via broadband has previously been the purview of a small minority of workers. In the UK, the most recent statistics indicate that **x%** of working age adults identified their home as their usual workplace, with an additional **x%** who said they work from home at least once a week (**insert stats from 2018 or 2019 NTS - also x% of these use ICT to complete their work at home**). Their demands on internet services have been minor compared to the demands of leisure users, such that the broadband performance offered by different Internet Service Providers (ISPs) has been benchmarked according to download speeds during the evening 'primetime', when video streaming services are at their peak, rather than during the working  day (**OfCom, 2017**). Yet the pandemic has fundamentally changed not only how many people work from home - 47% of working age adults at the peak in April, 2020 (**ref**) - but also their technical requirements when doing so. Whilst it may have been common in the past for telecommuters to complete solitary work tasks at home, but still visit their workplace for meetings (**ref?**), during the pandemic the replacement of face-to-face contact with bandwidth-intensive video conference calling was seen as essential to suppressing the spread of infection. This type of broadband use can particularly affect upload speeds **ref?**, so we seek to develop a new benchmark (**is it a benchmark?**)to assess the quality and reliability of upload speeds by time of day and day of the week across local authorities in the UK during the time when the population were told to work from home if at all possible. 
 
 **PARA3**The experience of upload speeds is not the same as the maximum speeds offered by an ISP or possible speeds over a particular type and length of connection. Therefore, we use volunteered geographic information in the form of speed-checks run by users to test their experienced broadband speeds, upload and download. Meanwhile, the quality and reliability of upload speeds, like ICT more generally, vary in time and space due to both supply and demand-side influences, and can be measured in a number of ways. These include: a) mean, experienced connection speed, b) standard deviation or the amount of fluctuation from the mean, and c) the variation in speeds at particular times of day when working from home is more likely to take place. We take account of all three measurements in order to describe upload speeds as fully as possible. We start by calculating the mean upload speed for every local government district in the UK for each hour of each weekday, excluding midnight to 6:00, weekends and bank holidays. We then cluster the local authorities by these temporal profiles, allowing us to identify patterns and describe the overall means, standard deviations, and other relevant statistics for each spatial cluster. Thus we aim to answer the first part of our research question: How resilient are broadband speeds as experienced in different parts of the UK during a time of extreme demand?
@@ -57,12 +58,168 @@ Potentially useful readings for covid and cities:
 - [WFM and covid, econ](https://www.coronavirusandtheeconomy.com/question/what-has-coronavirus-taught-us-about-working-home)
 - [productivity and WFM](https://www.coronavirusandtheeconomy.com/question/who-can-work-home-and-how-does-it-affect-their-productivity) 
 
+
+ET
+During the pandemic, working from home using Information and Communication
+Technologies (ICT), whether partially or exclusively, was transformed from a
+niche means of accessing work, albeit one that had been on a slow, upward trend,
+to a widespread way of life in many countries.
+The ability to work from home or telecommute meant millions retained their jobs
+and, to a varying extent, maintained productivity during periods of strict
+lockdown around the world.
+However, this ability was not evenly distributed socially or spatially, creating
+a new type of digital divide -- one of economic resilience and personal safety on
+one side and unemployment or essential front-line work on the other.
+The ability to telecommute is partly a product of whether the majority of work
+tasks in an occupation can be performed independently of being in a particular
+location or co-locating with colleagues.
+It is also a product of the quality of ICT services, particularly home internet
+connections, sufficient to successfully complete work tasks with a minimum of
+delay or interruption.
+Therefore, in this paper, we look at patterns of broadband speed tests
+and upload speeds in the UK in order to gain insights into both the quality and
+reliability of broadband services across the country and the distribution of
+telecommuting at the time when the population were told to work from home if
+possible.
+To do so, we employ unique data regarding individual broadband speed tests and
+state of the art time series clustering methods.
+Our analysis enables us to better understand how telecommuting and
+technology intersect at a time of extreme demand, and what lessons this time has
+for a future where telecommuting is likely to remain a common means of accessing
+work and broadband services, as well as infrastructure, must be fit for purpose.
+**I THINK WE NEED A MORE CLEAR RESEARCH QUESTION**
+
+<!-- How much do we work form home-->
+The shift towards telecommuting during various stages of lockdown around the world
+has been drastic and, importantly, speculations indicate that the post-Covid
+tendency to work from home will be much higher than the pre-Covid one.
+A back of the envelope calculation suggests that up to 40% of the working force
+could work from home in the UK [@batty2020editorial].
+Observational data pointed an even higher share of people in employment in the
+UK who worked from home in April $2020$ ($47$%), while the same figure only reached
+$5$% the year before [@ons2020; @ons2020lm2019].
+Similar figures have been reported for other countries around the world
+[@felstead2020homeworking].
+For instance, $37$% of the workforce worked from home in Europe in April $2020$ with
+countries like Finland reaching $60$% [@eurofound2020].
+In the US almost half of the working population worked from home during the same
+period because of the pandemic [@brynjolfsson2020covid].
+More broadly, a recent estimate indicated that $37$% of all jobs in the US can be
+permanently performed entirely from home [@NBERw26948].
+
+<!-- Who works from home-->
+There is a consensus that opportunities for working from home especially during
+the current pandemic are not equally spread across the workforce.
+@NBERw26948 indicated that in the US managers, educators, as well as those
+working in computer-related occupations, finance, and law can easily work from
+home.
+On the contrary, workers in farming, construction, and manufacturing do not have
+such opportunities.
+Not surprisingly, occupations with opportunities to telecommute are associated
+with higher earnings.
+This is not the case for the workforce occupied in less footloose occupations as
+as they tend to be lower-income, non-white, without a university degree,
+live in rental accommodation and lack health insurance [@NBERw27085].
+Although these figures refer to the US, similar trends can be observed for other
+countries.
+For example, $75$% of workers with tertiary education worked from home in Europe
+during spring $2020$, while the same share for workers with secondary and
+primary education dropped to $34$% and $14$% respectively.
+Moreover, employees living in cities, women and younger employees were
+have worked from home [@eurofound2020].
+
+<!-- ICT infrastructure-->
+None of these changes could have happened in the absence of ICT
+infrastructure -- both in terms of software and hardware.
+But while innovations in software are easily diffused across space and
+society^[See for example the huge success of videoconferencing apps
+[@marks2020zoom].],
+the same does not apply for ICT hardware infrastructure such as internet
+broadband connectivity.
+The literature exemplifies digital divides in terms of internet access and its
+quality.
+For instance, @riddlesden2014broadband highlighted the broadband divides in the
+UK, while the systematic review from @SALEMINK2017360 reinforced our
+understanding for the infrastructure quality differences between urban and rural
+areas.
+
+<!-- WFH and digital divides-->
+Our framework to understand telecommuting as a function of occupations and
+quality of ICT infrastructure is aligned with current debates on digital divides.
+While the, so-called, first level digital divides are associated with access
+and quality of internet connectivity, the second level ones are linked
+to the necessary skills to effectively utilise ICT and the internet
+[@blank2014dimensions; @van2011internet].
+Importantly, the differentiated capacity to telecommute, which to a certain
+extend are related to the first and second level digital divides, leads to
+differentiated outcomes regarding the economic resilience of people and
+places against the current pandemic.
+And to the extend that the quality of the internet infrastructure and occupation
+variation are spatially dependent and clustered in space, the spatial footprint
+of telecommuting is of great interest. In a way similar to the third level
+digital divide, which
+focuses on the differentiated returns of internet use [@stern2009levels;
+@van2014digital; @van2015third] places with high rates of telecommuting during
+the Covid pandemic illustrate higher economic resilience against the current pandemic.
+<!-- Econ resilience-->
+This is aligned with the regional economic resilience literature, which
+underlines the differentiated capacity of cities and regions to escape or
+recover from economic crises [@martin2012regional; @kitsos2018economic].
+
+<!-- WFH broader consequences-->
+The long-term effects of such drastic changes in telecommuting and attitudes
+towards working from home are difficult to predict. Nevertheless,
+they might span through various aspects of economy and society: from changes to
+transportation planning due to changes in commuting patters to changes in land
+use and urban planning to accommodate people who work from home
+(@BUDNITZ2020102713); and from productivity and innovation changes to a change
+in agglomeration externalities and the attraction of large cities [@econobs]
+just to name a few. This paper is positioned to support such endeavours by
+providing an explanatory **[NOTE SURE ABOUT THIS]** framework  based on
+the quality of internet connectivity and the frequencies of occupations within
+Local Authorities in the UK.
+
+<!-- How can we observe observe WFM? -->
+<!-- removed for now -->
+<!-- Directly through surveys (@felstead2020homeworking).
+Add survey limitations (cost, representativeness, time lag between survey and data availability)
+Data gap.
+Passive data collection through internet speeds
+Another option could be mobility data.
+How is internet speed data a better source than mobility?-->
+
+**MORE SOURCES:**
+
+- https://www.coronavirusandtheeconomy.com/question/why-has-coronavirus-affected-cities-more-rural-areas
+- [EPB commentaries](https://journals.sagepub.com/toc/EPB/current)
+- https://www.coronavirusandtheeconomy.com/question/what-has-coronavirus-taught-us-about-working-home
+- https://www.coronavirusandtheeconomy.com/question/who-can-work-home-and-how-does-it-affect-their-productivity
+- https://www.coronavirusandtheeconomy.com/question/how-will-economic-effects-coronavirus-vary-across-areas-uk
+- https://www.coronavirusandtheeconomy.com/which-parts-uk-have-been-hit-hardest-covid-19-crisis
+- https://www.coronavirusandtheeconomy.com/question/why-has-coronavirus-affected-cities-more-rural-areas
+
+**PARA5**: Data and methods
+
+**PARA6**: Contribution:
+
+# Literature review
+
+## broadband studies, divides, broadband tech stuff
+
+## from telecommuting to #WFH
+
 Some new papers google recommended to me:
 
 - https://urbanstudies.uva.nl/binaries/content/assets/subsites/centre-for-urban-studies/working-paper-series/wps_43.pdf
 - https://link.springer.com/article/10.1007/s11116-020-10136-6
 - https://www.sciencedirect.com/science/article/pii/S0966692319311305
 - check who cites the above and what they cite
+
+In this analysis, the terms ‘teleworking’ and ‘working from home’ are used interchangeably. An appropriate definition of teleworking is ‘the remote
+provision of labour that would otherwise be carried out within company premises’ (European Commission, 2020b). In practice, during the COVID crisis,
+most such work was carried out in the homes of individual employees rather than any other location.
+
+**PARA about Contention**
 
 # Time series clustering
 
@@ -107,4 +264,3 @@ An unnumbered section, e.g.\ `\section*{Acknowledgements}`, may be used for than
 An unnumbered section, e.g.\ `\section*{Funding}`, may be used for grant details, etc.\ if required and included _in the non-anonymous version_ before any Notes or References.
 
 # References
-
