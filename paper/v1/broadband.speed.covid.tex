@@ -59,36 +59,62 @@ clusters
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
 
-\href{https://docs.google.com/document/d/1PWjkmgzWGYKR9wFogKYw7l-8mZLoORt593x-Tu-f2-M/edit\#heading=h.i5om1o8wpcd9}{our
-Google doc}
+\begin{itemize}
+\tightlist
+\item
+  \href{https://docs.google.com/document/d/1PWjkmgzWGYKR9wFogKYw7l-8mZLoORt593x-Tu-f2-M/edit\#heading=h.i5om1o8wpcd9}{our
+  google doc}
+\end{itemize}
 
 During the pandemic, working from home using Information and
 Communication Technologies (ICT), whether partially or exclusively, was
 transformed from a niche means of accessing work, albeit one that had
 been on a slow, upward trend, to a widespread way of life in many
-countries. The ability to work from home or telecommute meant millions
-retained their jobs and, to a varying extent, maintained productivity
-during periods of strict lockdown around the world. However, this
-ability was not evenly distributed socially or spatially, creating a new
-type of digital divide -- one of economic resilience and personal safety
-on one side and unemployment or essential front-line work on the other.
-The ability to telecommute is partly a product of whether the majority
-of work tasks in an occupation can be performed independently of being
-in a particular location or co-locating with colleagues. It is also a
-product of the quality of ICT services, particularly home internet
-connections, sufficient to successfully complete work tasks with a
-minimum of delay or interruption. Therefore, in this paper, we look at
-patterns of broadband speed tests and upload speeds in the UK in order
-to gain insights into both the quality and reliability of broadband
-services across the country and the distribution of telecommuting at the
-time when the population were told to work from home if possible. To do
-so, we employ unique data regarding individual broadband speed tests and
-state of the art time series clustering methods. Our analysis enables us
+countries \citep{felstead2020homeworking}. \textbf{HANNAH, DO WE REALLY
+NEED A REFERENCE IN THE PREVIOUS SENTENCE?} The ability to work from
+home or telecommute meant millions retained their jobs and, to a varying
+extent, maintained productivity during periods of strict lockdown around
+the world. However, this ability has not been evenly distributed
+socially or spatially, creating a new type of digital divide. On one
+side are those who can work from home and have been able to enjoy both
+economic resilience and greater personal safety. On the other side,
+previously employed individuals have been forced to accept furlough or
+redundancy packages unless they are part of the cadre of essential
+workers, who are potentially at high risk of infection. Using the UK as
+a case study, this paper aims to improve our understanding of the
+spatial and social dimensions of this new digital divide by assessing
+the resilience of broadband speeds in terms of both quality and
+reliability of service, and whether this reinforces or redresses prior
+digital divisions. To do so, we employ unique volunteered geographic
+data on individual broadband speed tests and state-of-the-art
+time-series clustering methods, which enable us to create clusters of UK
+local authorities with similar temporal signatures of experienced
+internet speeds. We then associate these clusters of local authorities
+with their socioeconomic and geographic characteristics to explore
+whether they are linked with existing divides and the economic geography
+of the UK. \textbf{HANNAH, HOW DOES THIS SOUND?} Our analysis enables us
 to better understand how telecommuting and technology intersect at a
 time of extreme demand, and what lessons this time has for a future
 where telecommuting is likely to remain a common means of accessing work
 and broadband services, as well as infrastructure, must be fit for
-purpose. \textbf{I THINK WE NEED A MORE CLEAR RESEARCH QUESTION}
+purpose. \textbf{LET'S LEAVE IT FOR NOW, BUT I THINK WE CAN CRYSTALISE
+MORE THE RQ}
+
+The capability to work from home has previously been studied from the
+perspective of whether work tasks in a given occupation both can be and
+are allowed to be performed independently of location or co-location
+with colleagues, including supervisors (\textbf{insert refs}). However,
+successful telecommuting also requires that the quality and reliability
+of ICT services, particularly home internet connection speeds, enable
+the completion of work tasks with a minimum of delay or interruption. In
+reality, the performance of broadband speeds with respect to
+telecommuters has never been tested before at scale, as working from
+home and connecting to colleagues and workplace resources via broadband
+has previously been the purview of a small minority of workers. This
+papers understands telecommuting as a function of the quality of ICT
+services, particularly home internet connections, and whether work tasks
+in an occupation can be performed independently of being in a particular
+location or co-locating with colleagues
 
 The shift towards telecommuting during various stages of lockdown around
 the world has been drastic and, importantly, speculations indicate that
@@ -116,19 +142,19 @@ easily work from home. On the contrary, workers in farming,
 construction, and manufacturing do not have such opportunities. Not
 surprisingly, occupations with opportunities to telecommute are
 associated with higher earnings. This is not the case for the workforce
-occupied in less footloose occupations as as they tend to be
-lower-income, non-white, without a university degree, live in rental
-accommodation and lack health insurance \citep{NBERw27085}. Although
-these figures refer to the US, similar trends can be observed for other
-countries. For example, \(75\)\% of workers with tertiary education
-worked from home in Europe during spring \(2020\), while the same share
-for workers with secondary and primary education dropped to \(34\)\% and
-\(14\)\% respectively. Moreover, employees living in cities, women and
-younger employees were have worked from home \citep{eurofound2020}.
+occupied in less footloose occupations as they tend to be lower-income,
+non-white, without a university degree, live in rental accommodation and
+lack health insurance \citep{NBERw27085}. Although these figures refer
+to the US, similar trends can be observed for other countries. For
+example, \(75\)\% of workers with tertiary education worked from home in
+Europe during spring \(2020\), while the same share for workers with
+secondary and primary education dropped to \(34\)\% and \(14\)\%
+respectively. Moreover, employees living in cities, women and younger
+employees were have worked from home \citep{eurofound2020}.
 
-None of these changes could have happened in the absence of ICT
+None of these changes could have happened in the absence of reliable ICT
 infrastructure -- both in terms of software and hardware. But while
-innovations in software are easily diffused across space and
+software innovations are easily diffused across space and
 society\footnote{See for example the huge success of videoconferencing
   apps \citep{marks2020zoom}.}, the same does not apply for ICT hardware
 infrastructure such as internet broadband connectivity. The literature
@@ -144,34 +170,37 @@ digital divides. While the, so-called, first level digital divides are
 associated with access and quality of internet connectivity, the second
 level ones are linked to the necessary skills to effectively utilise ICT
 and the internet \citep{blank2014dimensions, van2011internet}.
-Importantly, the differentiated capacity to telecommute, which to a
-certain extend are related to the first and second level digital
-divides, leads to differentiated outcomes regarding the economic
-resilience of people and places against the current pandemic. And to the
-extend that the quality of the internet infrastructure and occupation
-variation are spatially dependent and clustered in space, the spatial
-footprint of telecommuting is of great interest. In a way similar to the
-third level digital divide, which focuses on the differentiated returns
-of internet use \citep{stern2009levels, van2014digital, van2015third}
-places with high rates of telecommuting during the Covid pandemic
-illustrate higher economic resilience against the current pandemic. This
-is aligned with the regional economic resilience literature, which
-underlines the differentiated capacity of cities and regions to escape
-or recover from economic crises
-\citep{martin2012regional, kitsos2018economic}.
+Importantly, the capacity to telecommute, which to a certain extend is
+related to the first and second level digital divides, leads to
+differentiated outcomes regarding the economic resilience of people and
+places against the current pandemic. And to the extend that the quality
+of the internet infrastructure and occupation variation are spatially
+dependent and clustered in space, the spatial footprint of telecommuting
+is of great interest. In a way similar to the third level digital
+divide, which focuses on the differentiated returns of internet use
+\citep{stern2009levels, van2014digital, van2015third} places with high
+rates of telecommuting during the Covid pandemic illustrate higher
+economic resilience against the current pandemic. This is aligned with
+the regional economic resilience literature, which underlines the
+differentiated capacity of cities and regions to escape or recover from
+economic crises \citep{martin2012regional, kitsos2018economic}.
 
 The long-term effects of such drastic changes in telecommuting and
 attitudes towards working from home are difficult to predict.
-Nevertheless, they might span through various aspects of economy and
-society: from changes to transportation planning due to changes in
-commuting patters to changes in land use and urban planning to
-accommodate people who work from home (\citet{BUDNITZ2020102713}); and
-from productivity and innovation changes to a change in agglomeration
-externalities and the attraction of large cities \citep{econobs} just to
-name a few. This paper is positioned to support such endeavours by
-providing an explanatory \textbf{{[}NOTE SURE ABOUT THIS{]}} framework
-based on the quality of internet connectivity and the frequencies of
-occupations within Local Authorities in the UK.
+Nevertheless, they span through various aspects of economy and society:
+from changes to transportation planning due to altered commuting
+patters, to changes in land use and urban planning to accommodate people
+who work from home \citep{BUDNITZ2020102713}; and from productivity and
+innovation changes, to changes in agglomeration externalities and the
+attraction of large cities \citep{econobs} just to name a few. This
+paper is positioned to support endeavours in understanding the effects
+of increased telecommuting by exposing the spatial and social dimensions
+of telecommuting including the resilience of broadband speeds in terms
+of both quality and reliability of service, and whether this reinforces
+or redresses prior digital divisions. \textbf{HANNAH, HOW DOES THIS
+SOUND}
+
+The structure of this paper is as follows. \ldots{}
 
 \textbf{MORE SOURCES:}
 
@@ -193,10 +222,6 @@ occupations within Local Authorities in the UK.
   \url{https://www.coronavirusandtheeconomy.com/question/why-has-coronavirus-affected-cities-more-rural-areas}
 \end{itemize}
 
-\textbf{PARA5}: Data and methods
-
-\textbf{PARA6}: Contribution:
-
 \hypertarget{literature-review}{%
 \section{Literature review}\label{literature-review}}
 
@@ -204,9 +229,47 @@ occupations within Local Authorities in the UK.
 \subsection{broadband studies, divides, broadband tech
 stuff}\label{broadband-studies-divides-broadband-tech-stuff}}
 
+\begin{itemize}
+\tightlist
+\item
+  PARA about Contention??
+\end{itemize}
+
+The infrastructural demands of working from home on internet services
+have been minor compared to the demands of leisure users, such that the
+broadband performance offered by different Internet Service Providers
+(ISPs) has been benchmarked according to download speeds during the
+evening `primetime', when video streaming services are at their peak,
+rather than during the working day (\textbf{OfCom, 2017}). Yet the
+pandemic has fundamentally changed not only how many people work from
+home, but also their technical requirements when doing so. Whilst it may
+have been common in the past for telecommuters to complete solitary work
+tasks at home, but still visit their workplace for meetings
+(\textbf{ref?}), during the pandemic the replacement of face-to-face
+contact with bandwidth-intensive video conference calling was seen as
+essential to suppressing the spread of infection. This type of broadband
+use can particularly affect upload speeds \textbf{ref?}. This paper
+offers a framework to assess the quality and reliability of upload
+speeds by time of day and day of the week across local authorities in
+the UK during the time when the population were told to work from home
+if at all possible.
+
 \hypertarget{from-telecommuting-to-wfh}{%
 \subsection{from telecommuting to
 \#WFH}\label{from-telecommuting-to-wfh}}
+
+\begin{itemize}
+\tightlist
+\item
+  Introduce space-time geography
+\item
+  circumstances where work can be carried out more flexibly in space and
+  time
+\item
+  how relate to digital divides
+\item
+  capability theory of mobility? suppressed demand\ldots{}
+\end{itemize}
 
 Some new papers google recommended to me:
 
@@ -227,25 +290,223 @@ used interchangeably. An appropriate definition of teleworking is `the
 remote provision of labour that would otherwise be carried out within
 company premises' (European Commission, 2020b). In practice, during the
 COVID crisis, most such work was carried out in the homes of individual
-employees rather than any other location.
+employees rather than any other location. \citep{eurofound2020}
 
-\textbf{PARA about Contention}
+\hypertarget{covid-and-working-from-home-cities-urban-structure}{%
+\subsection{covid and working from home, cities, urban
+structure}\label{covid-and-working-from-home-cities-urban-structure}}
 
-\hypertarget{time-series-clustering}{%
-\section{Time series clustering}\label{time-series-clustering}}
-
-Desription of the method
+\begin{itemize}
+\tightlist
+\item
+  economic geography of UK
+\end{itemize}
 
 \hypertarget{data-and-descriptive-statistics}{%
 \section{Data and descriptive
 statistics}\label{data-and-descriptive-statistics}}
 
-Data details and some figures, descriptive stats
+The experience of upload speeds is not the same as the maximum speeds
+offered by an ISP or possible speeds over a particular type and length
+of connection. Therefore, we use volunteered geographic information in
+the form of speed-checks run by users to test their experienced
+broadband speeds, upload and download. Meanwhile, the quality and
+reliability of upload speeds, like ICT more generally, vary in time and
+space due to both supply and demand-side influences, and can be measured
+in a number of ways. These include: a) mean, experienced connection
+speed, b) standard deviation or the amount of fluctuation from the mean,
+and c) the variation in speeds at particular times of day when working
+from home is more likely to take place. We take account of all three
+measurements in order to describe upload speeds as fully as possible. We
+start by calculating the mean upload speed for every local government
+district in the UK for each hour of each weekday, excluding midnight to
+6:00, weekends and bank holidays. We then cluster the local authorities
+by these temporal profiles, allowing us to identify patterns and
+describe the overall means, standard deviations, and other relevant
+statistics for each spatial cluster. Thus we aim to answer the first
+part of our research question: How resilient are broadband speeds as
+experienced in different parts of the UK during a time of extreme
+demand?
+
+The cause of these different experiences of broadband resilience may be
+different in different areas, as they may reflect similarities in
+patterns of demand or similar quality of infrastructure. Our approach is
+also limited by potential endogeneity, as for example, better quality
+connections with high mean speeds may enable more working from home, but
+greater demand may cause slower speeds, less reliability and greater
+variability of speed at different times of day or week. Therefore, we
+avoid attributing any cause to our analysis of the experienced level of
+quality and reliability of upload speeds. Instead, we run auxilliary
+regressions in order to understand how the spatial and temporal patterns
+of internet service relate to the economic geography of the UK. We
+discuss how the different patterns might support or undermine efforts to
+work from home and maintain safe productivity and whether they reinforce
+existing spatial and social inequalities. From this analysis, we hope to
+provide a greater understanding of how telecommuting and technology
+intersect at a time of extreme demand, and what lessons this time has
+for a future where telecommuting is likely to remain a common means of
+accessing work and broadband services, as well as infrastructure, must
+be fit for purpose.
+
+The primary data analysed in this paper was provided by Speedchecker
+Ltd, a private company that allows internet users to check their own
+broadband upload / download speeds, and stores every speed-check with a
+timestamp and geolocation.
+
+Our approach involves aggregating all the speed-checks during the 13
+weeks of March to May inclusive for weekdays in 2020 by each hour of the
+day and day of the week. As our research aims to identify the geography
+of internet service resilience for work purposes, bank holidays and the
+hours between midnight and 6am were also excluded. The composite week
+time series thus comprise 18 hours multiplied by 5 weekdays or 90 time
+points per series. These time series were calculated for each of the 382
+Local Authority Districts (LADs) in the UK, standardised, and then a
+k-means clustering algorithm was applied, including dynamic time
+warping. The LADs were assigned to 10 clusters for upload speeds. The
+cluster id for each LAD is then reattached to the speed-check dataframe
+to identify the characteristics of each cluster, including number of
+LADs, and the descriptives statistics of upload speeds in that cluster,
+and the temporal profile by hour of the day and day of the week.
+
+\textbf{Data details and some figures, descriptive stats - include whole
+sample time profile for 2019 and 2020 frequency of tests run as part of
+why we chose to create the time profiles by hour of the day and day of
+the week rather than daily over the whole period.}
+
+\hypertarget{time-series-clustering}{%
+\section{Time series clustering}\label{time-series-clustering}}
+
+Description of the method
 
 \hypertarget{results}{%
 \section{Results}\label{results}}
 
-Clusters, cluster description and aux regressions
+\hypertarget{upload-clusters-cluster-description}{%
+\subsection{Upload Clusters / cluster
+description}\label{upload-clusters-cluster-description}}
+
+The temporal profiles used to cluster the local authorities have been
+summarised in graph {[}.{]}, which shows a composite profile of mean
+upload speeds per hour per day for each cluster. For upload speeds, 345
+of 382 local authorities, or over 62 million people, fall into cluster 6
+or cluster 9. Graph {[}.{]} shows that both of these clusters have
+relatively similar temporal profiles, which are flatter than the other,
+smaller clusters, suggesting better reliability of service. However, the
+upload speeds at all times for cluster 9 are substantially higher than
+for cluster 6, which is an indication of better quality of service. This
+difference is reflected not only in the mean speeds for these clusters
+for the whole sample, but also the mean upload speeds in the morning
+peak from 9:00-10:59, as well as the evening peak period from
+19:00-20:59. In comparison, the time profile in graph {[}.{]} shows
+upload speeds in cluster 1 are on average lower at certain times of day
+during the study period than any other cluster, whilst the profile for
+cluster 3 appears to show speeds fluctuating as much as cluster 1, but
+at levels usually higher even than cluster 9.
+
+The variability of the smaller clusters may be related to the fewer
+speed tests from fewer local authorities that have been averaged, whilst
+averaging greater numbers of speed tests could artificially flatten the
+profile. This appears not to be the case for cluster 9, as there is
+negligible difference between morning and evening upload speeds, at 1\%
+slower in the morning, confirming a high level of reliability of
+service. In comparison, upload speeds in cluster 6 are 4\% slower in the
+morning than in the evening and experienced the joint highest ratio of
+standard deviation to mean across the time period under assessment. This
+suggests that although the time profile is relatively flat in graph
+{[}.{]}, the experience is one of speeds that fluctuate from a lower
+mean, and therefore might more often impact on online activities. Still,
+in most of the smaller clusters the reliability of service is worse than
+in cluster 9 in terms of the ratio of standard deviation to mean and
+worse than cluster 6 as well in terms of the ratio of upload speed in
+the morning peak compared to the evening peak. In five of the smaller
+clusters, which are home to almost 3 million people, speeds are 12-19\%
+slower between 9:00-10:59 compared to 19:00-20:59.
+
+The quality and reliability of broadband service is thus much better in
+the 115 Local Authority areas in cluster 9, which are mostly in urban or
+suburban areas, compared to cluster 6. These include 13 London Boroughs
+(of 32), 8 of the 10 local authorities of Greater Manchester, 5 of the 7
+constituent authorities of the West Midlands Combined Authority, as well
+as cities like Glasgow, Leicester, Nottingham, Sheffield, and the
+Portsmouth and Southampton conurbation. There are also some notable
+medium-sized cities, including Aberdeen, Cardiff, Oxford, Milton Keynes,
+and York, and many suburban districts from the South East of England to
+South Tyneside. Meanwhile, the 230 local authorities in cluster 6, which
+have lower speeds on average and more variation in service still include
+major urban areas, such as Bristol, Liverpool and Leeds, and many
+suburban areas, but also include some of the most rural areas in the
+country. Meanwhile, Cluster 1, with 10 local authorities that are home
+to over 1 million people has the second slowest speeds in the morning
+compared to the evening `peaks' and the second highest ratio of standard
+deviation to mean. This cluster's most populous area is Westminster in
+central London.
+
+\textbf{further description of temporal profiles of other clusters -
+include all in graph?} Indeed, the only cluster where upload speeds were
+slower in the evening than in the morning was cluster 5, made up of 2
+local authorities with less than 200,000 people: Three Rivers, a
+suburban district north of London, and Fylde, a seaside suburb of
+Blackpool. However, these are likely to be outliers and may not have
+many tests from which the clusters are calcualted. \textbf{Take out
+smaller clusters?} The exceptions can be found in seven of the eight
+much smaller clusters including 35 local authority districts, where AM
+peak upload speeds are between 6\% and 18\% slower than PM peak upload
+speeds, although the mean speeds for each cluster are higher than
+cluster 6. Indeed, in 25 local authorities with a combined population of
+almost 3 million, speeds are 13\% or more slower in the morning than in
+the evening. Included in this latter group are central London borough of
+Westminster and the London Borough of Newham, rural authorities like
+Eden and West Devon, and small cities like Dundee and Carlisle.
+
+\hypertarget{aux-regressions}{%
+\subsection{aux regressions}\label{aux-regressions}}
+
+Auxiliary regressions indicate that the speed tests in cluster 9
+authorities are also more likely to have been run on services provided
+by Virgin Media, suggesting they are in the half of the country with the
+most lucrative ICT market, which originally attracted the cable TV
+provider (OfCom\ldots). For example, although auxiliary regressions show
+that Cluster 6 local authorities are more likely to be in the South of
+the UK than Cluster 9, the cluster notably includes Southern rural
+districts from Cornwall to North Norfolk. Slower speeds could reflect
+the lower quality of service in rural areas compared to urban and
+suburban areas. There is frustration, however, as auxiliary regressions
+show that those living in cluster 6 had the highest probability of
+testing their broadband between 9:00 and 11:00 of any of the 10 upload
+speed clusters.
+
+the finding in the auxiliary regressions that those in cluster 9 ran the
+fewest speed tests per person during the morning period of any cluster.
+Now this may be an indication of fewer people working from home, less
+contention, and less resultant frustration. Cluster 9 comprises many
+central urban areas and has the lowest number of established businesses
+per inhabitant, which could be interpreted as a dominance of large
+employers. However, the job density is lower than cluster 6, meaning
+there are not as many jobs per resident in these areas. As the cluster
+includes many suburban areas too, which may be largely residential,
+could the quality and reliability of internet service be reinforcing
+patterns of telecommuting by those in wealthier suburbs who can work
+from home? Earnings in cluster 9 are second highest of all the clusters,
+with only Cluster 2 (comprising just North East Lincolnshire and East
+Lothian, population 265k) earning more per person.
+
+The auxiliary regressions show that compared to the two authorities in
+cluster 5, all the other clusters had a lower percentage of working
+people in managerial, professional and administrative jobs.??? Yet the
+auxiliary regression suggests that there are not many tests being run
+during the am peak in cluster 1. This may be because there are fewer
+people working at home checking their broadband than in most other
+clusters. Indeed, the auxiliary regressions indicate that cluster 1 has
+the highest job density or proportion of jobs to working-age population,
+which is likely to due to the presence of Westminster, central London,
+cluster 1's most populous local authority. Westminster not only has more
+workplaces than residents, but it is reasonable to presume that many who
+would normally work in Westminster, but be able to work from home during
+lockdown are likely to live outside central London and not be subject to
+the fluctuating speeds there. Workplaces, meanwhile, some of which would
+still have been open, could be running programmes that cause the
+slowdown and variation, but would be more likely to have their own
+in-house diagnostics, rather than using a service like Speedchecker Ltd.
 
 \hypertarget{conclusions}{%
 \section{Conclusions}\label{conclusions}}
