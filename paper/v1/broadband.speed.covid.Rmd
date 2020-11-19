@@ -33,106 +33,75 @@ output: rticles::tf_article
 
 - [our google doc](https://docs.google.com/document/d/1PWjkmgzWGYKR9wFogKYw7l-8mZLoORt593x-Tu-f2-M/edit#heading=h.i5om1o8wpcd9)
 
-During the pandemic, working from home using Information and Communication
-Technologies (ICT), whether partially or exclusively, was transformed from a
-niche means of accessing work, albeit one that had been on a slow, upward trend,
-to a widespread way of life in many countries [@felstead2020homeworking].
-**HANNAH, DO WE REALLY NEED A REFERENCE IN THE PREVIOUS SENTENCE?**
+During the pandemic, working from home using digital technologies, whether partially 
+or exclusively, was transformed from a niche means of accessing work, albeit one that 
+had been on a slow, upward trend, to a widespread way of life in many countries.
 The ability to work from home or telecommute meant millions retained their jobs
 and, to a varying extent, maintained productivity during periods of strict
 lockdown around the world.
-<!--OLD TEXT: However, this ability was not evenly distributed socially or spatially, creating
-a new type of digital divide -- one of economic resilience and personal safety on
-one side and unemployment or essential front-line work on the other.
-The ability to telecommute is partly a product of whether the majority of work
-tasks in an occupation can be performed independently of being in a particular
-location or co-locating with colleagues.-->
 However, this ability has not been evenly distributed socially or spatially,
 creating a new type of digital divide.
-On one side are those who can work from home and have been able to enjoy both
-economic resilience and greater personal safety.
+On one side are those who can work from home, supported by digital technologies, 
+and have thus been able to enjoy both economic resilience and greater personal safety.
 On the other side, previously employed individuals have been forced to accept
 furlough or redundancy packages unless they are part of the cadre of essential
 workers, who are potentially at high risk of infection.
-Using the UK as a case study, this paper aims to improve our understanding of
-the spatial and social dimensions of this new digital divide by assessing the
-resilience of broadband speeds in terms of both quality and reliability of
-service, and whether this reinforces or redresses prior digital divisions.
-<!--and upload speeds in the UK in order to gain insights into both the quality and
-reliability of broadband services across the country and the distribution of
-telecommuting at the time when the population were told to work from home if
-possible.-->
-To do so, we employ unique volunteered geographic data on individual broadband
-speed tests and state-of-the-art time-series clustering methods, which enable us
-to create clusters of UK local authorities with similar temporal signatures of
-experienced internet speeds.
+Whilst the basis for this new digital divide can be viewed as mainly occupational, 
+we consider whether the divide is also technological.
+Using the UK as a case study, this paper aims to understand how the resilience
+of broadband speeds in terms of both quality and reliability of service may reinforce
+or redress the spatial and social dimensions of the digital division exposed by the
+pandemic.
+To do so, we employ volunteered geographic data on individual broadband speed tests
+and state-of-the-art time-series clustering methods to create clusters of UK local
+authorities with similar temporal signatures of experienced internet speeds.
 We then associate these clusters of local authorities with their socioeconomic
-and geographic characteristics to explore whether they are linked with existing
-divides and the economic geography of the UK.
-**HANNAH, HOW DOES THIS SOUND?**
-Our analysis enables us to better understand how telecommuting and
-technology intersect at a time of extreme demand, and what lessons this time has
-for a future where telecommuting is likely to remain a common means of accessing
-work and broadband services, as well as infrastructure, must be fit for purpose.
+and geographic characteristics to explore how they overlap with or diverge from
+the existing economic and digital geography of the UK. **need to add in urban-rural**
+Our analysis enables us to better understand how the spatial and social distribution 
+of both occupations and online accessibility intersect to enable or hinder the 
+practice of telecommuting at a time of extreme demand. 
+We will also consider what lessons can be learned from this time for a future where
+telecommuting is likely to remain a common means of accessing work, and broadband
+services and infrastructure must be fit for purpose.
 **LET'S LEAVE IT FOR NOW, BUT I THINK WE CAN CRYSTALISE MORE THE RQ**
 
 <!-- Our framework: capability to WFH; HB old PARA2 -->
 The capability to work from home has previously been studied from the
 perspective of whether work tasks in a given occupation both can be and are
-allowed to be performed independently of location or co-location with
-colleagues, including supervisors (**insert refs**).
+allowed to be performed using digital technologies independently of 
+location or co-location with colleagues, including supervisors 
+[@allen2015effective; @singh2013modeling].
 However, successful telecommuting also requires that the quality and
-reliability of ICT services, particularly home internet connection speeds,
+reliability of digital services, particularly home internet connection speeds,
 enable the completion of work tasks with a minimum of delay or interruption.
-In reality, the performance of broadband speeds with respect to telecommuters
-has never been tested before at scale, as working from home and connecting to
-colleagues and workplace resources via broadband has previously been the
-purview of a small minority of workers.
-This papers understands telecommuting as a function of the quality of ICT
-services, particularly home internet connections, and whether work
-tasks in an occupation can be performed independently of being in a particular
-location or co-locating with colleagues
-
-<!-- How much do we work form home-->
-The shift towards telecommuting during various stages of lockdown around the world
-has been drastic and, importantly, speculations indicate that the post-Covid
-tendency to work from home will be much higher than the pre-Covid one.
+Prior to the pandemic, the performance of broadband services with respect to
+telecommuters was never tested at scale, as working from home and connecting to
+colleagues and workplace resources via broadband was the purview of a small minority 
+of workers. 
+Instead, in the UK, for example, benchmarking broadband performance and service 
+delivery by different Internet Service Providers (ISPs) focused upon the quality of 
+service for evening leisure use, when video streaming services are at their peak, 
+rather than during the working day [@ofcom2017].
+Yet the shift towards telecommuting during various stages of lockdown around the world
+has been drastic and there are speculations that post-Covid, the tendency to work from
+home will be much higher than the pre-Covid, raising questions around whether 
+internet services can accommodate the increased demand.
+For example, $47$% of people in employment in the UK worked soley from home in April
+$2020$, whilst the same figure only reached $5$% the year before [@ons2020; 
+@ons2020lm2019]. 
 A back of the envelope calculation suggests that up to 40% of the working force
-could work from home in the UK [@batty2020editorial].
-Observational data pointed an even higher share of people in employment in the
-UK who worked from home in April $2020$ ($47$%), while the same figure only reached
-$5$% the year before [@ons2020; @ons2020lm2019].
+could work from home on an ongoing basis [@batty2020editorial].
 Similar figures have been reported for other countries around the world
 [@felstead2020homeworking].
-For instance, $37$% of the workforce worked from home in Europe in April $2020$ with
+For instance, $37$% of the European workforce worked from home in April $2020$ with
 countries like Finland reaching $60$% [@eurofound2020].
-In the US almost half of the working population worked from home during the same
+In the US, almost half of the working population worked from home during the same
 period because of the pandemic [@brynjolfsson2020covid].
-More broadly, a recent estimate indicated that $37$% of all jobs in the US can be
+Furthermore, a recent estimate indicated that $37$% of all jobs in the US can be
 permanently performed entirely from home [@NBERw26948].
 
-<!-- Who works from home-->
-There is a consensus that opportunities for working from home especially during
-the current pandemic are not equally spread across the workforce.
-@NBERw26948 indicated that in the US managers, educators, as well as those
-working in computer-related occupations, finance, and law can easily work from
-home.
-On the contrary, workers in farming, construction, and manufacturing do not have
-such opportunities.
-Not surprisingly, occupations with opportunities to telecommute are associated
-with higher earnings.
-This is not the case for the workforce occupied in less footloose occupations as
-they tend to be lower-income, non-white, without a university degree,
-live in rental accommodation and lack health insurance [@NBERw27085].
-Although these figures refer to the US, similar trends can be observed for other
-countries.
-For example, $75$% of workers with tertiary education worked from home in Europe
-during spring $2020$, while the same share for workers with secondary and
-primary education dropped to $34$% and $14$% respectively.
-Moreover, employees living in cities, women and younger employees were
-have worked from home [@eurofound2020].
-
-<!-- ICT infrastructure-->
+<!-- ICT infrastructure and digital divides-->
 None of these changes could have happened in the absence of reliable ICT
 infrastructure -- both in terms of software and hardware.
 But while software innovations are easily diffused across space and
@@ -140,52 +109,39 @@ society^[See for example the huge success of videoconferencing apps
 [@marks2020zoom].],
 the same does not apply for ICT hardware infrastructure such as internet
 broadband connectivity.
-The literature exemplifies digital divides in terms of internet access and its
-quality.
-For instance, @riddlesden2014broadband highlighted the broadband divides in the
-UK, while the systematic review from @SALEMINK2017360 reinforced our
-understanding for the infrastructure quality differences between urban and rural
-areas.
-
-<!-- WFH and digital divides-->
-Our framework to understand telecommuting as a function of occupations and
-quality of ICT infrastructure is aligned with current debates on digital divides.
-While the, so-called, first level digital divides are associated with access
-and quality of internet connectivity, the second level ones are linked
-to the necessary skills to effectively utilise ICT and the internet
+The literature describes first level digital divides in terms of the availability and
+quality of internet connectivity, such as that manifest in different geographies 
+in the UK [@riddlesden2014broadband; @philip2017digital]. 
+Second level digital divides consider the presence or lack of the necessary skills 
+to effectively utilise digital technologies and the internet 
 [@blank2014dimensions; @van2011internet].
-Importantly, the capacity to telecommute, which to a certain
-extend is related to the first and second level digital divides, leads to
-differentiated outcomes regarding the economic resilience of people and
-places against the current pandemic.
-And to the extend that the quality of the internet infrastructure and occupation
-variation are spatially dependent and clustered in space, the spatial footprint
-of telecommuting is of great interest. In a way similar to the third level
-digital divide, which
-focuses on the differentiated returns of internet use [@stern2009levels;
-@van2014digital; @van2015third] places with high rates of telecommuting during
-the Covid pandemic illustrate higher economic resilience against the current pandemic.
-<!-- Econ resilience-->
-This is aligned with the regional economic resilience literature, which
-underlines the differentiated capacity of cities and regions to escape or
-recover from economic crises [@martin2012regional; @kitsos2018economic].
-
-<!-- WFH broader consequences-->
-The long-term effects of such drastic changes in telecommuting and attitudes
-towards working from home are difficult to predict. Nevertheless,
-they span through various aspects of economy and society: from changes to
-transportation planning due to altered commuting patters, to changes in land
-use and urban planning to accommodate people who work from home
-[@BUDNITZ2020102713]; and from productivity and innovation changes, to changes
-in agglomeration externalities and the attraction of large cities [@econobs]
-just to name a few. This paper is positioned to support endeavours in
-understanding the effects of increased telecommuting by
-exposing the spatial and social dimensions of telecommuting including the
-resilience of broadband speeds in terms of both quality and reliability of
-service, and whether this reinforces or redresses prior digital divisions.
-**HANNAH, HOW DOES THIS SOUND**
+The third level focuses on the differentiated returns of internet use **for...?**
+[@stern2009levels; @van2014digital; @van2015third].
+The capability to telecommute is related to all three levels of digital divides,
+but more importantly leads to differentiated outcomes regarding the economic 
+resilience of people and places during the current pandemic.
+We identify this as a new digital divide, one that fundamentally alters the 
+potential returns of internet use for the user and wider community, 
+assumes skills that are present in some occupations but not in others, 
+and relies upon access to high quality internet services.
+As the quality of internet infrastructure and services, as well as variation in 
+occupations are spatially dependent and clustered in space, our approach offers a 
+framework for understanding which types of places, socially and spatially, 
+are more likely to land on the right side of this new digital divide. 
+By asking how resilient broadband speeds are as experienced in different parts of the 
+UK during a time of extreme demand, we will better understand which places benefit 
+from greater economic resilience not only during the pandemic, but also into the 
+future.
 
 The structure of this paper is as follows.
+First we will review the literature on telecommuting and digital divides to better 
+understand the origins of the new digital divide revealed by the pandemic and its
+impact on the economic resilience of different places.
+We then describe our data and methodology.
+Our results section first describes the how internet services vary in the 
+different clusters and then assesses whether these clusters replicate or repudiate
+other socio-economic and geographic patterns of economic resilience.
+
 ...
 
 <!-- How can we observe observe WFM? -->
@@ -209,33 +165,86 @@ How is internet speed data a better source than mobility?-->
 
 # Literature review
 
-## broadband studies, divides, broadband tech stuff
-
-- PARA about Contention??
-
-<!-- WFH and infrastructure, HB old PARA2 -->
-The infrastructural demands of working from home on internet services have been
-minor compared to the demands of leisure users, such that the broadband
-performance offered by different Internet Service Providers (ISPs) has been
-benchmarked according to download speeds during the evening 'primetime',
-when video streaming services are at their peak, rather than during the working
-day (**OfCom, 2017**).
-Yet the pandemic has fundamentally changed not only how many people work from
-home, but also their technical requirements when doing so.
-Whilst it may have been common in the past for telecommuters to complete
-solitary work tasks at home, but still visit their workplace for meetings
-(**ref?**), during the pandemic the replacement of face-to-face contact with
-bandwidth-intensive video conference calling was seen as essential to
-suppressing the spread of infection.
-This type of broadband use can particularly affect upload
-speeds **ref?**.
-This paper offers a framework to assess the quality and reliability of upload
-speeds by time of day and day of the week across local authorities in the UK
-during the time when the population were told to work from home if at all
-possible.
-
-
 ## from telecommuting to #WFH
+
+<!-- Who works from home-->
+In this analysis, the terms ‘telecommuting’ and ‘working from home’ are used 
+interchangeably, as most remote labour during the Covid-19 crisis was carried out 
+in the homes of individual employees rather than any other location [@eurofound2020]. 
+However, it should be noted that previous research has explored how telecommuting 
+can occur in other places, including satellite offices or on public transport 
+[@felstead2012rapid; @siha2006telecommuting].
+Previous research has also used a variety of definitions to measure the level of 
+telecommuting within different workforces, distinguising, for example, between those 
+directly employed, indirectly employed, self-employed, full-time or part-time, and 
+who use digital technologies to work remotely full-days or part-days 
+[@allen2015effective; @bailey2002review; @haddad2009examination].
+<!--old text: An appropriate definition of teleworking is ‘the remote provision of labour that would otherwise be carried out within company premises’ (European Commission, 2020b).-->
+No matter the definition, the option and capability to telecommute or work from home 
+has never been equally distributed spatially or socio-economically any more than 
+different industries and employment opportunities have.
+For example, studies from the United States, the Netherlands, and the UK indicate 
+that telecommuters are most likely to hold professional, managerial, and technical 
+occupations, where the workforce is better educated and wealthier, and that there is
+suppressed demand among women and part-time workers
+[@headicar2016move; @peters2004employees; @singh2013modeling].
+Opportunities for working from home during the current pandemic have likewise not 
+been equally spread across the workforce.
+@NBERw26948 indicated that in the US, managers, educators, as well as those
+working in computer-related occupations, finance, and law can easily work from
+home, and that occupations with opportunities to telecommute are associated
+with higher earnings.
+This is not the case for the workforce occupied in more spatially fixed occupations,
+from farming, construction, and manufacturing to hospitality and care services.
+In the US, these occupations tend to be lower-income, non-white, 
+without a university degree, live in rental accommodation and lack health insurance
+[@NBERw27085].
+Similar trends can be observed for other countries.
+For example, $75$% of workers with tertiary education worked from home in Europe
+during spring $2020$, whilst only $34$% of workers with secondary education and
+$14$% of those primary education did so [@eurofound2020].
+
+## digital divides and economic resilience
+<!-- WFH and digital divides-->
+Our understanding of telecommuting as a product of enabled occupations can be 
+described as a manifestation of the third level digital divide, as those who are able 
+to use digital technologies to work from home benefit from a high rate of return on 
+their use of the internet in terms of autonomy, flexibility, and time saved from 
+commuting [@peters2004employees; @siha2006telecommuting; @singh2013modeling].
+These returns have been even greater during the Covid-19 crisis, when those with the 
+ability to telecommute also have the ability to maintain their employment whilst 
+protecting their health.
+However, the success of these arrangements has also been dependent upon the first 
+level digital divide, which is associated with access and quality of internet 
+connectivity.
+For example, the systematic review from @SALEMINK2017360 highlights the 
+infrastructure quality differences between urban and rural areas.
+Whether this variation in infrastructure quality affects the spatial footprint of 
+telecommuting has not previously been measured, although there are indications that
+those who purchase high speed connections consume more data of all sorts and use their
+connections for a variety of purposes [@hauge2011consumer].
+Another study identifies a correlation between access to internet services and a 
+reduction in household transport spend across 33 coutries, although the authors are 
+uncertain whether this implies less travel, for example because of increased
+telecommuting, or whether internet access enables more efficient travel 
+[@bris2017ict].
+However, the extreme demand during the pandemic provides a new opportunity to 
+understand how infrastructure accessibility, quality, and reliability affects 
+telecommuting, particularly as working from home during the pandemic required
+high volumes of bandwidth-intensive video conferencing in order to avoid the 
+face-to-face contact that could increase the spread of infection.
+Thus by answering questions about internet service resilience, we can also refine our
+understanding of how this has contributed to or reduced the new digital divide where
+economic resilience has been dependent upon the capability to work from home.
+
+<!-- Econ resilience-->
+This is aligned with the regional economic resilience literature, which
+underlines the differentiated capacity of cities and regions to escape or
+recover from economic crises [@martin2012regional; @kitsos2018economic].
+
+
+
+## other subsection?
 
 - Introduce space-time geography
 - circumstances where work can be carried out more flexibly in space and time
@@ -249,21 +258,57 @@ Some new papers google recommended to me:
 - https://www.sciencedirect.com/science/article/pii/S0966692319311305
 - check who cites the above and what they cite
 
-In this analysis, the terms ‘teleworking’ and ‘working from home’ are used interchangeably. An appropriate definition of teleworking is ‘the remote
-provision of labour that would otherwise be carried out within company premises’ (European Commission, 2020b). In practice, during the COVID crisis,
-most such work was carried out in the homes of individual employees rather than any other location.
-[@eurofound2020]
-
 ## covid and working from home, cities, urban structure
 - economic geography of UK
 
 # Data and descriptive statistics
 
 <!-- HB old PARA3 -->
-The experience of upload speeds is not the same as the maximum speeds offered by an ISP or possible speeds over a particular type and length of connection. Therefore, we use volunteered geographic information in the form of speed-checks run by users to test their experienced broadband speeds, upload and download. Meanwhile, the quality and reliability of upload speeds, like ICT more generally, vary in time and space due to both supply and demand-side influences, and can be measured in a number of ways. These include: a) mean, experienced connection speed, b) standard deviation or the amount of fluctuation from the mean, and c) the variation in speeds at particular times of day when working from home is more likely to take place. We take account of all three measurements in order to describe upload speeds as fully as possible. We start by calculating the mean upload speed for every local government district in the UK for each hour of each weekday, excluding midnight to 6:00, weekends and bank holidays. We then cluster the local authorities by these temporal profiles, allowing us to identify patterns and describe the overall means, standard deviations, and other relevant statistics for each spatial cluster. Thus we aim to answer the first part of our research question: How resilient are broadband speeds as experienced in different parts of the UK during a time of extreme demand?
+This paper assesses the quality and reliability of upload speeds by time of day and 
+day of the week across local authorities in the UK during the time when the population
+were told to work from home if at all possible.
+The experience of upload speeds is not the same as the maximum speeds offered by an 
+ISP or possible speeds over a particular type and length of connection. 
+We use volunteered geographic information in the form of speed-checks run by users to 
+test their experienced broadband speeds, upload and download. 
+Since the quality and reliability of internet services vary in time and space due to 
+both supply and demand-side influences, we use a number of different measures of 
+experienced upload speeds. 
+These include: a) mean, experienced connection speed, 
+b) standard deviation or the amount of fluctuation from the mean, and 
+c) the variation in speeds at particular times of day when working from home is more 
+likely to take place. 
+We take account of all three measurements in order to describe upload speeds as fully 
+as possible. 
+We start by calculating the mean upload speed for every local government district in 
+the UK for each hour of each weekday, excluding midnight to 6:00, weekends and bank 
+holidays. 
+We then cluster the local authorities by these temporal profiles, allowing us to 
+identify patterns and describe the overall means, standard deviations, and other 
+relevant statistics for each spatial cluster. 
+Thus we aim to answer the first part of our research question: 
+How resilient are broadband speeds as experienced in different parts of the UK during 
+a time of extreme demand?
 
 <!-- HB old PARA4 -->
-The cause of these different experiences of broadband resilience may be different in different areas, as they may reflect similarities in patterns of demand or similar quality of infrastructure. Our approach is also limited by potential endogeneity, as for example, better quality connections with high mean speeds may enable more working from home, but greater demand may cause slower speeds, less reliability and greater variability of speed at different times of day or week. Therefore, we avoid attributing any cause to our analysis of the experienced level of quality and reliability of upload speeds. Instead, we run auxilliary regressions in order to understand how the spatial and temporal patterns of internet service relate to the economic geography of the UK. We discuss how the different patterns might support or undermine efforts to work from home and maintain safe productivity and whether they reinforce existing spatial and social inequalities. From this analysis, we hope to provide a greater understanding of how telecommuting and technology intersect at a time of extreme demand, and what lessons this time has for a future where telecommuting is likely to remain a common means of accessing work and broadband services, as well as infrastructure, must be fit for purpose.
+The cause of these different experiences of broadband resilience may be different in 
+different areas, as they may reflect similarities in patterns of demand or similar 
+quality of infrastructure. 
+Our approach is also limited by potential endogeneity, as for example, better quality 
+connections with high mean speeds may enable more working from home, but greater 
+demand may cause slower speeds, less reliability and greater variability of speed at 
+different times of day or week. 
+Therefore, we avoid attributing any cause to our analysis of the experienced level of 
+quality and reliability of upload speeds. 
+Instead, we run auxilliary regressions in order to understand how the spatial and 
+temporal patterns of internet service relate to the economic geography of the UK. 
+We discuss how the different patterns might support or undermine efforts to work from 
+home and maintain safe productivity and whether they reinforce existing spatial and 
+social inequalities. 
+From this analysis, we hope to provide a greater understanding of how telecommuting 
+and technology intersect at a time of extreme demand, and what lessons this time has 
+for a future where telecommuting is likely to remain a common means of accessing work 
+and broadband services, as well as infrastructure, must be fit for purpose.
 
 
 The primary data analysed in this paper was provided by Speedchecker Ltd, a private company that allows internet users to check their own broadband upload / download speeds, and stores every speed-check with a timestamp and geolocation.
@@ -297,6 +342,20 @@ the finding in the auxiliary regressions that those in cluster 9 ran the fewest 
 The auxiliary regressions show that compared to the two authorities in cluster 5, all the other clusters had a lower percentage of working people in managerial, professional and administrative jobs.??? Yet the auxiliary regression suggests that there are not many tests being run during the am peak in cluster 1. This may be because there are fewer people working at home checking their broadband than in most other clusters. Indeed, the auxiliary regressions indicate that cluster 1 has the highest job density or proportion of jobs to working-age population, which is likely to due to the presence of Westminster, central London, cluster 1's most populous local authority. Westminster not only has more workplaces than residents, but it is reasonable to presume that many who would normally work in Westminster, but be able to work from home during lockdown are likely to live outside central London and not be subject to the fluctuating speeds there. Workplaces, meanwhile, some of which would still have been open, could be running programmes that cause the slowdown and variation, but would be more likely to have their own in-house diagnostics, rather than using a service like Speedchecker Ltd.
 
 # Conclusions
+<!-- WFH broader consequences-->
+The long-term effects of such drastic changes in telecommuting and attitudes
+towards working from home are difficult to predict. Nevertheless,
+they span through various aspects of economy and society: from changes to
+transportation planning due to altered commuting patters, to changes in land
+use and urban planning to accommodate people who work from home
+[@BUDNITZ2020102713]; and from productivity and innovation changes, to changes
+in agglomeration externalities and the attraction of large cities [@econobs]
+just to name a few. This paper is positioned to support endeavours in
+understanding the effects of increased telecommuting by
+exposing the spatial and social dimensions of telecommuting including the
+resilience of broadband speeds in terms of both quality and reliability of
+service, and whether this reinforces or redresses prior digital divisions.
+**HANNAH, HOW DOES THIS SOUND - this last bit probably in the discussion at the end?**
 
 # Acknowledgement(s) {-}
 
