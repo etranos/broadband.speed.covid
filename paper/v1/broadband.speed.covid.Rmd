@@ -274,7 +274,75 @@ Our approach involves aggregating all the speed-checks during the 13 weeks of Ma
 
 # Time series clustering
 
-Description of the method
+The core of the methodological framework of this paper lies upon clustering methods.
+Clustering is a widely used family of techniques in geography (**ADD REF**),
+which can be defined within the modern machine learning framework as an unsupervised
+learning task, which involves partitioning unlabeled observations into homogeneous
+groups known as clusters [@montero2014tsclust]. The key idea is that observations
+within clusters tend to be more similar than observations between clusters.
+Clustering is particularly useful for exploratory studies as it identifies
+structures within the data [@aghabozorgi2015time].
+
+Various applications of clustering can be found within geography: **ADD EXAMPLES**
+
+Key characteristic of these studies is the cross-sectional nature of the data they
+employed. Indeed, most clustering problems in geography deal with observations
+that are fixed in time. However, for this paper we are interested in creating
+clusters of local authorities in the UK with similar temporal signatures of
+experienced internet speeds over time. Hence, we deviate from the established
+geographical clustering tools and employ time series clustering methods.
+
+Time series clustering methods have been developed in order to deal with clustering
+problems linked to, for instance, stock or other financial data, economic,
+governmental or medical data as well as machine monitoring
+[@aggarwal2013time; @aggarwal2001surprising; @hyndman2015large; @WARRENLIAO20051857].
+The main challenge -- and also the difference with cross-sectional clustering
+problems -- is data dimensionality given the multiplicity of data points for every
+individual included in the data set. Time series data are dynamic data as the
+value of the observations change as a function of time [@aghabozorgi2015time].
+This high dimensionality leads to (i) computational and algorithmic challenges
+regarding handling these data and building algorithms to perform clustering over
+long time series, and (ii) open questions regarding the choice of similarity
+measures in order to cluster similar times series together considering the whole
+length of the time series and overcoming issues around noise, outliers and shifts
+[@lin2004iterative; @aghabozorgi2015time].
+
+Time series clustering methods utilising the whole length of time series can be
+grouped in three categories. The first -- model-based approaches -- is based on
+recovering the underlying model for each time series and then apply clustering
+algorithms on the model parameters [@aghabozorgi2015time]. The main criticism
+is the cluster accuracy for near clusters [@mitsa2010temporal]. The second approach
+is a based the formation of vectors of features based on the original time series.
+These new data of reduced dimensionality is then clustered using conventional
+clustering algorithms.
+
+For this paper we utilise the third category of time series clustering methods
+known as shape-based approaches. The main idea is to match any two sperate time
+series based on the similarity of their shapes through the calculation of
+distances among these two shapes.
+
+
+@sardatime
+Ideally, all members of the same cluster are similar to each other, but are as
+dissimilar as possible from objects in a different cluster.
+
+Time-series is a common type of dynamic data that naturally arises in many different scenarios,
+such as stock data, medical data, and machine monitoring, just to name a few (Aghabozorgi et al.,
+2015; Aggarwal and Reddy, 2013). They pose some challenging issues due to the large size and high
+dimensionality commonly associated with time-series (Aghabozorgi et al., 2015). In this context,
+dimensionality of a series is related to time, and it can be understood as the length of the series.
+
+the data and how the underlying grouping is performed. One classification depends on whether the
+whole series, a subsequence, or individual time points are to be clustered. On the other hand, the
+clustering itself may be shape-based, feature-based, or model-based.
+
+In the context of shape-based time-series clustering, it is common to utilize the Dynamic Time
+Warping (DTW) distance as dissimilarity measure (Aghabozorgi et al., 2015). The calculation of the
+DTW distance involves a dynamic programming algorithm that tries to find the optimum warping
+path between two series under certain constraints
+
+
+
 
 # Results
 
