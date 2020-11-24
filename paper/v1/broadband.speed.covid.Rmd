@@ -319,23 +319,40 @@ clustering algorithms.
 For this paper we utilise the third category of time series clustering methods
 known as shape-based approaches. The main idea is to match any two sperate time
 series based on the similarity of their shapes through the calculation of
-distances among these two shapes.
+distances among these two shapes. Such approached are better equipped to capture
+similarities between short length time series [@aghabozorgi2015time].
+This approach serves best this paper because (i) we aim to identify clusters of
+UK local authorities with similar temporal signatures -- i.e. shapes -- of
+experienced internet speeds and (ii) the length of our time series is short
+(**see also discussion in Section XX**).
 
+Other important dimensions regarding time series clustering are related with the
+clustering algorithm. Similar to clustering of cross-sectional data, we can employ
+partitioning algorithms, which lead to non-overlapping clusters, hierarchical
+clustering, which result to a hierarchy of clusters and fuzzy algorithms, which
+create overlapping clusters [@sardatime]. Because of the simplicity of the
+implementation and the interpretability of the results, we utilise here
+partitioning clustering based on the widely *k-Means* algorithm. This is an iterative
+algorithm, which begins with defining the desired number of clusters *k*. Then,
+each observation is randomly assigned to a cluster from the $[1,k]$ space. This
+is the initial cluster assignment, which is followed by iterations in order to
+minimise the distance between the centroids of the clusters and the observations
+assigned to these clusters [@james2013introduction].
+
+There are a number of differences between the above described application of
+*k-Means* for cross-sectional data and its application for times series data.
+
+k-Meidoids
+distance between points in time series
+dt
+
+comparison with density-based clustering DBSCAN [187]
+where a cluster is expanded if its neighbours are dense.
+
+- evaluation
+- standardised
 
 @sardatime
-Ideally, all members of the same cluster are similar to each other, but are as
-dissimilar as possible from objects in a different cluster.
-
-Time-series is a common type of dynamic data that naturally arises in many different scenarios,
-such as stock data, medical data, and machine monitoring, just to name a few (Aghabozorgi et al.,
-2015; Aggarwal and Reddy, 2013). They pose some challenging issues due to the large size and high
-dimensionality commonly associated with time-series (Aghabozorgi et al., 2015). In this context,
-dimensionality of a series is related to time, and it can be understood as the length of the series.
-
-the data and how the underlying grouping is performed. One classification depends on whether the
-whole series, a subsequence, or individual time points are to be clustered. On the other hand, the
-clustering itself may be shape-based, feature-based, or model-based.
-
 In the context of shape-based time-series clustering, it is common to utilize the Dynamic Time
 Warping (DTW) distance as dissimilarity measure (Aghabozorgi et al., 2015). The calculation of the
 DTW distance involves a dynamic programming algorithm that tries to find the optimum warping
