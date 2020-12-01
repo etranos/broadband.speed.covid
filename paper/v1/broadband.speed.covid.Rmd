@@ -83,7 +83,7 @@ and state-of-the-art time-series clustering methods to create clusters of UK loc
 authorities with similar temporal signatures of experienced internet speeds.
 We then associate these clusters of local authorities with their socioeconomic
 and geographic characteristics to explore how they overlap with or diverge from
-the existing economic and digital geography of the UK. **need to add urban-rural to analysis**
+the existing economic and digital geography of the UK. 
 Our analysis enables us to better understand how the spatial and social distribution
 of both occupations and online accessibility intersect to enable or hinder the
 practice of telecommuting at a time of extreme demand.
@@ -166,7 +166,7 @@ First we review the literature on telecommuting and digital divides to better
 understand the origins of the new digital divide revealed by the pandemic and its
 impact on the economic resilience of different places.
 We then describe our data and methodology.
-Our results section first offers classification of how internet services vary
+Our results section first offers a classification of how internet services vary
 across the UK local authorities and then assesses whether these clusters replicate
 or repudiate other socio-economic and geographic patterns of economic resilience.
 
@@ -189,9 +189,9 @@ those who use digital technologies to work remotely full-days or part-days
 No matter the definition, the option and capability to telecommute or work from home
 has never been equally distributed spatially or socio-economically any more than
 different industries and employment opportunities have.
-For example, studies from the United States, the Netherlands, and the UK indicate
+For example, studies from the United States, the Netherlands, and the UK found
 that telecommuters are most likely to hold professional, managerial, and technical
-occupations, where the workforce is better educated and wealthier, and that there is
+occupations where the workforce is better educated and wealthier, and that there is
 suppressed demand among women and part-time workers
 [@headicar2016move; @peters2004employees; @singh2013modeling].
 Opportunities for working from home during the current pandemic have likewise not
@@ -222,30 +222,36 @@ when those with the ability to telecommute also have the ability to maintain
 their employment whilst protecting their health.
 However, the success of these arrangements has been dependent upon the first
 level digital divide, which is associated with access and quality of internet
-connectivity.
-For example, the systematic review from @SALEMINK2017360 highlights the
-infrastructure quality differences between urban and rural areas
+connectivity at a time of extremely high demand.
+@SALEMINK2017360 provides a systematic review of the pre-pandemic, 
+first level digital divide in infrastructure quality between urban and rural areas 
 in various advanced economies.
-Whether this variation in infrastructure quality affects the spatial footprint of
-telecommuting has not previously been measured, although there are indications that
-those who purchase high speed connections consume more data of all sorts and use their
-connections for a variety of purposes [@hauge2011consumer].
-Another study identifies a correlation between access to internet services and a
-reduction in household transport spend across 33 countries [@bris2017ict].
-Whether the implication is less travel because of increased telecommuting,
-or whether internet access enables more efficient travel, this finding is
-an indication of the potential household savings better internet services offer.
-Thus, the extreme demand during the pandemic provides a new opportunity to
-understand how infrastructure accessibility, quality, and reliability
-affects telecommuting, particularly as working from home during the pandemic required
-high volumes of bandwidth-intensive video conferencing in order to avoid the
-face-to-face contact that could increase the spread of infection.
-By first answering questions about internet service resilience, we can also refine our
-understanding of how this has contributed to or reduced the new digital divide,
-where economic resilience has been dependent upon the capability to work from home.
+Yet whether this variation in infrastructure quality affects the spatial footprint of
+telecommuting has not previously been measured.
+There are indications that those who purchase high speed connections consume 
+more data of all sorts and use their connections for a variety of purposes 
+[@hauge2011consumer], 
+and that there is a correlation between access to internet services and a
+reduction in household transport spend [@bris2017ict].
+Whether the implication is more internet use and less travel 
+because of increased telecommuting, these studies suggest that better internet 
+services enable households to make savings and efficiencies, 
+an example of the first level digital divide reinforcing the third level.
+Yet did the purchase of high speed connections and increased internet access also  
+prepare households for long-term home-working, enforced by government restrictions?
+The extreme demand during the pandemic provides a new opportunity to understand 
+how infrastructure accessibility, quality, and reliability affects telecommuting, 
+particularly in light of the high volumes of bandwidth-intensive video conferencing 
+required in order to avoid the face-to-face contact that could increase 
+the spread of infection. 
+We seek to answer how internet service resilience contributes to or reduces 
+economic resilience 
+when the latter is dependent upon the capability to work from home, 
+and thus improve our understanding of this new digital divide.
+**RELATED TO YOUR POINT ABOVE, WE MAY CONCLUDE THIS IS NOT A NEW DIGITAL DIVIDE, BUT THAT IS STILL ANSWERING A USEFUL QUESTION - MIGHT END UP REWORDING AS INTERACTION BETWEEN DIGITAL DIVIDES?**
 
 <!-- Covid-19 and working from home, cities, urban structure -->
-The multi-layered digital divides intersect with materials divides and the economic
+The multi-layered digital divides intersect with material divides and the economic
 geography of the UK.
 Following the regional economic resilience literature, which
 underlines the differentiated capacity of cities and regions to escape or
@@ -260,10 +266,10 @@ unemployment, productivity and prosperity [@lee2014grim; @mccann2020perceptions;
 @dorling2018peak].
 Some scholars have even argued that the UK suffers some of the highest level of
 interregional inequalities in the global north [@gal2018reducing; @mccann2016uk].
-Not only all three levels of digital divides are, to a certain extend, associated
+Not only are all three levels of digital divides associated to a certain extent 
 with or shaped by the geography of the UK, but the intersection of the digital and
-material divides affects the capacity of places to overcome, at least partially,
-the economic effects of the Covid-19 pandemic.
+material divides affects the capacity of places to overcome
+some of the economic effects of the Covid-19 pandemic.
 Importantly, this is the first time that digital technologies became an essential
 tool for economic resilience for such a great part of the population.
 
@@ -305,27 +311,29 @@ How is internet speed data a better source than mobility?-->
 <!-- clustering in general -->
 The starting point of our methodological framework is cluster analysis, which can
 be defined within the modern machine learning framework as an unsupervised
-learning task, which involves partitioning unlabelled observations into homogeneous
-groups known as clusters [@montero2014tsclust].
+learning task, partitioning unlabelled observations into homogeneous groups 
+known as clusters [@montero2014tsclust].
 The key idea is that observations within clusters tend to be more similar than
 observations between clusters.
 Clustering is particularly useful for exploratory studies as it identifies
 structures within the data [@aghabozorgi2015time].
 Therefore, cluster analysis is a widely used family of techniques in geography
 [@gordon1977classification; @everitt1974cluster].
-For instance, clustering methods is the basis of *geodemographics*, which aims
-to create small area indicators or typologies of neighbourhoods based on various
-and some times diverse variables [@SINGLETON2009289; @harris2005geodemographics].
+For instance, clustering methods are the basis of *geodemographics*, a discipline 
+which aims to create small area indicators or typologies of neighbourhoods 
+based on various and sometimes diverse variables 
+[@SINGLETON2009289; @harris2005geodemographics].
 Clustering techniques have also been employed to solve regionalisation problems
 [@niesterowicz2016].
 
 <!-- time-series clustering -->
-Common characteristic of these studies is the cross-sectional nature of the data
+Common characteristics of these studies are the cross-sectional nature of the data
 they employ.
 Indeed, most clustering problems in geography deal with observations that are
 fixed in time.
-However, for this paper we are interested in creating clusters of local authorities
-in the UK with similar temporal signatures of experienced internet speeds over time.
+However, for this paper we are interested in internet speeds, which vary over time. 
+We aim to create clusters of local authorities in the UK with similar temporal 
+signatures of experienced internet speeds.
 Hence, we deviate from the established geographical clustering tools and
 employ time-series clustering methods.
 
@@ -340,9 +348,9 @@ Time-series are dynamic data as the value of the observations change as
 a function of time [@aghabozorgi2015time].
 This high dimensionality leads to
 (i) computational and algorithmic challenges regarding handling these data and
-building algorithms to perform clustering over long time-series,
-and (ii) open questions regarding the choice of similarity measures in order to
-cluster similar times series objects together considering the whole length of the time-series
+building algorithms to perform clustering over long time-series, and 
+(ii) open questions regarding the choice of similarity measures in order to cluster 
+similar times series objects together considering the whole length of the time-series
 and overcoming issues around noise, outliers and shifts [@lin2004iterative;
 @aghabozorgi2015time].
 
@@ -352,16 +360,16 @@ The first -- model-based approaches -- is based on recovering the underlying mod
 for each time-series and then applying clustering algorithms on the model parameters
 of each time-series [@aghabozorgi2015time].
 The main criticism is the cluster accuracy for nearby clusters [@mitsa2010temporal].
-The second approach is a based the formation of vectors of features based on the
+The second approach is based the formation of vectors of features derived from the
 original time-series.
-These new data of reduced dimensionality is then clustered using conventional
+These new data of reduced dimensionality are then clustered using conventional
 clustering algorithms.
 
 For this paper we utilise the third category of time-series clustering methods
 known as shape-based approaches.
 These methods match two sperate time-series objects based on the similarity of
-their shapes through the calculation of distances among these two shapes and are
-better equipped to capture similarities between short length
+their shapes through the calculation of distances between the shapes, 
+and are thus better equipped to capture similarities between short length
 time-series [@aghabozorgi2015time].
 This approach serves best this paper because (i) we aim to identify clusters of
 UK local authorities with similar temporal signatures -- i.e. shapes -- of
@@ -369,18 +377,18 @@ experienced internet speeds and (ii) the length of our time-series is short
 (see the data discussion in this section).
 
 Another import element of time-series clustering is the actual clustering algorithm.
-Similar to clustering of cross-sectional data, we can employ partitioning
-algorithms, which lead to non-overlapping clusters, hierarchical
-clustering, which result to a hierarchy of clusters and fuzzy algorithms, which
+Similar to the clustering of cross-sectional data, we can employ partitioning
+algorithms, which lead to non-overlapping clusters, hierarchical clustering, 
+which classifies clusters at different levels, and fuzzy algorithms, which
 create overlapping clusters [@sardatime].
 Because of the simplicity of the implementation and the interpretability of the
 results, we utilise here partitioning clustering based on the widely used *k-Means*
 algorithm.
 This is an iterative algorithm, which begins with defining the desired number of
 clusters *k*.
-Then, each observation is randomly assigned to a cluster from the $[1,k]$ space.
-This is the initial cluster assignment, which is followed by iterations in order
-to minimise the distance between the centroids of the clusters and the observations
+Then each observation is randomly assigned to a cluster from the $[1,k]$ space.
+This initial cluster assignment is followed by iterations in order to minimise 
+the distance between the centroids of the clusters and the observations
 assigned to these clusters [@james2013introduction].
 
 <!-- difference between clustering cross-sectional and time-series data -->
@@ -392,8 +400,8 @@ minimal distance to all other cluster objects [@sardatime].
 Also, instead of calculating the Euclidean distance between centroids and data
 points, more complex distance measures need to be employed in order to capture
 the similarity between a time-series object and a medoid.
-A common distance measure for shape-based time-series clustering in the Dynamic
-Time Warping (DTW).
+A common distance measure for shape-based time-series clustering is 
+Dynamic Time Warping (DTW).
 Using its underpinning dynamic programming algorithm, DTW compares two time-series
 objects to find the optimum warping path between them.
 DTW is widely used in order to overcome limitations linked to the use of Euclidean
@@ -403,7 +411,7 @@ The `R` package `dtwclust` has been used for the time-series clustering [@dtwclu
 <!-- introduction of our broadband speeds data -->
 To assess the quality and reliability of internet across local authorities
 in the UK during the time when the population were told to work from home if at
-all possible we utilise unique data regarding individual internet speed tests from
+all possible we utilise unique data comprising individual internet speed tests from
 Speedchecker Ltd^[[https://www.broadbandspeedchecker.co.uk/](https://www.broadbandspeedchecker.co.uk/)].
 This a private company that allows internet users to check their own broadband
 upload and download speeds, and stores every speed-check with timestamp and
@@ -414,33 +422,50 @@ These volunteered geographic data enable to assess the *experienced* internet
 speed by users, which may differ from the *advertised* maximum speeds provided
 by Internet Service Providers.
 We are particularly interested in upload speeds and the frequency of speed tests.
-While the former is less associated with internet-based leisure activities such
-as video streaming, which involve downloading large amounts of data, the latter
+Upload speeds are less associated with internet-based leisure activities such
+as video streaming, which involve downloading large amounts of data, but they
 can be linked more with work-related activities such as uploading documents or
 two-way communication and interaction systems.
-**ADD MORE. HOW ABOUT SPEED TESTS?**
+Meanwhile, the frequency of speed tests was important in identifying 
+the temporal profile which woud give us most insight into 
+experienced internet service and resilience.
+Although we know from government statements the start and end of the period of
+interest, namely, March to May 2020, the frequency of speed tests within that period 
+provides an indication of the volume of experience over any particular units of time.
 
 <!-- data transformation -->
-The first step in the workflow after dropping some outliers following
-@riddlesden2014broadband is to transform and the individual,
-geolocated and time-stamped tests to more meaningful aggregates both in terms
-of space and time.
-Regarding the temporal dimension, we aggregate all the speed-checks during the $13$
-weeks of March to May inclusive for weekdays in $2020$ by each hour of the day and
-day of the week.
+Thus, the first step in the workflow after dropping some outliers following
+@riddlesden2014broadband was to transform the individual, geolocated and time-stamped 
+tests to more meaningful aggregates both in terms of space and time.
+The frequency of testing indicates that whilst there is an overall trend of increased
+testing or increased experience of internet service from March to April and then a 
+slight reduction from April to May, this trend masks substantial variation 
+by not only the day of the week, but also time of day, as can be seen in **[graph]**.
+Thus, a daily aggregation of upload speeds would also mask this pattern.
+Furthermore, the importance of this pattern is highlighted by a comparison 
+with the same period in 2019 **see graph**, 
+when the volume of testing and thus of experience of internet service quality
+was much more tied to the evening leisure peak and presumably to download speeds.
+Since the increase in testing during the working day in 2020 is an indication that 
+users have a greater perception of the variable quality of internet service,
+particularly during a new morning peak of testing for service reliability,
+we decided to include a measure of hourly variation in our temporal profiles.
+However, although this is a large data set ($241,088$ individual tests during the
+working hours of study period), there are not enough observations for each
+Local Authority District (LAD) and for each working hour of each working day
+($631$ speed tests per LAD on average) to profile speeds at that level of detail.
+Therefore, we aggregate all the speed-checks during the $13$ weeks of March to May 
+inclusive for weekdays in $2020$ by each hour of the day and day of the week.
 As our research aims to identify the geography of internet service resilience for
-work purposes, bank holidays and the hours between midnight and 6am were also
-excluded.
+work purposes, bank holidays and the hours between midnight and 6am were excluded,
+as well as weekend days.
 The composite week time-series thus comprise 18 hours multiplied by 5 weekdays or
 90 time points per series.
-We aggregate these data because, we could not follow individuals or households
-and connect data points.
-Also, although this is a large data set ($241,088$ individual tests during the
-working hours of study period), there are not enough observations for each local
-and for each working hour ($631$ speed test per LAD in average).
-These time-series were calculated for each of the 382 Local Authority Districts
-(LADs) in the UK, standardised, and then a *k*-means partitioning around medoids
-clustering algorithm was applied using DTW.
+We also aggregate these data spatially because we could not follow individuals or 
+households and connect data points.
+The time-series were calculated for each of the 382 LADs in the UK, standardised, 
+and then a *k*-means partitioning around medoids clustering algorithm 
+was applied using DTW.
 We initially run the algorithm for $k = 5, 10, 15 and 20$ and used cluster validity
 indices (CVIs) to pick the optimal solution of $k = 10$.
 Following @sardatime the following CVIs were employed: Silhouette (max), Score
@@ -463,26 +488,20 @@ print(nrow(TSbb20sp))
 print(nrow(TSbb20sp)/length(unique(TSbb20sp$LAD19NM)))
 ```
 
-We then match the cluster membership to the LAD-level data to identify the
-characteristics of each cluster, including number of LADs, the descriptive
-statistics of upload speeds in that cluster, and the temporal profile by hour of
-the day and day of the composite week.
-Thus we aim to answer the first part of our research question:
-How resilient are broadband speeds as experienced in different parts of the UK
-during a time of extreme demand?
-
 <!-- metrics -->
+We then review the characteristics of each cluster, including number of LADs, 
+and the temporal profile of upload speed by hour of the day 
+and day of the composite week.
 Since the quality and reliability of internet services vary in time and space due
 to both supply and demand-side influences, we use a number of different measures
-of experienced upload speeds.
+to then describe experienced upload speeds per cluster.
 These include: a) mean, experienced connection speed,
 b) standard deviation or the amount of fluctuation from the mean, and
 c) the variation in speeds at particular times of day when working from home is
 more likely to take place.
-We take account of all three measurements in order to describe upload speeds as
-fully as possible.
-The following **graphs / tables** show these statistics for the sample as a whole,
-as well as similar statistics related to frequency of testing.
+We take account of all three measurements in our descriptives statistics of
+upload speeds in order to determine how resilient broadband speeds are 
+as experienced in different parts of the UK during a time of extreme demand.
 
 **Data details and some figures, descriptive stats - include whole sample time profile for 2019 and 2020 frequency of tests run as part of why we chose to create the time profiles by hour of the day and day of the week rather than daily over the whole period.**
 
@@ -517,7 +536,7 @@ The identification strategy is as follows.
 Based on the outcomes of the time-series clustering, we identify $J$ distinct
 and crisp clusters.
 We then regress this cluster membership against a vector $X_{i}$ of
-socio-economic and geographic variables, which we are discussed in details in
+socio-economic and geographic variables, which are discussed in detail in
 **section XX**.
 This analysis enables us to provide a more nuanced understanding of how
 telecommuting and technology intersect at a time of extreme demand, and what
