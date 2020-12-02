@@ -411,6 +411,16 @@ busi <- busi %>%
 # sapply(test, function(x) sum(is.na(x)))
 ```
 
+## Urban/rural
+
+```{r eval=F}
+# not complete
+url <- "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/137663/la-class-dataset-post0409.xls"
+GET(url, write_disk(tf <- tempfile(fileext = ".xls")))
+urban.rural <- read_excel(tf, 1L, range = "A17:CP1877", col_names = T)
+
+```
+
 ## merge
 
 ```{r}
@@ -501,7 +511,7 @@ stargazer(data.cor,
 
 # convert dependent variable to factor
 data$cluster.up <- as.factor(data$cluster.up)
-data$cluster.up <- relevel(data$cluster.up, "3") # base category: cluster 3
+data$cluster.up <- relevel(data$cluster.up, "4") # base category: cluster 4
 
 aux <- multinom(cluster.up ~ 
                   #pop16_64 + # non sign, while pop is
@@ -548,11 +558,13 @@ stargazer(aux,
           add.lines = list(c("McFadden's R squared",
                              round(r2[1],3), round(r2[1],3), round(r2[1],3),
                              round(r2[1],3), round(r2[1],3), round(r2[1],3),
-                             round(r2[1],3), round(r2[1],3), round(r2[1],3)),
+                             round(r2[1],3), round(r2[1],3), round(r2[1],3)
+                             , round(r2[1],3), round(r2[1],3)),
                            (c("N",
                             n.obs, n.obs, n.obs,
                             n.obs, n.obs, n.obs,
-                            n.obs, n.obs, n.obs))))
+                            n.obs, n.obs, n.obs
+                            , n.obs, n.obs))))
 
 ```
 
@@ -564,7 +576,7 @@ stargazer(aux,
 
 # convert dependent variable to factor
 data$cluster.tests <- as.factor(data$cluster.tests)
-data$cluster.tests <- relevel(data$cluster.tests, "5") # base category: cluster 5
+data$cluster.tests <- relevel(data$cluster.tests, "4") # base category
 
 aux <- multinom(cluster.tests ~ 
                   #pop16_64 + # non sign, while pop is
@@ -609,10 +621,10 @@ stargazer(aux,
                              "% of Virgin Media connections"),
           add.lines = list(c("McFadden's R squared",
                              round(r2[1],3), round(r2[1],3), round(r2[1],3),
-                             round(r2[1],3)),
+                             round(r2[1],3), round(r2[1],3), round(r2[1],3)),
                            (c("N",
                             n.obs, n.obs, n.obs,
-                            n.obs))))
+                            n.obs, n.obs, n.obs))))
 
 ```
 
@@ -624,7 +636,7 @@ stargazer(aux,
 
 # convert dependent variable to factor
 data$cluster.down <- as.factor(data$cluster.down)
-data$cluster.down <- relevel(data$cluster.down, "2") # base category: cluster 2
+data$cluster.down <- relevel(data$cluster.down, "2") # base category
 
 aux <- multinom(cluster.down ~ 
                   #pop16_64 + # non sign, while pop is

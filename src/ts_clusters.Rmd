@@ -113,7 +113,7 @@ ts.wide$hour <- paste(ts.wide$hour, ":00", sep="")
 ts.wide$help.date.time <- with(ts.wide, as.POSIXct(paste(help.date.time, hour), format="%Y-%m-%d %H:%M"))
 
 ts.wide <- ts.wide %>%
-  select(help.date.time, LAD19NM, mean.up) #%>%
+  dplyr::select(help.date.time, LAD19NM, mean.up) #%>%
   #filter(date > "2020-2-15")
 
 # turn to a wide format
@@ -135,13 +135,88 @@ ts.wide <- zscore(ts.wide)
 ts.wide <- split(ts.wide, rep(1:ncol(ts.wide), each = nrow(ts.wide)))
 
 # 5 - 20 cluster sollutions
-pc_k <- tsclust(ts.wide, k = c(5,10,15,20), seed = 94L,
+pc_k <- tsclust(ts.wide, k = c(5:15), seed = 94L,
                 type="partitional",
                 distance = "dtw_basic", centroid = "pam", trace = T, 
                 args = tsclust_args(dist = list(window.size = 20L)))
 
 # decide k, see RJ-2019-023 for max/min
-names(pc_k) <- paste0("k_", c("5","10","15", "20"))
+names(pc_k) <- paste0("k_", c("5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"))
+cvis <- sapply(pc_k, cvi, type = "internal")
+cvis
+# max Sil
+# max SF
+# max CH
+# min DB
+# min DBstar
+# max D
+# min COP
+
+# loop for k decision
+pref.cvi <- NULL
+
+max.cvis <- c(1:3,6)
+for (i in max.cvis){
+  a <- which.max(cvis[i,])
+  pref.cvi <- c(pref.cvi, a)
+}
+
+min.cvis <- c(4:5,7)
+for (i in min.cvis){
+  a <- which.min(cvis[i,])
+  pref.cvi <- c(pref.cvi, a)
+}
+
+print(pref.cvi) # cvis[2,] is always 0 
+
+pc_k <- tsclust(ts.wide, k = 13, seed = 94L, 
+                type="partitional", 
+                distance = "dtw_basic", centroid = "pam", trace = T, 
+                args = tsclust_args(dist = list(window.size = 20L)))
+plot(pc_k)
+
+cluster_up <- data.frame(LAD=ts.wide.names,
+                           cluster=pc_k@cluster)
+```
+
+### Download speed
+
+```{r eval=TRUE, echo=TRUE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
+
+ts.wide <- merge(ts.down2020, help.dates, by = "weekday")
+ts.wide$hour <- paste(ts.wide$hour, ":00", sep="")
+ts.wide$help.date.time <- with(ts.wide, as.POSIXct(paste(help.date.time, hour), format="%Y-%m-%d %H:%M"))
+
+ts.wide <- ts.wide %>%
+  dplyr::select(help.date.time, LAD19NM, mean.down) #%>%
+  #filter(date > "2020-2-15")
+
+# turn to a wide format
+ts.wide <- ts_wide(ts.wide)
+
+# impute with means of each TS
+# TODO check sensitivity
+ts.wide <- na_mean(ts.wide)
+#sapply(ts.wide, function(x) sum(is.na(x)))
+
+# extract names
+ts.wide.names <- names(ts.wide[,-1])
+ts.wide <- ts.wide[,-1]
+
+# standardise
+ts.wide <- zscore(ts.wide)
+
+# convert to list for tsclust
+ts.wide <- split(ts.wide, rep(1:ncol(ts.wide), each = nrow(ts.wide)))
+
+# 5 - 20 cluster sollutions
+pc_k <- tsclust(ts.wide, k = c(5:15), seed = 94L,
+                type="partitional",
+                distance = "dtw_basic", centroid = "pam", trace = T, 
+                args = tsclust_args(dist = list(window.size = 20L)))
+
+# decide k, see RJ-2019-023 for max/min
+names(pc_k) <- paste0("k_", c("5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"))
 cvis <- sapply(pc_k, cvi, type = "internal")
 cvis
 # max Sil
@@ -175,81 +250,6 @@ pc_k <- tsclust(ts.wide, k = 10, seed = 94L,
                 args = tsclust_args(dist = list(window.size = 20L)))
 plot(pc_k)
 
-cluster_up <- data.frame(LAD=ts.wide.names,
-                           cluster=pc_k@cluster)
-```
-
-### Download speed
-
-```{r eval=TRUE, echo=TRUE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
-
-ts.wide <- merge(ts.down2020, help.dates, by = "weekday")
-ts.wide$hour <- paste(ts.wide$hour, ":00", sep="")
-ts.wide$help.date.time <- with(ts.wide, as.POSIXct(paste(help.date.time, hour), format="%Y-%m-%d %H:%M"))
-
-ts.wide <- ts.wide %>%
-  select(help.date.time, LAD19NM, mean.down) #%>%
-  #filter(date > "2020-2-15")
-
-# turn to a wide format
-ts.wide <- ts_wide(ts.wide)
-
-# impute with means of each TS
-# TODO check sensitivity
-ts.wide <- na_mean(ts.wide)
-#sapply(ts.wide, function(x) sum(is.na(x)))
-
-# extract names
-ts.wide.names <- names(ts.wide[,-1])
-ts.wide <- ts.wide[,-1]
-
-# standardise
-ts.wide <- zscore(ts.wide)
-
-# convert to list for tsclust
-ts.wide <- split(ts.wide, rep(1:ncol(ts.wide), each = nrow(ts.wide)))
-
-# 5 - 20 cluster sollutions
-pc_k <- tsclust(ts.wide, k = c(5,10,15,20), seed = 94L,
-                type="partitional",
-                distance = "dtw_basic", centroid = "pam", trace = T, 
-                args = tsclust_args(dist = list(window.size = 20L)))
-
-# decide k, see RJ-2019-023 for max/min
-names(pc_k) <- paste0("k_", c("5","10","15", "20"))
-cvis <- sapply(pc_k, cvi, type = "internal")
-cvis
-# max Sil
-# max SF
-# max CH
-# min DB
-# min DBstar
-# max D
-# min COP
-
-# loop for k decision
-pref.cvi <- NULL
-
-max.cvis <- c(1:3,6)
-for (i in max.cvis){
-  a <- which.max(cvis[i,])
-  pref.cvi <- c(pref.cvi, a)
-}
-
-min.cvis <- c(4:5,7)
-for (i in min.cvis){
-  a <- which.min(cvis[i,])
-  pref.cvi <- c(pref.cvi, a)
-}
-
-print(pref.cvi) # cvis[2,] is always 0 
-
-pc_k <- tsclust(ts.wide, k = 20, seed = 94L, 
-                type="partitional", 
-                distance = "dtw_basic", centroid = "pam", trace = T, 
-                args = tsclust_args(dist = list(window.size = 20L)))
-plot(pc_k)
-
 cluster_down <- data.frame(LAD=ts.wide.names,
                          cluster=pc_k@cluster)
 ```
@@ -264,7 +264,7 @@ ts.wide$hour <- paste(ts.wide$hour, ":00", sep="")
 ts.wide$help.date.time <- with(ts.wide, as.POSIXct(paste(help.date.time, hour), format="%Y-%m-%d %H:%M"))
 
 ts.wide <- ts.wide %>%
-  select(help.date.time, LAD19NM, n.tests) #%>%
+  dplyr::select(help.date.time, LAD19NM, n.tests) #%>%
   #filter(date > "2020-2-15")
 
 # turn to a wide format
@@ -286,13 +286,13 @@ ts.wide <- zscore(ts.wide)
 ts.wide <- split(ts.wide, rep(1:ncol(ts.wide), each = nrow(ts.wide)))
 
 # 5 - 20 cluster sollutions
-pc_k <- tsclust(ts.wide, k = c(5,10,15,20), seed = 94L,
+pc_k <- tsclust(ts.wide, k = c(5:15), seed = 94L,
                 type="partitional",
                 distance = "dtw_basic", centroid = "pam", trace = T, 
                 args = tsclust_args(dist = list(window.size = 20L)))
 
 # decide k, see RJ-2019-023 for max/min
-names(pc_k) <- paste0("k_", c("5","10","15", "20"))
+names(pc_k) <- paste0("k_", c("5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"))
 cvis <- sapply(pc_k, cvi, type = "internal")
 cvis
 # max Sil
@@ -320,7 +320,7 @@ for (i in min.cvis){
 
 print(pref.cvi) # cvis[2,] is always 0 
 
-pc_k <- tsclust(ts.wide, k = 5, seed = 94L, 
+pc_k <- tsclust(ts.wide, k = 7, seed = 94L, 
                 type="partitional", 
                 distance = "dtw_basic", centroid = "pam", trace = T, 
                 args = tsclust_args(dist = list(window.size = 20L)))
@@ -348,7 +348,7 @@ ts.wide$hour <- paste(ts.wide$hour, ":00", sep="")
 ts.wide$help.date.time <- with(ts.wide, as.POSIXct(paste(help.date.time, hour), format="%Y-%m-%d %H:%M"))
 
 ts.wide <- ts.wide %>%
-  select(help.date.time, LAD19NM, mean.up) #%>%
+  dplyr::select(help.date.time, LAD19NM, mean.up) #%>%
   #filter(date > "2020-2-15")
 
 # turn to a wide format
@@ -372,7 +372,7 @@ ts.wide2019$hour <- paste(ts.wide2019$hour, ":00", sep="")
 ts.wide2019$help.date.time <- with(ts.wide2019, as.POSIXct(paste(help.date.time, hour), format="%Y-%m-%d %H:%M"))
 
 ts.wide2019 <- ts.wide2019 %>%
-  select(help.date.time, LAD19NM, mean.up) #%>%
+  dplyr::select(help.date.time, LAD19NM, mean.up) #%>%
   #filter(date > "2020-2-15")
 
 # turn to a wide format
@@ -398,13 +398,13 @@ ts.wide <- zscore(ts.wide)
 ts.wide <- split(ts.wide, rep(1:ncol(ts.wide), each = nrow(ts.wide)))
 
 # 5 - 20 cluster sollutions
-pc_k <- tsclust(ts.wide, k = c(5,10,15,20), seed = 94L,
+pc_k <- tsclust(ts.wide, k = c(5:15), seed = 94L,
                 type="partitional",
                 distance = "dtw_basic", centroid = "pam", trace = T, 
                 args = tsclust_args(dist = list(window.size = 20L)))
 
 # decide k, see RJ-2019-023 for max/min
-names(pc_k) <- paste0("k_", c("5","10","15", "20"))
+names(pc_k) <- paste0("k_", c("5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"))
 cvis <- sapply(pc_k, cvi, type = "internal")
 cvis
 # max Sil
@@ -432,7 +432,7 @@ for (i in min.cvis){
 
 print(pref.cvi) # cvis[2,] is always 0 
 
-pc_k <- tsclust(ts.wide, k = 20, seed = 94L, 
+pc_k <- tsclust(ts.wide, k = 6, seed = 94L, 
                 type="partitional", 
                 distance = "dtw_basic", centroid = "pam", trace = T, 
                 args = tsclust_args(dist = list(window.size = 20L)))
@@ -461,7 +461,7 @@ ts.wide$hour <- paste(ts.wide$hour, ":00", sep="")
 ts.wide$help.date.time <- with(ts.wide, as.POSIXct(paste(help.date.time, hour), format="%Y-%m-%d %H:%M"))
 
 ts.wide <- ts.wide %>%
-  select(help.date.time, LAD19NM, mean.down) #%>%
+  dplyr::select(help.date.time, LAD19NM, mean.down) #%>%
   #filter(date > "2020-2-15")
 
 # turn to a wide format
@@ -485,7 +485,7 @@ ts.wide2019$hour <- paste(ts.wide2019$hour, ":00", sep="")
 ts.wide2019$help.date.time <- with(ts.wide2019, as.POSIXct(paste(help.date.time, hour), format="%Y-%m-%d %H:%M"))
 
 ts.wide2019 <- ts.wide2019 %>%
-  select(help.date.time, LAD19NM, mean.down) #%>%
+  dplyr::select(help.date.time, LAD19NM, mean.down) #%>%
   #filter(date > "2020-2-15")
 
 # turn to a wide format
@@ -511,13 +511,13 @@ ts.wide <- zscore(ts.wide)
 ts.wide <- split(ts.wide, rep(1:ncol(ts.wide), each = nrow(ts.wide)))
 
 # 5 - 20 cluster sollutions
-pc_k <- tsclust(ts.wide, k = c(5,10,15,20), seed = 94L,
+pc_k <- tsclust(ts.wide, k = c(5:15), seed = 94L, #HERE
                 type="partitional",
                 distance = "dtw_basic", centroid = "pam", trace = T, 
                 args = tsclust_args(dist = list(window.size = 20L)))
 
 # decide k, see RJ-2019-023 for max/min
-names(pc_k) <- paste0("k_", c("5","10","15", "20"))
+names(pc_k) <- paste0("k_", c("5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"))
 cvis <- sapply(pc_k, cvi, type = "internal")
 cvis
 # max Sil
@@ -545,7 +545,7 @@ for (i in min.cvis){
 
 print(pref.cvi) # cvis[2,] is always 0 
 
-pc_k <- tsclust(ts.wide, k = 10, seed = 94L, 
+pc_k <- tsclust(ts.wide, k = 15, seed = 94L, 
                 type="partitional", 
                 distance = "dtw_basic", centroid = "pam", trace = T, 
                 args = tsclust_args(dist = list(window.size = 15L)))

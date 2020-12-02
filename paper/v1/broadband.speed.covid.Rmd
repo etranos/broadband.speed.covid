@@ -466,10 +466,11 @@ households and connect data points.
 The time-series were calculated for each of the 382 LADs in the UK, standardised, 
 and then a *k*-means partitioning around medoids clustering algorithm 
 was applied using DTW.
-We initially run the algorithm for $k = 5, 10, 15 and 20$ and used cluster validity
-indices (CVIs) to pick the optimal solution of $k = 10$.
-Following @sardatime the following CVIs were employed: Silhouette (max), Score
-function (max), Calinski-Harabasz (max), Davies-Bouldin (min), Modified Davies-Bouldin (DB*, min), Dunn (max), COP (min).
+We initially run the algorithm for [5, 15] $k \in \mathbb{N} \bigcap [5,15]$  
+and used cluster validity indices (CVIs) to pick the optimal solution of $k = 13$.
+Following @sardatime the majority vote for the following CVIs was used: Silhouette 
+(max), Score function (max), Calinski-Harabasz (max), Davies-Bouldin (min), Modified 
+Davies-Bouldin (DB*, min), Dunn (max), COP (min).
 
 ```{r echo=FALSE, eval=FALSE, message=FALSE}
 
