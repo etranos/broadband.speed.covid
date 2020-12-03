@@ -53,6 +53,16 @@ TSbb19_20sp <- read_csv(path.data)
 TS2020 <- selectByDate(TSbb19_20sp, year = 2020) 
 TS2019 <- selectByDate(TSbb19_20sp, year = 2019)
 
+#create time variation plots for speedtests for each year
+Tests19 <- count(TS2019, date)
+TS2019 <- left_join(TS2019, Tests19)
+names(TS2019)[13] <- "test frequency 2019"
+timeVariation(TS2019, pollutant = "test frequency 2019", statistic = "mean")
+Tests20 <- count(TS2020, date)
+TS2020 <- left_join(TS2020, Tests20)
+names(TS2020)[13] <- "test frequency 2020"
+timeVariation(TS2020, pollutant = "test frequency 2020", statistic = "mean")
+
 #join clusters to TS2020
 names(clusters) [1] <- "LAD19NM"
 TS2020 <- left_join(TS2020, clusters)
@@ -234,13 +244,14 @@ TestCluster19 + geom_line() + labs(x = "Weekdays March-May 2019") +
                     labels = "%a"), labels = 
                      c("Mon", "Tues", "Weds", "Thurs", "Fri")) + geom_point()
 #summarise upload speed clusters by hour of each weekday and plot
+#plot largest 5 clusters first - all over 1 million pop
 cluster.up <- TS2020 %>%
   group_by(cluster.up, weekday, hour) %>%
   summarise(mean.up = mean(speedup))
 names(cluster.up)[1] <- "clusterID"
 names(LAD.cluster.up)[1] <- "clusterID"
 cluster.up <- left_join(cluster.up, LAD.cluster.up)
-cluster.up <- cluster.up[which(cluster.up$up.LADs > 5),]
+cluster.up <- cluster.up[which(cluster.up$up.LADs > 9),]
 cluster.up$clusterID <- as.factor(cluster.up$clusterID)
 #add fake dates for plotting
 help.dates <- tibble(help.date.time = c(
@@ -254,9 +265,38 @@ cluster.up <- merge(cluster.up, help.dates, by = "weekday")
 cluster.up$hour <- paste(cluster.up$hour, ":00", sep="")
 cluster.up$help.date.time <- with(cluster.up, as.POSIXct(paste(help.date.time, hour), format="%Y-%m-%d %H:%M"))
 #plot cluster statistic for mean upload speed
-UpCluster <- ggplot(cluster.up, aes(help.date.time, mean.up, 
+UpClusterL <- ggplot(cluster.up, aes(help.date.time, mean.up, 
                                          colour = clusterID))
-UpCluster + geom_line() + labs(x = "Weekdays March-May") + 
+UpClusterL + geom_line() + labs(x = "Weekdays March-May", y = "mean upload speed") + 
+  scale_x_datetime(breaks = as.POSIXct(c("2020-03-02 15:00:00", 
+                    "2020-03-03 15:00:00", "2020-03-04 15:00:00",
+                    "2020-03-05 15:00:00", "2020-03-06 15:00:00"), 
+                    labels = "%a"), labels = 
+                     c("Mon", "Tues", "Weds", "Thurs", "Fri")) + geom_point()
+#plot next 6 smaller clusters, but exclude 2 clusters with 1 LAD and under 100k pop
+cluster.upS <- TS2020 %>%
+  group_by(cluster.up, weekday, hour) %>%
+  summarise(mean.up = mean(speedup))
+names(cluster.upS)[1] <- "clusterID"
+names(LAD.cluster.up)[1] <- "clusterID"
+cluster.upS <- left_join(cluster.upS, LAD.cluster.up)
+cluster.upS <- cluster.upS[which(cluster.upS$up.LADs < 10 & cluster.upS$up.LADs > 1),]
+cluster.upS$clusterID <- as.factor(cluster.upS$clusterID)
+#add fake dates for plotting
+help.dates <- tibble(help.date.time = c(
+  make_datetime(year = 2020, month = 3, day = 2),
+  make_datetime(year = 2020, month = 3, day = 3),
+  make_datetime(year = 2020, month = 3, day = 4),
+  make_datetime(year = 2020, month = 3, day = 5),
+  make_datetime(year = 2020, month = 3, day = 6)),
+                     weekday = c("Mon", "Tue", "Wed", "Thu", "Fri"))
+cluster.upS <- merge(cluster.upS, help.dates, by = "weekday")
+cluster.upS$hour <- paste(cluster.upS$hour, ":00", sep="")
+cluster.upS$help.date.time <- with(cluster.upS, as.POSIXct(paste(help.date.time, hour), format="%Y-%m-%d %H:%M"))
+#plot cluster statistic for mean upload speed
+UpClusterS <- ggplot(cluster.upS, aes(help.date.time, mean.up, 
+                                         colour = clusterID))
+UpClusterS + geom_line() + labs(x = "Weekdays March-May", y = "mean upload speed") + 
   scale_x_datetime(breaks = as.POSIXct(c("2020-03-02 15:00:00", 
                     "2020-03-03 15:00:00", "2020-03-04 15:00:00",
                     "2020-03-05 15:00:00", "2020-03-06 15:00:00"), 
