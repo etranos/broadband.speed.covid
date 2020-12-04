@@ -418,35 +418,38 @@ upload and download speeds, and stores every speed-check with timestamp and
 geolocation information.
 These data have been used before to assess digital divides [@riddlesden2014broadband]
 and the impact of local loop unbundling regulatory processes [@nardotto2015unbundling].
-These volunteered geographic data enable to assess the *experienced* internet
-speed by users, which may differ from the *advertised* maximum speeds provided
-by Internet Service Providers.
-We are particularly interested in upload speeds and the frequency of speed tests.
-Upload speeds are less associated with internet-based leisure activities such
-as video streaming, which involve downloading large amounts of data, but they
-can be linked more with work-related activities such as uploading documents or
-two-way communication and interaction systems.
+By using volunteered geographic data, we are able to assess the *experienced* 
+internet speed by users, which may differ from the *advertised* maximum speeds of 
+Internet Service Providers (ISPs).
+We are particularly interested in upload speeds and the frequency of speed tests
+over the period from March to May 2020, as government statements indicate this is
+when UK workers were told to work from home if at all possible **[need ref?]**.
+Average upload speeds are slower than average download speeds, at $9.3$Mb/s 
+mean upload speed for the whole sample during the period of interest, 
+compared to $29.6$Mb/s for download speeds, but they are also less associated 
+with internet-based, high-demand, leisure activities such as video streaming.
+Therefore, upload speeds are more relevant to work-related activities such as 
+uploading documents or two-way audio, video, and text-based communication systems.
 Meanwhile, the frequency of speed tests was important in identifying 
 the temporal profile which woud give us most insight into 
-experienced internet service and resilience.
-Although we know from government statements the start and end of the period of
-interest, namely, March to May 2020, the frequency of speed tests within that period 
-provides an indication of the volume of experience over any particular units of time.
+experienced internet service and resilience, and provide 
+an indication of the volume of experience over particular units of time.
 
 <!-- data transformation -->
-Thus, the first step in the workflow after dropping some outliers following
+The first step in the workflow after dropping some outliers following
 @riddlesden2014broadband was to transform the individual, geolocated and time-stamped 
 tests to more meaningful aggregates both in terms of space and time.
 The frequency of testing indicates that whilst there is an overall trend of increased
 testing or increased experience of internet service from March to April and then a 
 slight reduction from April to May, this trend masks substantial variation 
-by not only the day of the week, but also time of day, as can be seen in **[graph]**.
-Thus, a daily aggregation of upload speeds would also mask this pattern.
-Furthermore, the importance of this pattern is highlighted by a comparison 
-with the same period in 2019 **see graph**, 
+by not only the day of the week, but also time of day, as can be seen in Figure $1$**add graph of 2020 Time Variation**.
+Thus, a daily aggregation of upload speeds would mask the variation in experience
+over the course of each weekday.
+Furthermore, the importance of this variation is highlighted by a comparison 
+with the same period in $2019$, as in Figure $2$ **add graph of 2019 TimeVar**, 
 when the volume of testing and thus of experience of internet service quality
 was much more tied to the evening leisure peak and presumably to download speeds.
-Since the increase in testing during the working day in 2020 is an indication that 
+Since the increase in testing during the working day in $2020$ is an indication that 
 users have a greater perception of the variable quality of internet service,
 particularly during a new morning peak of testing for service reliability,
 we decided to include a measure of hourly variation in our temporal profiles.
@@ -457,13 +460,13 @@ Local Authority District (LAD) and for each working hour of each working day
 Therefore, we aggregate all the speed-checks during the $13$ weeks of March to May 
 inclusive for weekdays in $2020$ by each hour of the day and day of the week.
 As our research aims to identify the geography of internet service resilience for
-work purposes, bank holidays and the hours between midnight and 6am were excluded,
+work purposes, bank holidays and the hours between midnight and $6:00$ were excluded,
 as well as weekend days.
-The composite week time-series thus comprise 18 hours multiplied by 5 weekdays or
-90 time points per series.
+The composite week time-series thus comprise $18$ hours multiplied by $5$ weekdays or
+$90$ time points per series.
 We also aggregate these data spatially because we could not follow individuals or 
 households and connect data points.
-The time-series were calculated for each of the 382 LADs in the UK, standardised, 
+The time-series were calculated for each of the $382$ LADs in the UK, standardised, 
 and then a *k*-means partitioning around medoids clustering algorithm 
 was applied using DTW.
 We initially run the algorithm for [5, 15] $k \in \mathbb{N} \bigcap [5,15]$  
@@ -504,11 +507,9 @@ We take account of all three measurements in our descriptives statistics of
 upload speeds in order to determine how resilient broadband speeds are 
 as experienced in different parts of the UK during a time of extreme demand.
 
-**Data details and some figures, descriptive stats - include whole sample time profile for 2019 and 2020 frequency of tests run as part of why we chose to create the time profiles by hour of the day and day of the week rather than daily over the whole period.**
+**More data details and some figures, descriptive stats**
 
-**Just looking back, it was partly the frequency of tests, but that was also by geography, so do we need maps? And I feel there was something else I'm forgetting...**
-
-<!-- HB old PARA4 - link to auxillary regressions method, or put in results to introduce results of auxillary regressions? -->
+<!-- link to auxillary regressions method -->
 The cause of these different experiences of broadband resilience may be different in
 different areas, as they may reflect either similarities in patterns of demand
 or similar quality of infrastructure.
@@ -550,56 +551,141 @@ must be fit for purpose.
 ## Upload Clusters / cluster description
 
 The temporal profiles used to cluster the local authorities have been summarised in
-graph [.], which
-shows a composite profile of mean upload speeds per hour per day for each cluster.
-For upload speeds, 345 of 382 local authorities, or over 62 million people,
-fall into cluster 6 or cluster 9.
-Graph [.] suggests that these two clusters have relatively similar temporal profiles,
-which are flatter than the other, smaller clusters,
-suggesting better reliability of service.
-However, the upload speeds at all times for cluster 9 are substantially higher
-than for cluster 6, which is an indication of better quality of service.
-This difference is reflected not only in the mean speeds for these clusters for the
-whole sample, but also the mean upload speeds in the morning peak from 9:00-10:59,
-as well as the evening peak period from 19:00-20:59.
-In comparison, the time profile in graph [.] shows upload speeds in cluster 1 are
-on average lower at certain times of day during the study period than any other
-cluster, whilst the profile for cluster 3 appears to show speeds fluctuating as much
-as cluster 1, but at levels usually higher even than cluster 9.
+Figure $3$ **add Graphs as 3a and 3b** and Table $1$ **Do we want all columns? Is this the first table?**.
+The graphs in Figure $3$ show a composite profile of mean upload speeds per hour 
+per day for each cluster, with the largest five clusters in Figure $3$a, 
+and the next six in Figure $3$b.
+Figure $3$ and Table $1$ provide a comprehensive overview of the quality and
+reliability of experienced broadband in different parts of the UK, 
+the temporal clusters offering a novel approach to understanding spatial disparity.
 
-The variability of the smaller clusters may be related to the fewer speed tests from
-fewer local authorities that have been averaged, whilst averaging greater numbers of
-speed tests could artificially flatten the profile.
-This appears not to be the case for cluster 9, as there is negligible difference
-between morning and evening upload speeds, at 1% slower in the morning, confirming a
-high level of reliability of service.
-In comparison, upload speeds in cluster 6 are 4% slower in the morning than in the
-evening and experienced the joint highest ratio of standard deviation to mean across
-the time period under assessment.
-This suggests that although the time profile is relatively flat in graph [.],
-the experience is one of speeds that fluctuate from a lower mean,
-and therefore might more often impact on online activities.
-Still, in most of the smaller clusters the reliability of service is worse than in
-cluster 9 in terms of the ratio of standard deviation to mean.
-The smaller clusters are mainly worse than clusters 9 and 6 in terms of
-the ratio of upload speed in the morning peak compared to the evening peak.
-In five of the smaller clusters, which are home to almost 3 million people,
-speeds are 12-19% slower between 9:00-10:59 compared to 19:00-20:59.
+The largest two clusters, comprising $281$ local authorities and almost $50$ million 
+people, fall into clusters $6$ and cluster $13$.
+Cluster $13$ has one of the lowest aggregate mean upload speed of any of the clusters,
+and the second highest ratio of the standard deviation to the mean.
+This suggests that those living in local authorities in this cluster experienced 
+some of the lowest quality broadband services in terms of upload speeds in the UK.
+However, the variation in upload speeds in cluster $13$, 
+which can be an indication of its reliability, does not seem to disproportionately 
+affect the morning peak from $9:00-10:59$, as upload speeds are, on average, 
+only $2.6$% slower than in the evening peak period between $19:00$ and $20:59$.
+Although cluster $13$ does include some rural, remote areas of the country, 
+such as Northwest Scotland, Cornwall and Powys in Wales as shown on Figure $4$,
+**insert map**it also includes the major metropolitan centres of Bristol, Liverpool, 
+and Newcastle, as well as nine (of $32$) London Boroughs and plenty of home county 
+and suburban areas.
+Meanwhile, those living in cluster $6$ experience aggregate mean upload speeds of 
+about $1$Mb/s faster than those in cluster $13$, but still lower than the other three
+large clusters and most of the smaller clusters, 
+suggesting a middling quality of service.
+However, the time profile for cluster $6$ in Figure $3$a shows that upload speeds 
+drop quickly from $6:00$ to $7:00$ on a Monday and peak between $23:00$ and midnight 
+on Wednesday and Thursday, but tend to be lower during the working day.
+Indeed, those in cluster $6$, including people living in Birmingham, Leeds and 
+Sheffield, in $12$ London Boroughs, and many suburban areas and smaller cities like
+Cardiff, Oxford and Cambridge experience mean upload speeds in the morning that are
+$4.4$% lower than in the evening.
+This lower level of reliability may be as a result of increased demand, 
+e.g. for telecommuting, especially as there are few truly remote areas 
+in this cluster.
 
-The quality and reliability of broadband service is much better in
-the 115 Local Authority areas in cluster 9,
-which are mostly in urban or suburban areas, compared to cluster 6.
-These include 13 London Boroughs (of 32), 8 of the 10 local authorities of Greater Manchester, 5 of the 7 constituent authorities of the West Midlands Combined Authority, as well as cities like Glasgow, Leicester, Nottingham, Sheffield, and the Portsmouth and Southampton conurbation. There are also some notable medium-sized cities, including Aberdeen, Cardiff, Oxford, Milton Keynes, and York, and many suburban districts from the South East of England to South Tyneside. Meanwhile, the 230 local authorities in cluster 6, which have lower speeds on average and more variation in service still include major urban areas, such as Bristol, Liverpool and Leeds, and many suburban areas, but also include some of the most rural areas in the country. Meanwhile, Cluster 1, with 10 local authorities that are home to over 1 million people has the second slowest speeds in the morning compared to the evening 'peaks' and the second highest ratio of standard deviation to mean. This cluster's most populous area is Westminster in central London.  
+However, whilst the difference in experienced mean upload speeds between $9:00-10:59$ 
+and $19:00-20:59$ in cluster $6$ is greater than in any of the other large clusters, 
+it is smaller than this difference in all the clusters shown in Figure $3$b.
+Whilst this may suggest a lack of reliability, especially considering the large
+spikes and dips in these clusters, the statistics in Table $1$ show 
+a more varied picture.
+The experienced upload speeds in cluster $1$ are the second slowest of any cluster,
+the ratio of standard deviation to mean is the highest, as is the ratio of speeds 
+in the morning compared to the evening peak hours analysed.
+The five, mainly rural authorities in this cluster clearly lack broadband resilience,
+for telecommuting or otherwise.
+Home to almost $3.5$ thousand people, the districts are scattered around the country:
+Ceredigion in West Wales, Darlington in the Northeast, Eden between the Lake District
+and the North Penines, Rossendale in the Northwest, and Rutland in the East Midlands.
+In comparison, clusters $3$ and $10$ have relatively high mean upload speeds, and 
+low standard deviations, suggesting reliability and resilience, 
+as well as quality broadband services, despite slower speeds in the morning peak.
+Like cluster $6$, is this also a sign of increased telecommuting?
+The eight LADs in clusters $3$ and $10$ are home to over one million people, a
+and are all more urban and suburban than cluster $1$, including the London Borough 
+of Newham, the Southeast commuter towns of Harlow and Luton, the Birmingham suburbs 
+of Bromsgrove and Cannock Chase, Dundee City, and the towns of Eastbourne and Corby.
 
-**further description of temporal profiles of other clusters - include all in graph?** Indeed, the only cluster where upload speeds were slower in the evening than in the morning was cluster 5, made up of 2 local authorities with less than 200,000 people: Three Rivers, a suburban district north of London, and Fylde, a seaside suburb of Blackpool. However, these are likely to be outliers and may not have many tests from which the clusters are calcualted. **Take out smaller clusters?** The exceptions can be found in seven of the eight much smaller clusters including 35 local authority districts, where AM peak upload speeds are between 6% and 18% slower than PM peak upload speeds, although the mean speeds for each cluster are higher than cluster 6. Indeed, in 25 local authorities with a combined population of almost 3 million, speeds are 13% or more slower in the morning than in the evening. Included in this latter group are central London borough of Westminster and the London Borough of Newham, rural authorities like Eden and West Devon, and small cities like Dundee and Carlisle.
+Meanwhile, the most resilient broadband service in terms of both quality and
+reliability appears to be found in clusters $9$ and $11$, home to over $12$ million people. 
+The mean speeds for these clusters are second and third highest, 
+the ratio of the standard deviation to the mean are the two lowest, and
+the experienced upload speeds in the morning peak are not that different 
+from those experienced in the evening peak.
+In Figure $3$a, cluster $11$ shows more noticeable peaks and troughs, 
+but the lowest points are not at the peak times described in Table $1$. 
+Rather, the slowest upload speeds on average occur between $6:00-7:00$ on 
+Monday morning, $14:00-15:00$ on Friday, and $16:00-17:00$ on Thursday. 
+These slowest times are still mostly faster than the average hourly upload speeds
+in cluster $13$.
+Although not all of the local authorities in these two clusters are urban, 
+among the $65$ LADs are Manchester and three of the nine other boroughs of 
+Greater Manchester, Glasgow, Nottingham, both Portsmouth and Southampton, 
+eight London Boroughs, four of the seven constituent authorities of the 
+West Midlands Combined Authority.
+There are also a number of other tightly bounded urban areas, such as Aberdeen, 
+Blackpool, Ipswich, Norwich, Slough, and Stevenage, and urban areas at the centre
+of less confined districts like Burnley, Milton Keynes, and Northampton.
+The local authorities in these two clusters clearly experienced resilient
+broadband that could support high levels of telecommuting.
+They are not on the wrong side of the first level digital divide, 
+but how likely are they to be able to take advantage of their resilient ICT
+infrastructure and services?
 
 ## aux regressions
 
-Auxiliary regressions indicate that the speed tests in cluster 9 authorities are also more likely to have been run on services provided by Virgin Media, suggesting they are in the half of the country with the most lucrative ICT market, which originally attracted the cable TV provider (OfCom...). For example, although auxiliary regressions show that Cluster 6 local authorities are more likely to be in the South of the UK than Cluster 9, the cluster notably includes Southern rural districts from Cornwall to North Norfolk. Slower speeds could reflect the lower quality of service in rural areas compared to urban and suburban areas. There is frustration, however, as auxiliary regressions show that those living in cluster 6 had the highest probability of testing their broadband between 9:00 and 11:00 of any of the 10 upload speed clusters.
+Clusters $3$, $9$, $10$ and $11$ seem to benefit most from high quality and 
+resilient broadband services.
+The dips in mean upload speeds in clusters $6$, $3$ and $10$ during the morning
+peak are suggestive of more use during the working day, and potentially more
+telecommuting.
+Using auxiliary regressions, we test whether the clusters that have higher mean
+speeds and more reliable services are more urban, more wealthy, and / or more likely 
+to benefit from a choice of high quality internet services.
+We also measure which of our clusters are more likely to have a higher proportion of 
+occupations which enable telecommuting because of the nature of the work.
+The results of these auxiliary regressions are presented in Table $2$.
+The reference case is cluster $4$, which includes the local authority of Hambleton
+in North Yorkshire, a rural area of just over ninety thousand people.
+Mean, experienced upload speeds in cluster $4$ are close to both the average speeds
+for the $13$ clusters ($9.9$Mb/s) and the pre-clustered average for the whole sample
+($9.3$Mb/s).
+The standard deviation for cluster $4$ and the ratio of evening to morning peak speeds
+are indications of worse reliability than many of the other clusters, 
+but this is only one more reason to view the results in Table $2$ as relative
+rather than absolute probabilities.
 
-the finding in the auxiliary regressions that those in cluster 9 ran the fewest speed tests per person during the morning period of any cluster. Now this may be an indication of fewer people working from home, less contention, and less resultant frustration. Cluster 9 comprises many central urban areas and has the lowest number of established businesses per inhabitant, which could be interpreted as a dominance of large employers. However, the job density is lower than cluster 6, meaning there are not as many jobs per resident in these areas. As the cluster includes many suburban areas too, which may be largely residential, could the quality and reliability of internet service be reinforcing patterns of telecommuting by those in wealthier suburbs who can work from home? Earnings in cluster 9 are second highest of all the clusters, with only Cluster 2 (comprising just North East Lincolnshire and East Lothian, population 265k) earning more per person.
+First, the number of speed tests run per cluster inhabitant between $9:00-10:59$
+is an indication of satisfaction or at least a lack of concern over broadband speeds
+and quality of service. 
+People in clusters $3$, $9$, $10$ and $11$ all ran fewer speed tests at this time of
+day than people in clusters $6$ and $13$.
+Those in clusters $3$, $9$, $10$ and $11$ also benefit from a higher proportion of
+fast Virgin cable connections than those in clusters $6$ and $13$. 
+Since services provided by Virgin Media are only available to $45$% of premises
+in the UK [@ofcom2016], 
+where the more lucrative ICT market originally attracted the cable TV provider, 
+this is an indication that people in these clusters are more likely to live on the 
+right side of the first level, infrastructure-based digital divide.
+Another indication is if people in these clusters are more likely to be closer to
+London or a metropolitan area.
+The broadband speed tests run in the authorities in cluster $3$ are more likely to 
+be taking place close to London than those run in any of the other clusters, 
+a result that makes sense considering two of the four authorities in cluster $3$ 
+are the London commuter towns of Harlow and Luton.
+However, even though London was also included in the variable calculating distance 
+to one of the ten major metropolitan areas in England, or Glasgow or Cardiff, 
+tests run in cluster $3$ are likely to be furthest away. 
+**Did you include London in distMet as well? - code suggests so**
+**Do we need to re-think this variable (e.g. remove Cardiff, add Leicester or...)**
 
-The auxiliary regressions show that compared to the two authorities in cluster 5, all the other clusters had a lower percentage of working people in managerial, professional and administrative jobs.??? Yet the auxiliary regression suggests that there are not many tests being run during the am peak in cluster 1. This may be because there are fewer people working at home checking their broadband than in most other clusters. Indeed, the auxiliary regressions indicate that cluster 1 has the highest job density or proportion of jobs to working-age population, which is likely to due to the presence of Westminster, central London, cluster 1's most populous local authority. Westminster not only has more workplaces than residents, but it is reasonable to presume that many who would normally work in Westminster, but be able to work from home during lockdown are likely to live outside central London and not be subject to the fluctuating speeds there. Workplaces, meanwhile, some of which would still have been open, could be running programmes that cause the slowdown and variation, but would be more likely to have their own in-house diagnostics, rather than using a service like Speedchecker Ltd.
+
 
 # Conclusions
 
