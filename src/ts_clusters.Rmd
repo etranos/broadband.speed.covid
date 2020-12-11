@@ -36,6 +36,7 @@ library(tsbox)
 library(dtwclust)
 library(leaflet)
 library(ggmap)
+library(cowplot)
 
 # This is the project path
 path <- find_rstudio_root_file()
@@ -627,19 +628,50 @@ ggplot(la.f, aes(x = long, y = lat)) +
   theme_void()
 
 ggplot(la.f, aes(x = long, y = lat)) +
-  geom_polygon(aes( group = group, fill = as.factor(cluster.up))) +
-  theme_nothing(legend = TRUE) +
-  labs(title = "Upload clusters") +
-  scale_fill_viridis_d()+
-  theme_void()
-
-ggplot(la.f, aes(x = long, y = lat)) +
   geom_polygon(aes( group = group, fill = as.factor(cluster.down))) +
   theme_nothing(legend = TRUE) +
   labs(title = "Download clusters") +
   scale_fill_viridis_d()+
   theme_void()
 
+cluster.upL <- c(6, 9, 11, 12, 13)
+cluster.upS <- c(1, 2, 3, 7, 8, 10)
+ 
+la.f_ <- la.f #plot the background
+
+cluster.upL.plot <- la.f %>% 
+  filter(cluster.up %in% cluster.upL) %>% 
+  ggplot(aes(x = long, y = lat)) +
+  geom_polygon(data = la.f_, color='grey', fill='white', aes(x=long, y=lat, group=group, colour = 'grey30')) +
+  geom_polygon(aes( group = group, fill = as.factor(cluster.up))) +
+  labs(title = "Larger clusters, upload speeds") + 
+  scale_fill_viridis_d() +
+  guides(fill=guide_legend(title="Clusters")) +
+  theme_void()
+
+cluster.upS.plot <- la.f %>% 
+  filter(cluster.up %in% cluster.upS) %>% 
+  ggplot(aes(x = long, y = lat)) +
+  geom_polygon(data = la.f_, color='grey', fill='white', aes(x=long, y=lat, group=group, colour = 'grey30')) +
+  geom_polygon(aes( group = group, fill = as.factor(cluster.up))) +
+  labs(title = "Smaller clusters, upload speeds") + 
+  scale_fill_viridis_d() +
+  guides(fill=guide_legend(title="Clusters")) +
+  theme_void()
+
+plot_grid(cluster.upL.plot, cluster.upS.plot, nrow = 1,
+          align = "h", axis = "l", 
+          #labels = c(".co.uk / pop., 2000", ".co.uk / pop., 2010", "non .co.uk / pop., 2000", "non .co.uk / pop., 2010", ""), 
+          #label_size = 12,
+          greedy = T)
+          #rel_heights = c(1, 1, .3)) # this is the relative position of the 3 lines
+
+#ggsave("all_maps2.png") # this is the colour map for the preprint
+out.path.map <- paste0(path, "/paper/v1/figures/map.up.clusters.png")
+ggsave(out.path.map)#,
+       #width = 210, #A4
+       #height = 297, #A4
+       #units = "mm")
 ```
 
 ```{r, eval=FALSE}
