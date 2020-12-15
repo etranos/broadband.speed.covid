@@ -547,7 +547,7 @@ Based on the outcomes of the time-series clustering, we identify $J$ distinct
 and crisp clusters.
 We then regress this cluster membership against a vector $X_{i}$ of
 socio-economic and geographic variables, which are discussed in detail in
-Section \ref{#sec:4.2}.
+the relevant [section](#sec:4.2).
 This analysis enables us to provide a more nuanced understanding of how
 telecommuting and technology intersect at a time of extreme demand, and what
 lessons this time has for a future where telecommuting is likely to remain a
@@ -591,13 +591,15 @@ clustersLADup <- read_csv(path.clustersLADup)
   
 
 clustersLADup <- clustersLADup %>% 
-  mutate(across(4:7, round, 3))
+  mutate(across(4:7, round, 0))
 
 stargazer(clustersLADup[1:7],
           summary = F,
           font.size = "footnotesize",
           type = "latex",
-          header = F, 
+          header = F,
+          digit.separator = ",",
+          digit.separate = c(3,3),
           covariate.labels=c("Cluster",
                              "N. of LADs",
                              "LAD population",
@@ -652,7 +654,7 @@ However, whilst the difference in experienced mean upload speeds between 9:00-10
 and 19:00-20:59 in cluster $6$ is greater than in any of the other large clusters, 
 it is smaller than this difference in all the clusters shown in Figure \ref{UpClusterL}.
 Whilst this may suggest a lack of reliability, especially considering the large
-spikes and dips in these clusters, the statistics in Table $1$ show 
+spikes and dips in these clusters, the statistics in Table \ref{up.cluster.descr} show 
 a more varied picture.
 The experienced upload speeds in cluster $1$ are the second slowest of any cluster,
 the ratio of standard deviation to mean is the highest, as is the ratio of speeds 
@@ -730,7 +732,7 @@ stargazer(aux.up,
                              "n. business est. per hab., 2019",
                              "NVQ4+",
                              "AM tests per hab., 2020",
-                             "% of Virgin Media connections"),
+                             "Virgin Media \\%, 2020"),
           add.lines = list(c("McFadden's R squared",
                              round(r2.up[1],3), round(r2.up[1],3), round(r2.up[1],3),
                              round(r2.up[1],3), round(r2.up[1],3), round(r2.up[1],3),
@@ -754,7 +756,8 @@ to benefit from a choice of high quality internet services.
 We also measure which of our clusters are more likely to have a higher proportion of 
 occupations which enable telecommuting because of the nature of the work.
 The results of these auxiliary regressions are presented in Table \ref{aux}.
-The dependent variable is the LAD cluster membership as described in Section \ref{#sec:3}
+The dependent variable is the LAD cluster membership as described in the 
+[Methods and data](#sec:3) section
 and equation \ref{eq1} and each column represent a different cluster.
 The reference case is cluster $4$, which includes the local authority of Hambleton
 in North Yorkshire, a rural area of just over ninety thousand people.
