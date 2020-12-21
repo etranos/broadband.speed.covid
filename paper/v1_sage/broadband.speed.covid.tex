@@ -1,4 +1,4 @@
-\documentclass[,]{sagej}
+\documentclass[Royal,times,sageh]{sagej}
 
 \usepackage{moreverb,url,natbib, multirow, tabularx}
 \usepackage[colorlinks,bookmarksopen,bookmarksnumbered,citecolor=red,urlcolor=red]{hyperref}
@@ -9,6 +9,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{dcolumn}
 \def\tightlist{}
+\newcommand{\beginappendix}{\setcounter{table}{0} \renewcommand{\thetable}{A\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{A\arabic{figure}}}
 
 
 \begin{document}
@@ -17,18 +18,20 @@
 
 \runninghead{}
 
-\author{A. N. Author\affilnum{}, John Smith\affilnum{}}
+\author{A. Uthor*\affilnum{1,2}, O. Tro\affilnum{2}, O. Vriga\affilnum{3}}
 
-\affiliation{}
+\affiliation{\affilnum{1}{Department of Incredible Research, University A, City A, Country A}\\\affilnum{2}{Department of Applied Things, University B, City B, Country B}\\\affilnum{3}{Very Important Stuff Committee, Institute C, City C, Country C}}
 
+\corrauth{Corresponding author name, This is sample corresponding address.}
 
+\email{\href{mailto:correspondingauthor@protonmail.com}{\nolinkurl{correspondingauthor@protonmail.com}}}
 
 \begin{abstract}
 TBC
 \end{abstract}
 
 \keywords{covid; internet; working from home; broadband speed; time-series
-clusters}
+clusters;}
 
 \maketitle
 
@@ -875,8 +878,6 @@ likelihood of workforce employed in managerial occupations is positive
 for LADs in both clusters, but only individuals in LADs in cluster
 \(13\) are more likely to enjoy high earnings.
 
-\protect\hyperlink{sec:appendix}{Appendix}
-
 \hypertarget{sec:5}{%
 \section{Conclusions}\label{sec:5}}
 
@@ -939,8 +940,435 @@ e.g.~\texttt{\textbackslash{}section*\{Acknowledgements\}}, may be used
 for thanks, etc.~if required and included \emph{in the non-anonymous
 version} before any Notes or References.
 
-\bibliographystyle{}
-\bibliography{bibliography.bib}
+\hypertarget{sec:appendix}{%
+\section{Appendix}\label{sec:appendix}}
+
+\begin{table}[!htbp] \centering 
+  \caption{LAD cluster membership for upload speed timeseries\label{cluster.membership}} 
+  \label{} 
+\footnotesize 
+\begin{tabular}{@{\extracolsep{5pt}} ccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & LAD & cluster membership \\ 
+\hline \\[-1.8ex] 
+1 & Aberdeen City & 9 \\ 
+2 & Aberdeenshire & 13 \\ 
+3 & Adur & 13 \\ 
+4 & Allerdale & 6 \\ 
+5 & Amber Valley & 6 \\ 
+6 & Angus & 6 \\ 
+7 & Antrim and Newtownabbey & 13 \\ 
+8 & Ards and North Down & 12 \\ 
+9 & Argyll and Bute & 13 \\ 
+10 & Armagh City, Banbridge and Craigavon & 13 \\ 
+11 & Arun & 13 \\ 
+12 & Ashfield & 6 \\ 
+13 & Ashford & 6 \\ 
+14 & Aylesbury Vale & 6 \\ 
+15 & Babergh & 13 \\ 
+16 & Barking and Dagenham & 11 \\ 
+17 & Barnet & 6 \\ 
+18 & Barnsley & 9 \\ 
+19 & Barrow-in-Furness & 13 \\ 
+20 & Basildon & 13 \\ 
+21 & Basingstoke and Deane & 6 \\ 
+22 & Bassetlaw & 13 \\ 
+23 & Bath and North East Somerset & 6 \\ 
+24 & Bedford & 13 \\ 
+25 & Belfast & 6 \\ 
+26 & Bexley & 6 \\ 
+27 & Birmingham & 6 \\ 
+28 & Blaby & 11 \\ 
+29 & Blackburn with Darwen & 13 \\ 
+30 & Blackpool & 11 \\ 
+31 & Blaenau Gwent & 6 \\ 
+32 & Bolsover & 11 \\ 
+33 & Bolton & 13 \\ 
+34 & Boston & 13 \\ 
+35 & Bournemouth, Christchurch and Poole & 6 \\ 
+36 & Bracknell Forest & 13 \\ 
+37 & Bradford & 6 \\ 
+38 & Braintree & 6 \\ 
+39 & Breckland & 13 \\ 
+40 & Brent & 11 \\ 
+41 & Brentwood & 6 \\ 
+42 & Bridgend & 6 \\ 
+43 & Brighton and Hove & 13 \\ 
+44 & Bristol, City of & 13 \\ 
+45 & Broadland & 13 \\ 
+46 & Bromley & 6 \\ 
+47 & Bromsgrove & 10 \\ 
+48 & Broxbourne & 9 \\ 
+49 & Broxtowe & 6 \\ 
+50 & Burnley & 11 \\ 
+51 & Bury & 6 \\ 
+52 & Caerphilly & 11 \\ 
+53 & Calderdale & 6 \\ 
+54 & Cambridge & 6 \\ 
+55 & Camden & 13 \\ 
+56 & Cannock Chase & 10 \\ 
+57 & Canterbury & 6 \\ 
+58 & Cardiff & 6 \\ 
+59 & Carlisle & 11 \\ 
+60 & Carmarthenshire & 13 \\ 
+61 & Castle Point & 6 \\ 
+62 & Causeway Coast and Glens & 11 \\ 
+63 & Central Bedfordshire & 13 \\ 
+64 & Ceredigion & 1 \\ 
+65 & Charnwood & 9 \\ 
+66 & Chelmsford & 6 \\ 
+67 & Cheltenham & 6 \\ 
+68 & Cherwell & 6 \\ 
+69 & Cheshire East & 13 \\ 
+70 & Cheshire West and Chester & 13 \\ 
+71 & Chesterfield & 6 \\ 
+72 & Chichester & 13 \\ 
+73 & Chiltern & 13 \\ 
+74 & Chorley & 9 \\ 
+75 & City of Edinburgh & 6 \\ 
+76 & City of London & 13 \\ 
+77 & Clackmannanshire & 6 \\ 
+78 & Colchester & 6 \\ 
+79 & Conwy & 12 \\ 
+80 & Copeland & 6 \\ 
+81 & Corby & 3 \\ 
+82 & Cornwall & 13 \\ 
+83 & Cotswold & 13 \\ 
+84 & County Durham & 6 \\ 
+85 & Coventry & 6 \\ 
+86 & Craven & 13 \\ 
+87 & Crawley & 11 \\ 
+88 & Croydon & 6 \\ 
+89 & Dacorum & 13 \\ 
+90 & Darlington & 1 \\ 
+91 & Dartford & 6 \\ 
+92 & Daventry & 6 \\ 
+93 & Denbighshire & 6 \\ 
+94 & Derby & 6 \\ 
+95 & Derbyshire Dales & 13 \\ 
+96 & Derry City and Strabane & 6 \\ 
+97 & Doncaster & 11 \\ 
+98 & Dorset & 6 \\ 
+99 & Dover & 13 \\ 
+100 & Dudley & 11 \\ 
+101 & Dumfries and Galloway & 13 \\ 
+102 & Dundee City & 10 \\ 
+103 & Ealing & 6 \\ 
+104 & East Ayrshire & 6 \\ 
+105 & East Cambridgeshire & 13 \\ 
+106 & East Devon & 13 \\ 
+107 & East Dunbartonshire & 13 \\ 
+108 & East Hampshire & 6 \\ 
+109 & East Hertfordshire & 13 \\ 
+110 & East Lindsey & 6 \\ 
+111 & East Lothian & 2 \\ 
+112 & East Northamptonshire & 6 \\ 
+113 & East Renfrewshire & 6 \\ 
+114 & East Riding of Yorkshire & 6 \\ 
+115 & East Staffordshire & 12 \\ 
+116 & East Suffolk & 6 \\ 
+117 & Eastbourne & 3 \\ 
+118 & Eastleigh & 6 \\ 
+119 & Eden & 1 \\ 
+120 & Elmbridge & 6 \\ 
+121 & Enfield & 6 \\ 
+122 & Epping Forest & 12 \\ 
+123 & Epsom and Ewell & 13 \\ 
+124 & Erewash & 9 \\ 
+125 & Exeter & 13 \\ 
+126 & Falkirk & 6 \\ 
+127 & Fareham & 6 \\ 
+128 & Fenland & 12 \\ 
+129 & Fermanagh and Omagh & 13 \\ 
+130 & Fife & 13 \\ 
+131 & Flintshire & 13 \\ 
+132 & Folkestone and Hythe & 13 \\ 
+133 & Forest of Dean & 13 \\ 
+134 & Fylde & 5 \\ 
+135 & Gateshead & 6 \\ 
+136 & Gedling & 6 \\ 
+137 & Glasgow City & 9 \\ 
+138 & Gloucester & 13 \\ 
+139 & Gosport & 6 \\ 
+140 & Gravesham & 6 \\ 
+141 & Great Yarmouth & 6 \\ 
+142 & Greenwich & 9 \\ 
+143 & Guildford & 6 \\ 
+144 & Gwynedd & 13 \\ 
+145 & Hackney & 13 \\ 
+146 & Halton & 9 \\ 
+147 & Hambleton & 4 \\ 
+148 & Hammersmith and Fulham & 12 \\ 
+149 & Harborough & 6 \\ 
+150 & Haringey & 6 \\ 
+151 & Harlow & 3 \\ 
+152 & Harrogate & 6 \\ 
+153 & Harrow & 6 \\ 
+154 & Hart & 6 \\ 
+155 & Hartlepool & 6 \\ 
+156 & Hastings & 13 \\ 
+157 & Havant & 9 \\ 
+158 & Havering & 6 \\ 
+159 & Herefordshire, County of & 6 \\ 
+160 & Hertsmere & 11 \\ 
+161 & High Peak & 6 \\ 
+162 & Highland & 13 \\ 
+163 & Hillingdon & 13 \\ 
+164 & Hinckley and Bosworth & 6 \\ 
+165 & Horsham & 6 \\ 
+166 & Hounslow & 11 \\ 
+167 & Huntingdonshire & 13 \\ 
+168 & Hyndburn & 11 \\ 
+169 & Inverclyde & 13 \\ 
+170 & Ipswich & 11 \\ 
+171 & Isle of Anglesey & 13 \\ 
+172 & Isle of Wight & 13 \\ 
+173 & Isles of Scilly & 11 \\ 
+174 & Islington & 6 \\ 
+175 & Kensington and Chelsea & 11 \\ 
+176 & Kettering & 6 \\ 
+177 & King's Lynn and West Norfolk & 6 \\ 
+178 & Kingston upon Hull, City of & 13 \\ 
+179 & Kingston upon Thames & 6 \\ 
+180 & Kirklees & 6 \\ 
+181 & Knowsley & 9 \\ 
+182 & Lambeth & 13 \\ 
+183 & Lancaster & 13 \\ 
+184 & Leeds & 6 \\ 
+185 & Leicester & 6 \\ 
+186 & Lewes & 11 \\ 
+187 & Lewisham & 9 \\ 
+188 & Lichfield & 8 \\ 
+189 & Lincoln & 6 \\ 
+190 & Lisburn and Castlereagh & 7 \\ 
+191 & Liverpool & 13 \\ 
+192 & Luton & 3 \\ 
+193 & Maidstone & 6 \\ 
+194 & Maldon & 6 \\ 
+195 & Malvern Hills & 13 \\ 
+196 & Manchester & 11 \\ 
+197 & Mansfield & 6 \\ 
+198 & Medway & 6 \\ 
+199 & Melton & 13 \\ 
+200 & Mendip & 6 \\ 
+201 & Merthyr Tydfil & 13 \\ 
+202 & Merton & 9 \\ 
+203 & Mid and East Antrim & 9 \\ 
+204 & Mid Devon & 13 \\ 
+205 & Mid Suffolk & 13 \\ 
+206 & Mid Sussex & 6 \\ 
+207 & Mid Ulster & 13 \\ 
+208 & Middlesbrough & 6 \\ 
+209 & Midlothian & 13 \\ 
+210 & Milton Keynes & 9 \\ 
+211 & Mole Valley & 13 \\ 
+212 & Monmouthshire & 6 \\ 
+213 & Moray & 6 \\ 
+214 & Na h-Eileanan Siar & 13 \\ 
+215 & Neath Port Talbot & 13 \\ 
+216 & New Forest & 6 \\ 
+217 & Newark and Sherwood & 9 \\ 
+218 & Newcastle-under-Lyme & 6 \\ 
+219 & Newcastle upon Tyne & 13 \\ 
+220 & Newham & 10 \\ 
+221 & Newport & 6 \\ 
+222 & Newry, Mourne and Down & 13 \\ 
+223 & North Ayrshire & 6 \\ 
+224 & North Devon & 13 \\ 
+225 & North East Derbyshire & 6 \\ 
+226 & North East Lincolnshire & 2 \\ 
+227 & North Hertfordshire & 6 \\ 
+228 & North Kesteven & 6 \\ 
+229 & North Lanarkshire & 6 \\ 
+230 & North Lincolnshire & 6 \\ 
+231 & North Norfolk & 6 \\ 
+232 & North Somerset & 13 \\ 
+233 & North Tyneside & 6 \\ 
+234 & North Warwickshire & 11 \\ 
+235 & North West Leicestershire & 6 \\ 
+236 & Northampton & 9 \\ 
+237 & Northumberland & 6 \\ 
+238 & Norwich & 11 \\ 
+239 & Nottingham & 11 \\ 
+240 & Nuneaton and Bedworth & 6 \\ 
+241 & Oadby and Wigston & 8 \\ 
+242 & Oldham & 9 \\ 
+243 & Orkney Islands & 13 \\ 
+244 & Oxford & 6 \\ 
+245 & Pembrokeshire & 6 \\ 
+246 & Pendle & 6 \\ 
+247 & Perth and Kinross & 13 \\ 
+248 & Peterborough & 11 \\ 
+249 & Plymouth & 13 \\ 
+250 & Portsmouth & 9 \\ 
+251 & Powys & 13 \\ 
+252 & Preston & 12 \\ 
+253 & Reading & 13 \\ 
+254 & Redbridge & 13 \\ 
+255 & Redcar and Cleveland & 13 \\ 
+256 & Redditch & 11 \\ 
+257 & Reigate and Banstead & 13 \\ 
+258 & Renfrewshire & 6 \\ 
+259 & Rhondda Cynon Taf & 12 \\ 
+260 & Ribble Valley & 6 \\ 
+261 & Richmond upon Thames & 9 \\ 
+262 & Richmondshire & 13 \\ 
+263 & Rochdale & 11 \\ 
+264 & Rochford & 6 \\ 
+265 & Rossendale & 1 \\ 
+266 & Rother & 13 \\ 
+267 & Rotherham & 13 \\ 
+268 & Rugby & 9 \\ 
+269 & Runnymede & 6 \\ 
+270 & Rushcliffe & 6 \\ 
+271 & Rushmoor & 13 \\ 
+272 & Rutland & 1 \\ 
+273 & Ryedale & 6 \\ 
+274 & Salford & 6 \\ 
+275 & Sandwell & 9 \\ 
+276 & Scarborough & 11 \\ 
+277 & Scottish Borders & 13 \\ 
+278 & Sedgemoor & 13 \\ 
+279 & Sefton & 6 \\ 
+280 & Selby & 7 \\ 
+281 & Sevenoaks & 13 \\ 
+282 & Sheffield & 6 \\ 
+283 & Shetland Islands & 13 \\ 
+284 & Shropshire & 6 \\ 
+285 & Slough & 11 \\ 
+286 & Solihull & 6 \\ 
+287 & Somerset West and Taunton & 13 \\ 
+288 & South Ayrshire & 6 \\ 
+289 & South Bucks & 13 \\ 
+290 & South Cambridgeshire & 13 \\ 
+291 & South Derbyshire & 9 \\ 
+292 & South Gloucestershire & 13 \\ 
+293 & South Hams & 6 \\ 
+294 & South Holland & 6 \\ 
+295 & South Kesteven & 9 \\ 
+296 & South Lakeland & 13 \\ 
+297 & South Lanarkshire & 6 \\ 
+298 & South Norfolk & 13 \\ 
+299 & South Northamptonshire & 9 \\ 
+300 & South Oxfordshire & 6 \\ 
+301 & South Ribble & 13 \\ 
+302 & South Somerset & 13 \\ 
+303 & South Staffordshire & 6 \\ 
+304 & South Tyneside & 13 \\ 
+305 & Southampton & 9 \\ 
+306 & Southend-on-Sea & 13 \\ 
+307 & Southwark & 13 \\ 
+308 & Spelthorne & 9 \\ 
+309 & St Albans & 6 \\ 
+310 & St. Helens & 11 \\ 
+311 & Stafford & 13 \\ 
+312 & Staffordshire Moorlands & 6 \\ 
+313 & Stevenage & 11 \\ 
+314 & Stirling & 13 \\ 
+315 & Stockport & 6 \\ 
+316 & Stockton-on-Tees & 9 \\ 
+317 & Stoke-on-Trent & 6 \\ 
+318 & Stratford-on-Avon & 13 \\ 
+319 & Stroud & 13 \\ 
+320 & Sunderland & 11 \\ 
+321 & Surrey Heath & 6 \\ 
+322 & Sutton & 6 \\ 
+323 & Swale & 6 \\ 
+324 & Swansea & 13 \\ 
+325 & Swindon & 13 \\ 
+326 & Tameside & 7 \\ 
+327 & Tamworth & 6 \\ 
+328 & Tandridge & 8 \\ 
+329 & Teignbridge & 13 \\ 
+330 & Telford and Wrekin & 9 \\ 
+331 & Tendring & 6 \\ 
+332 & Test Valley & 6 \\ 
+333 & Tewkesbury & 13 \\ 
+334 & Thanet & 13 \\ 
+335 & Three Rivers & 12 \\ 
+336 & Thurrock & 6 \\ 
+337 & Tonbridge and Malling & 6 \\ 
+338 & Torbay & 13 \\ 
+339 & Torfaen & 6 \\ 
+340 & Torridge & 13 \\ 
+341 & Tower Hamlets & 13 \\ 
+342 & Trafford & 9 \\ 
+343 & Tunbridge Wells & 13 \\ 
+344 & Uttlesford & 13 \\ 
+345 & Vale of Glamorgan & 8 \\ 
+346 & Vale of White Horse & 11 \\ 
+347 & Wakefield & 6 \\ 
+348 & Walsall & 9 \\ 
+349 & Waltham Forest & 13 \\ 
+350 & Wandsworth & 13 \\ 
+351 & Warrington & 6 \\ 
+352 & Warwick & 6 \\ 
+353 & Watford & 13 \\ 
+354 & Waverley & 13 \\ 
+355 & Wealden & 6 \\ 
+356 & Wellingborough & 6 \\ 
+357 & Welwyn Hatfield & 9 \\ 
+358 & West Berkshire & 6 \\ 
+359 & West Devon & 8 \\ 
+360 & West Dunbartonshire & 6 \\ 
+361 & West Lancashire & 6 \\ 
+362 & West Lindsey & 13 \\ 
+363 & West Lothian & 6 \\ 
+364 & West Oxfordshire & 6 \\ 
+365 & West Suffolk & 6 \\ 
+366 & Westminster & 12 \\ 
+367 & Wigan & 6 \\ 
+368 & Wiltshire & 6 \\ 
+369 & Winchester & 13 \\ 
+370 & Windsor and Maidenhead & 13 \\ 
+371 & Wirral & 13 \\ 
+372 & Woking & 6 \\ 
+373 & Wokingham & 13 \\ 
+374 & Wolverhampton & 11 \\ 
+375 & Worcester & 6 \\ 
+376 & Worthing & 13 \\ 
+377 & Wrexham & 6 \\ 
+378 & Wychavon & 13 \\ 
+379 & Wycombe & 6 \\ 
+380 & Wyre & 13 \\ 
+381 & Wyre Forest & 7 \\ 
+382 & York & 6 \\ 
+\hline \\[-1.8ex] 
+\end{tabular} 
+\end{table}
+
+\begin{table}[!htbp] \centering 
+  \caption{Descriptive statistics for the auxiliary regression explanatory variables\label{descr.aux}} 
+  \label{} 
+\footnotesize 
+\begin{tabular}{@{\extracolsep{0pt}}lccccccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+Statistic & \multicolumn{1}{c}{N} & \multicolumn{1}{c}{Mean} & \multicolumn{1}{c}{St. Dev.} & \multicolumn{1}{c}{Min} & \multicolumn{1}{c}{Pctl(25)} & \multicolumn{1}{c}{Pctl(75)} & \multicolumn{1}{c}{Max} \\ 
+\hline \\[-1.8ex] 
+pop, 2018 & 365 & 1.137 & 5.726 & 0.400 & 0.700 & 0.930 & 110.110 \\ 
+job density, 2018 & 365 & 53.269 & 57.700 & 0.150 & 22.050 & 69.290 & 544.090 \\ 
+distance to nearest met. area & 365 & 201.558 & 173.634 & 0.150 & 76.180 & 278.880 & 1,003.950 \\ 
+distance to London & 365 & 0.463 & 0.499 & 0 & 0 & 1 & 1 \\ 
+South of the UK & 363 & 12.009 & 4.013 & 3.600 & 9.000 & 14.300 & 27.900 \\ 
+managerial jobs, 2020 & 364 & 14.505 & 4.057 & 3.500 & 11.800 & 16.900 & 29.600 \\ 
+tech jobs, 2020 & 358 & 10.513 & 3.764 & 1.000 & 8.025 & 12.500 & 21.600 \\ 
+skilled trade jobs, 2020 & 364 & 21.223 & 6.902 & 4.400 & 16.775 & 24.850 & 71.600 \\ 
+professional jobs, 2020 & 359 & 9.965 & 2.738 & 3.200 & 8.100 & 11.400 & 21.300 \\ 
+administrative jobs, 2020 & 362 & 9.261 & 2.827 & 2.800 & 7.300 & 11.400 & 17.800 \\ 
+leisure jobs, 2020 & 337 & 6.339 & 2.847 & 1.200 & 4.400 & 7.900 & 19.800 \\ 
+machine operation jobs, 2020 & 360 & 592.184 & 81.129 & 437.600 & 534.625 & 633.875 & 893.200 \\ 
+earnings, 2019 & 365 & 39.329 & 11.076 & 15.000 & 31.800 & 45.300 & 100.000 \\ 
+NVQ4+ & 365 & 0.152 & 0.141 & 0.000 & 0.018 & 0.241 & 0.753 \\ 
+Virgin Media \%, 2020 & 365 & 0.057 & 0.164 & 0.023 & 0.038 & 0.056 & 3.174 \\ 
+n. business est. per hab., 2019 & 365 & 0.0005 & 0.0002 & 0.0001 & 0.0003 & 0.001 & 0.001 \\ 
+\hline \\[-1.8ex] 
+\end{tabular} 
+\end{table}
+
+\bibliographystyle{sageh}
+\bibliography{bibliography}
 
 
 \end{document}

@@ -1,34 +1,39 @@
 ---
-title: |
-  WFH and broadband speed (title needs rework)
-type: ARTICLE TEMPLATE
+title: WFH and broadband speed (title needs rework)
 author:
-  - name: A. N. Author
-    affil: a
-    email: latex.helpdesk@tandf.co.uk
-  - name: John Smith
-    affil: b
-    email: john.smith@uni-freiburg.de
-affiliation:
-  - num: a
-    address: |
-      Taylor & Francis, 4 Park Square, Milton Park, Abingdon, UK
-  - num: b
-    address: |
-      Institut für Informatik, Albert-Ludwigs-Universität, Freiburg, Germany
-bibliography: bibliography.bib
-appendix: appendix.tex
-abstract: |
-  TBC
-keywords: |
-  covid; internet; working from home; broadband speed; time-series clusters
+- name: A. Uthor*
+  num: 1,2
+- name: O. Tro
+  num: 2
+- name: O. Vriga
+  num: 3
+address:
+- num: 1
+  org: Department of Incredible Research, University A, City A, Country A
+- num: 2
+  org: Department of Applied Things, University B, City B, Country B
+- num: 3
+  org: Very Important Stuff Committee, Institute C, City C, Country C
+corrauth: "Corresponding author name, This is sample corresponding address."
+email: correspondingauthor@protonmail.com
+abstract: "TBC"
+keywords:   covid; internet; working from home; broadband speed; time-series clusters;
+classoption:
+  - Royal
+  - times
+bibliography: bibliography
+bibliographystyle: sageh
 header-includes: |
   \usepackage{hyperref}
   \usepackage[utf8]{inputenc}
   \usepackage{dcolumn}
   \def\tightlist{}
-output: rticles::tf_article
+  \newcommand{\beginappendix}{\setcounter{table}{0} \renewcommand{\thetable}{A\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{A\arabic{figure}}}
+output:
+  rticles::sage_article:
+    keep_tex: yes
 ---
+
 
 ```{r settings, include = FALSE}
 library(ggplot2)
@@ -900,9 +905,6 @@ in cluster $13$. Contradictory, the likelihood of workforce employed in manageri
 occupations is positive for LADs in both clusters, but only individuals in LADs
 in cluster $13$ are more likely to enjoy high earnings.
 
-[Appendix](#sec:appendix)
-
-
 # Conclusions {#sec:5}
 
 Upload speeds are not used as benchmarks in the UK, nor have been seen as integral to
@@ -956,4 +958,75 @@ service, and whether this reinforces or redresses prior digital divisions.
 
 An unnumbered section, e.g.\ `\section*{Acknowledgements}`, may be used for thanks, etc.\ if required and included _in the non-anonymous version_ before any Notes or References.
 
+# Appendix {#sec:appendix}
 
+```{r echo=FALSE, message=FALSE, results = "asis"}
+
+# Cluster table
+clusters <- paste(path, "/data/temp/clusters_nodiff.csv", sep = "")
+clusters <- read_csv(clusters)
+clusters <- clusters %>%
+  dplyr::select(LAD, cluster.up) %>%
+  rename('cluster membership' = cluster.up) 
+  #group_by('cluster membership') %>%
+  #dplyr::arrange()
+  #sort('cluster membership', decreasing = F)
+  
+stargazer(clusters,
+          summary = F,
+          font.size = "footnotesize",
+          type = "latex",
+          header = F,
+          title = "LAD cluster membership for upload speed timeseries\\label{cluster.membership}")  
+```
+
+```{r echo=FALSE, message=FALSE, results = "asis"}
+
+# Descriptive statistics table
+path.LAs_Clusters <- paste0(path, "/data/temp/LAs_Clusters.RData")
+load(path.LAs_Clusters)
+
+for.descr <- data %>%
+  dplyr::select(pop, job.dens2018, distMet,
+                distLondon, south, 
+                managers, tech, skilled, prof,
+                admin, caring, plant, 
+                earnings, nvq4,
+                virgin,
+                total.busi, LAD.tests.am20, pop) %>%
+  mutate('total.busi/pop' = total.busi/pop,
+         'LAD.tests.am20/pop' = LAD.tests.am20/pop) %>%
+  dplyr::select(-total.busi, -pop, -LAD.tests.am20)
+                
+stargazer(for.descr,
+          summary = T,
+          font.size = "footnotesize",
+          type = "latex",
+          header = F,
+          digit.separator = ",",
+          digit.separate = c(3,3),
+          covariate.labels=c("pop, 2018",
+                             "job density, 2018",
+                             "distance to nearest met. area",
+                             "distance to London",
+                             "South of the UK",
+                             "managerial jobs, 2020",
+                             "tech jobs, 2020",
+                             "skilled trade jobs, 2020",
+                             "professional jobs, 2020",
+                             "administrative jobs, 2020",
+                             "leisure jobs, 2020",
+                             "machine operation jobs, 2020",
+                             "earnings, 2019",
+                             "NVQ4+",
+                             "Virgin Media \\%, 2020",
+                             "n. business est. per hab., 2019",
+                             "AM tests per hab., 2020"),
+          rownames = F,
+          no.space=TRUE,
+          column.sep.width = "0pt",
+          #notes = "",
+          title = "Descriptive statistics for the auxiliary regression explanatory variables\\label{descr.aux}")
+
+
+```
