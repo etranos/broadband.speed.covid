@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7250 64-bit) (preloaded format=pdflatex 2020.8.26)  21 DEC 2020 13:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7250 64-bit) (preloaded format=pdflatex 2020.8.26)  22 DEC 2020 14:41
 entering extended mode
 **./broadband.speed.covid.tex
 (broadband.speed.covid.tex
@@ -428,9 +428,6 @@ LaTeX Warning: Label `' multiply defined.
 
 LaTeX Warning: Label `' multiply defined.
 
-
-LaTeX Warning: Label `' multiply defined.
-
 )
 \openout1 = `broadband.speed.covid.aux'.
 
@@ -657,7 +654,7 @@ Overfull \vbox (0.57463pt too high) has occurred while \output is active []
 Overfull \vbox (2.3146pt too high) has occurred while \output is active []
 
 [7]
-<figures/time.var.plot2020.png, id=317, 481.8pt x 481.8pt>
+<figures/time.var.plot2020.png, id=321, 481.8pt x 481.8pt>
 File: figures/time.var.plot2020.png Graphic file (type png)
 <use figures/time.var.plot2020.png>
 Package pdftex.def Info: figures/time.var.plot2020.png  used on input line 444.
@@ -667,7 +664,7 @@ LaTeX Font Info:    Font shape `OT1/phv/m/n' will be
 (Font)              scaled to size 8.54997pt on input line 445.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
 (Font)              scaled to size 8.54997pt on input line 445.
-<figures/time.var.plot2019.png, id=318, 481.8pt x 481.8pt>
+<figures/time.var.plot2019.png, id=322, 481.8pt x 481.8pt>
 File: figures/time.var.plot2019.png Graphic file (type png)
 <use figures/time.var.plot2019.png>
 Package pdftex.def Info: figures/time.var.plot2019.png  used on input line 450.
@@ -677,12 +674,12 @@ Package pdftex.def Info: figures/time.var.plot2019.png  used on input line 450.
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [9 <./figures/time.var.plot2020.png> <./figures/time.var.plot2019.png>]
-<figures/upClusterL.png, id=341, 481.8pt x 481.8pt>
+<figures/upClusterL.png, id=345, 481.8pt x 481.8pt>
 File: figures/upClusterL.png Graphic file (type png)
 <use figures/upClusterL.png>
 Package pdftex.def Info: figures/upClusterL.png  used on input line 520.
 (pdftex.def)             Requested size: 335.17236pt x 335.18452pt.
-<figures/upClusterS.png, id=342, 481.8pt x 481.8pt>
+<figures/upClusterS.png, id=346, 481.8pt x 481.8pt>
 File: figures/upClusterS.png Graphic file (type png)
 <use figures/upClusterS.png>
 Package pdftex.def Info: figures/upClusterS.png  used on input line 524.
@@ -693,36 +690,36 @@ Overfull \hbox (10.47156pt too wide) in paragraph at lines 531--552
  []
 
 [10]
-<figures/map.up.clusters.png, id=357, 505.89pt x 505.89pt>
+<figures/map.up.clusters.png, id=361, 505.89pt x 505.89pt>
 File: figures/map.up.clusters.png Graphic file (type png)
 <use figures/map.up.clusters.png>
-Package pdftex.def Info: figures/map.up.clusters.png  used on input line 592.
+Package pdftex.def Info: figures/map.up.clusters.png  used on input line 591.
 (pdftex.def)             Requested size: 335.17236pt x 335.17754pt.
 [11 <./figures/upClusterL.png>] [12 <./figures/upClusterS.png>]
-Overfull \hbox (41.47224pt too wide) in paragraph at lines 659--727
+Overfull \hbox (41.47224pt too wide) in paragraph at lines 658--726
+ [][] 
+ []
+
+[13] [14 <./figures/map.up.clusters.png>] [15] [16] [17] [18] [19]
+LaTeX Font Info:    Trying to load font information for OMS+pcr on input line 9
+95.
+("C:\Program Files\MiKTeX 2.9\tex/latex/psnfss\omspcr.fd"
+File: omspcr.fd 
+)
+LaTeX Font Info:    Font shape `OMS/pcr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 995.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[20] [21]
+Overfull \hbox (6.4734pt too wide) in paragraph at lines 1111--1134
  [][] 
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[13] [14 <./figures/map.up.clusters.png>] [15] [16] [17] [18]
-LaTeX Font Info:    Trying to load font information for OMS+pcr on input line 9
-39.
-("C:\Program Files\MiKTeX 2.9\tex/latex/psnfss\omspcr.fd"
-File: omspcr.fd 
-)
-LaTeX Font Info:    Font shape `OMS/pcr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 939.
-
-LaTeX Warning: Float too large for page by 3333.80406pt on input line 1339.
-
-
-Overfull \hbox (6.4734pt too wide) in paragraph at lines 1345--1368
- [][] 
- []
-
-(broadband.speed.covid.bbl [19] [20]
+[22] (broadband.speed.covid.bbl [23]
 Underfull \hbox (badness 10000) in paragraph at lines 88--91
 []\OT1/ptm/m/n/9 Eurofound (2020) Liv-ing, work-ing and covid-19.  \OT1/ptm/m/i
 t/9 COVID-19 series \OT1/ptm/m/n/9 URL
@@ -749,7 +746,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 113--116
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[21]
+[24]
 Underfull \hbox (badness 10000) in paragraph at lines 214--216
 []\OT1/ptm/m/n/9 Nathan M and Over-man H (2020) Will coro-n-avirus cause a big 
 city exo-dus?
@@ -762,9 +759,6 @@ my . com / question /
  []
 
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-[22]
 Underfull \hbox (badness 10000) in paragraph at lines 232--236
 []\OT1/ptm/m/n/9 OfCom (2017) Uk home broad-band per-for-mance: The per-for-man
 ce of
@@ -825,29 +819,29 @@ Underfull \hbox (badness 10000) in paragraph at lines 243--247
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[23])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1374.
-[24]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1374.
+[25])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1142.
+[26]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1142.
 (broadband.speed.covid.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1374.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1374.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1142.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1142.
 
 Package rerunfilecheck Info: File `broadband.speed.covid.out' has not changed.
-(rerunfilecheck)             Checksum: 7DF1EA71DDB59A9A8AF94BFF4C093F33;808.
+(rerunfilecheck)             Checksum: B45A981CF6C9B14BA6E82DCFDE35A115;857.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1374.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1142.
  ) 
 Here is how much of TeX's memory you used:
- 9731 strings out of 481181
- 152843 string characters out of 2903886
- 485202 words of memory out of 3000000
- 24948 multiletter control sequences out of 15000+200000
+ 9735 strings out of 481181
+ 152859 string characters out of 2903886
+ 458159 words of memory out of 3000000
+ 24949 multiletter control sequences out of 15000+200000
  587155 words of font info for 126 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 47i,13n,47p,295b,548s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 47i,13n,47p,295b,527s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Users/nw19521/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}<
 C:/Users/nw19521/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/c
 mex10.pfb><C:/Users/nw19521/AppData/Local/Programs/MiKTeX/fonts/type1/public/am
@@ -868,9 +862,9 @@ ams/MiKTeX/fonts/type1/urw/helvetic/uhvro8a.pfb><C:/Users/nw19521/AppData/Local
 /Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/nw19521/AppData/Loc
 al/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/nw19521/AppData/L
 ocal/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on broadband.speed.covid.pdf (24 pages, 469777 bytes).
+Output written on broadband.speed.covid.pdf (26 pages, 474934 bytes).
 PDF statistics:
- 569 PDF objects out of 1000 (max. 8388607)
- 123 named destinations out of 1000 (max. 500000)
- 130 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 588 PDF objects out of 1000 (max. 8388607)
+ 126 named destinations out of 1000 (max. 500000)
+ 138 words of extra memory for PDF output out of 10000 (max. 10000000)
 

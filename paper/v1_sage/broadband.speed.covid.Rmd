@@ -1021,7 +1021,11 @@ service, and whether this reinforces or redresses prior digital divisions.
 
 An unnumbered section, e.g.\ `\section*{Acknowledgements}`, may be used for thanks, etc.\ if required and included _in the non-anonymous version_ before any Notes or References.
 
-# Appendix {#sec:appendix}
+\pagebreak
+
+# Appendix 1 {#appendix1} 
+
+This is the LAD cluster membership for the upload speed timeseries.
 
 ```{r echo=FALSE, message=FALSE, results = "asis"}
 
@@ -1030,18 +1034,147 @@ clusters <- paste(path, "/data/temp/clusters_nodiff.csv", sep = "")
 clusters <- read_csv(clusters)
 clusters <- clusters %>%
   dplyr::select(LAD, cluster.up) %>%
-  rename('cluster membership' = cluster.up) 
+  #rename('cluster membership' = cluster.up) %>%
   #group_by('cluster membership') %>%
+  group_split(cluster.up, .keep = F)
   #dplyr::arrange()
   #sort('cluster membership', decreasing = F)
-  
-stargazer(clusters,
-          summary = F,
-          font.size = "footnotesize",
-          type = "latex",
-          header = F,
-          title = "LAD cluster membership for upload speed timeseries\\label{cluster.membership}")  
+
+cluster1 <- as.vector(unlist(clusters[1]))
+cluster2 <- as.vector(unlist(clusters[2]))
+cluster3 <- as.vector(unlist(clusters[3]))
+cluster4 <- as.vector(unlist(clusters[4]))
+cluster5 <- as.vector(unlist(clusters[5]))
+cluster6 <- as.vector(unlist(clusters[6]))
+cluster7 <- as.vector(unlist(clusters[7]))
+cluster8 <- as.vector(unlist(clusters[8]))
+cluster9 <- as.vector(unlist(clusters[9]))
+cluster10 <- as.vector(unlist(clusters[10]))
+cluster11 <- as.vector(unlist(clusters[11]))
+cluster12 <- as.vector(unlist(clusters[12]))
+cluster13 <- as.vector(unlist(clusters[13]))
 ```
+
+
+
+**Cluster 1: **
+```{r echo=FALSE, message=FALSE, results = "asis"}
+cat(paste(shQuote(cluster1, type="cmd2"), collapse=", "))
+```
+
+
+**Cluster 2: **
+```{r echo=FALSE, message=FALSE, results = "asis"}
+cat(paste(shQuote(cluster2, type="cmd2"), collapse=", "))
+```
+
+
+**Cluster 3: **
+```{r echo=FALSE, message=FALSE, results = "asis"}
+cat(paste(shQuote(cluster3, type="cmd2"), collapse=", "))
+```
+
+
+**Cluster 4: **
+```{r echo=FALSE, message=FALSE, results = "asis"}
+cat(paste(shQuote(cluster4, type="cmd2"), collapse=", "))
+```
+
+
+**Cluster 5: **
+```{r echo=FALSE, message=FALSE, results = "asis"}
+cat(paste(shQuote(cluster5, type="cmd2"), collapse=", "))
+```
+
+
+**Cluster 6: **
+```{r echo=FALSE, message=FALSE, results = "asis"}
+cat(paste(shQuote(cluster6, type="cmd2"), collapse=", "))
+```
+
+
+**Cluster 7: **
+```{r echo=FALSE, message=FALSE, results = "asis"}
+cat(paste(shQuote(cluster7, type="cmd2"), collapse=", "))
+```
+
+
+**Cluster 8: **
+```{r echo=FALSE, message=FALSE, results = "asis"}
+cat(paste(shQuote(cluster8, type="cmd2"), collapse=", "))
+```
+
+
+**Cluster 9: **
+```{r echo=FALSE, message=FALSE, results = "asis"}
+cat(paste(shQuote(cluster9, type="cmd2"), collapse=", "))
+```
+
+
+**Cluster 10: **
+```{r echo=FALSE, message=FALSE, results = "asis"}
+cat(paste(shQuote(cluster10, type="cmd2"), collapse=", "))
+```
+
+
+**Cluster 11: **
+```{r echo=FALSE, message=FALSE, results = "asis"}
+cat(paste(shQuote(cluster11, type="cmd2"), collapse=", "))
+```
+
+
+**Cluster 12: **
+```{r echo=FALSE, message=FALSE, results = "asis"}
+cat(paste(shQuote(cluster12, type="cmd2"), collapse=", "))
+```
+
+
+**Cluster 13: **
+```{r echo=FALSE, message=FALSE, results = "asis"}
+cat(paste(shQuote(cluster13, type="cmd2"), collapse=", "))
+```
+
+```{r echo=FALSE, message=FALSE, results = "asis", eval=FALSE}
+# LADs <- do.call(cbindX, clusters) # this is with library(gdata)
+# LADs1 <- LADs[,1:7]
+# LADs2 <- LADs[,8:13]
+# 
+# names(LADs1) <- c("Cluster 1", "Cluster 2", "Cluster 3",
+#                      "Cluster 4", "Cluster 5", "Cluster 6",
+#                      "Cluster 7")
+# names(LADs2) <- c("Cluster 8", "Cluster 9", "Cluster 10",
+#                      "Cluster 11", "Cluster 12")
+# 
+# opts <- options(knitr.kable.NA = "") # kableExtra.auto_format = FALSE
+# 
+# # LADs1 %>%
+# # kable(caption = "LAD cluster membership for upload speed timeseries (1 out of 2)\\label{cluster.membership1}") %>%
+# #   kable_styling(font_size = 5,fixed_thead = T)
+# 
+# LADs1 %>%
+# kbl(caption = "LAD cluster membership for upload speed timeseries (1 out of 2)\\label{cluster.membership1}") %>%
+#    kable_classic(font_size = 5,
+#                 fixed_thead = T,
+#                 full_width = F
+#                 )
+# 
+# 
+# # stargazer(LADs1,
+# #           summary = F,
+# #           font.size = "footnotesize",
+# #           type = "latex",
+# #           header = F,
+# #           title = "LAD cluster membership for upload speed timeseries (1 out of 2)\\label{cluster.membership1}")  
+# 
+# stargazer(LADs2,
+#           summary = F,
+#           font.size = "footnotesize",
+#           type = "latex",
+#           header = F,
+#           title = "LAD cluster membership for upload speed timeseries (2 out of 2)\\label{cluster.membership2}")  
+```
+
+# Appendix 2 {#appendix2}
 
 ```{r echo=FALSE, message=FALSE, results = "asis"}
 
@@ -1093,3 +1226,5 @@ stargazer(for.descr,
 
 
 ```
+
+\pagebreak
