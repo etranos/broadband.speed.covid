@@ -278,7 +278,7 @@ and these affect the aggregated potential capacity of places for telecommuting.
 Such profiles are associated with longstanding inequalities in the UK and their
 spatial representation as a North-South divide [@martin_north_south].
 Various studies have illustrated severe inequalities between the north and the
-south regions of England **replace 'UK'** regarding, for example, skills and human capital,
+south regions of England regarding, for example, skills and human capital,
 unemployment, productivity and prosperity [@lee2014grim; @mccann2020perceptions;
 @dorling2018peak].
 Some scholars have even argued that the UK suffers some of the highest level of
@@ -640,7 +640,7 @@ million people, experience aggregate mean upload speeds of about $1$Mb/s faster
 than those in cluster $13$, but still lower than the other three large clusters
 and most of the smaller clusters, suggesting a middling quality of service.
 However, the time profile for cluster $6$ in Figure \ref{UpClusterL} shows
-that upload speeds drop quickly from $6:00$ to $7:00$ on a Monday
+that upload speeds are highest at $6:00$ on a Monday morning
 and peak between $23:00$ and midnight on Wednesday and Thursday,
 but tend to be lower during the working day.
 Indeed, experienced mean upload speeds in the morning peak are $4.4$% lower
@@ -671,7 +671,7 @@ but the statistics in Table \ref{up.cluster.descr} show that clusters $9$ and $1
 have the most reliable internet services.
 The ratio of standard deviation to mean in both these clusters is below 55%,
 and the ratio of upload speeds in the peak periods indicates that speeds are
-only about 2% slower in the morning.
+only about 2% slower in the morning than the evening.
 Mean speeds are also higher than in any other cluster, excluding cluster $2$,
 where measures of reliability suggests poorer performance.
 
@@ -696,7 +696,7 @@ $3$ and $10$.
 In summary, the local authorities in clusters $9$ and $11$ experienced resilient
 broadband internet that could support high levels of telecommuting.
 Those in clusters $2$, $3$, $7$, and $10$ also experience higher than average
-mean speeds and rank high to middle on measures of service reliability.
+mean speeds and rank middle to high on measures of service reliability.
 These LADs are *not* on the wrong side of the first level digital divide,
 but how likely are they to be able to take advantage of their resilient ICT
 infrastructure and services?
@@ -775,7 +775,7 @@ The reference case is cluster $4$, which includes only the local authority of
 Hambleton in North Yorkshire, a rural area of just over ninety thousand people.
 Mean, experienced upload speeds in cluster $4$ are close to both the average speeds
 for the $13$ clusters ($9.9$Mb/s) and the pre-clustered average for the whole sample
-($9.3$Mb/s) as shown in \ref{up.cluster.descr}.
+($9.3$Mb/s) as shown in Table \ref{up.cluster.descr}.
 However, the standard deviation for cluster $4$ and the difference between average
 speeds in the morning compared to the evening peak periods are indications of
 worse reliability than many of the other clusters.
@@ -785,9 +785,9 @@ rather than absolute probabilities.
 First, the number of speed tests run per cluster inhabitant between $9:00$-$10:59$
 is an indication of satisfaction or at least a lack of concern over broadband speeds
 and quality of service.
-People in LADs assigned to clusters $6$ and $13$ were more likely to ran speed tests
+People in LADs assigned to clusters $6$ and $13$ were more likely to run speed tests
 (at a per capita basis)
-at this time of day, whilst people in cluster $11$ were the least likely ones.
+at this time of day, whilst people in cluster $11$ were the least likely to do so.
 This high level of satisfaction matches the high quality and reliability of service
 we would expect from the analysis in Section [4.1]](#sec:4.1).
 Those in clusters $2$, $3$, $9$ and $10$ were also less likely to ran speed tests per
@@ -815,14 +815,15 @@ a result that makes sense considering two of the four authorities in cluster $3$
 are the London commuter towns of Harlow and Luton.
 However, even though London was also included in the variable calculating distance
 from the centre of one of either the ten largest metropolitan areas in England,
-Glasgow or Cardiff, tests run in cluster $3$ are likely to be furthest away.
+or Glasgow or Cardiff, tests run in cluster $3$ are likely to be furthest away.
 Still, whilst significant, the effect is tiny and the other members of cluster $3$
 are Corby and Eastbourne, two towns which, whilst not part of metropolitan areas,
 are also not in remote parts of the country, and are home to an estimated population
 of $175$ thousand people between them. **move maps to here?**
+
 Meanwhile, LADs in cluster $7$ are most likely to be near the centre of a large
 metropolitan area, even though the four local authorities of cluster $7$ include
-no central urban boroughs, and only one LAD that is part of a metropolitan area of
+no central urban boroughs and only one LAD that is part of a metropolitan area of
 governance - Tameside in Greater Manchester.
 This may be why those in cluster $7$ are not served by Virgin Media.
 It also is a demonstration of the complexity of experienced broadband upload speeds
@@ -840,7 +841,7 @@ but furthest from London.
 Internet resilience, as measured here, seems to be more nuanced than our --
 arguably crude -- dummy variable depicting the North-South economic divide either,
 which assigns $1$ to LADs locates in Greater London, Southeast, Southwest and East
-of England regions.
+of England regions, and $0$ to the rest.
 The authorities most likely to be in the South are those in cluster $13$,
 which was identified as having the slowest mean upload speeds of any of the clusters,
 and thus a low level of service.
@@ -848,62 +849,144 @@ However, cluster $13$ does include some rural, remote areas of the country,
 such as Northwest Scotland, Cornwall and Powys in Wales as shown on Figure
 \ref{map.up.clusters}.
 It also includes the major metropolitan centres of Bristol, Liverpool,
-and Newcastle, as well as nine (of $32$) London Boroughs and plenty of home county
-and suburban areas.
+and Newcastle, as well as nine (of $32$) London Boroughs, 
+including the City of London and plenty of home county and suburban areas.
 Although by the standard deviation measure cluster $13$ has unreliable internet
-services, speed variation was less during the morning peak.
-More broadly, the estimates for this variable are not consistent between the
-two clubs of LAD clusters: those who are in the wrong and the right side of
-digital divides.
+services, speed variation was less during the morning peak, suggesting that 
+the estimates for reliability are inconsistent. 
+Considering that this is one of the largest clusters, and thus the averages 
+incorporate more noise than some of the smaller clusters, 
+it may be that the LADs in this cluster do not all suffer equally from 
+a first level digital divide.
 
-Regarding the rest of the socio-economic variables we see a varied
-picture. Clusters $9$ and $11$, which are the ones benefiting by the most resilient
-internet connections are likely to consist of LADs with higher share of managerial
-and highly skilled occupations as well as higher average earnings. Interestingly,
-both clusters are characterised by lower share of occupations that are not usually
-associated with teleworking (professional, associated professional and technical,
-administrative, leisure and machine operation jobs), but also by lower number of
-business per habitant and. However, the likelihood of hosting highly skilled
-residents is not consistent with cluster $11$ having a negative coefficient for the
-NVQ4 variable. This might be an indication of the higher returns that resilient
-broadband infrastructure generates for cluster $9$ versus cluster $11$. While both
-of these cluster consist more likely by large LADs in terms of population, job
-density if higher for LADs in cluster $11$ indicating more labour intensive
-economic structures contrary to LADs in cluster $9$.
+Yet we need to consider the results for other variables in Table \ref{aux} to better
+determine whether clusters $1$ and $13$, which appear to suffer most from a lack 
+of quality internet services, are also more likely to have a low skilled workforce, 
+less able to benefit from telecommuting. 
+Cluster $1$ has the lowest propotion of educated people of any of the clusters,
+and the lowest earnings, despite recording the highest proportion of managerial, 
+professional jobs, and the second highest proportion of tech jobs.
+Rural areas such as those in cluster $1$ are often home to many retired people,
+which might explain these results or perhaps, as these figures are relative,
+we could note that cluster $1$ also has a greater proportion of skilled trades
+than other clusters.
+Either way, it seems likely that the first level digital divide reinforces 
+other inequities in cluster $1$.
+In comparison, those cluster $13$ are more likely to earn more and have a better
+education.
+Cluster $13$ also has the most businesses per inhabitant, but is somewhere in the 
+middle in terms of job density.
+If this is an indication of a high number of SMEs, it might give some explanation
+for the variable internet quality, considering that small businesses have not been
+seen as the most valuable customers for higher speed broadband services **insert ref**.
 
-A similar divided picture can be built for the next tier of clusters: $2$, $3$,
+Cluster $6$ is the largest cluster, and thus, like cluster $13$, there is more 
+noise within the averages we use to measure internet quality and reliability,
+and the result indicates an average level of service, even if better than LADs
+in cluster $13$.
+Cluster $6$ also falls towards the middle of the clusters on many of the socio-
+economic variables in Table \ref{aux}. 
+It ranks third or fourth out of the eleven clusters in the table in terms of
+having a higher proportion of managerial, professional, and tech jobs, as well as 
+higher earnings, but is fourth from bottom in terms of education.
+The LADs in cluster $6$ are also diverse, with few truly remote areas, 
+but many urban areas in both the North, including Birmingham, Leeds and Sheffield, 
+and South, including twelve London Boroughs, and many suburban areas and 
+smaller cities like Oxford and Cambridge.
+The capital cities of the other UK nations, Belfast, Cardiff and Edinburgh, are
+also in this cluster, suggesting perhaps that the lower level of reliability 
+discussed in Section [4.1](#sec:4.1) may be as a result of increased demand,
+e.g. for telecommuting.
+
+In comparison, clusters $9$ and $11$, which benefit from the most resilient
+internet connections, are characterised by lower share of occupations that are  
+may benefit from the ability to telecommute (e.g. managerial and technical). 
+Cluster $9$ is more highly educated and higher earning than cluster $11$, 
+has fewer businesses per inhabitant and less job density.
+Indeed, cluster $11$ has a negative coefficient for the NVQ4 variable, whilst
+for cluster $9$ the coefficient is positive, and cluster $11$ has the second
+highest job density and cluster $9$ the second lowest. 
+The former might be an indication of the higher returns that resilient
+broadband infrastructure generates for cluster $9$ versus cluster $11$. 
+Indeed, we did detect slightly more slowdown in the AM peak in cluster $9$ than in
+cluster $11$ (see Table \ref{up.cluster.descr}).
+Meanwhile, a propensity for a high job density might indicate more labour intensive 
+economic structures in cluster $11$ than in the LADs in cluster $9$.
+
+The LADs in clusters $9$ and $11$ also have opposite signs for their likelihood 
+of being in the South of England.
+Those in cluster $9$ less likely to be in the South and those in cluster $11$ 
+more likely, although the coefficient for cluster $9$ might be skewed by 
+the presence of the Scottish cities of Glasgow and Aberdeen, 
+as Scotland has a different economic profile than England.
+Still, both clusters consist of larger LADs in terms of population, 
+including the urban centre of Manchester and three of the nine other districts of
+Greater Manchester, Nottingham, both Portsmouth and Southampton,
+eight London Boroughs, and four of the seven constituent authorities of the
+West Midlands Combined Authority.
+Among the $65$ LADs are also a number of other tightly bounded urban areas, 
+such as Blackpool, Ipswich, Norwich, Slough, and Stevenage, and urban areas 
+at the centre of less confined districts like Burnley, 
+the digital hub of Milton Keynes, and Northampton.
+Thus, our findings confirm the importance of geography and urban locations 
+for being on the right side of the first level digital divide, and suggest that 
+internet resilience cuts across other digital and economic divides.
+
+A similarly divided picture can be built for the next tier of clusters: $2$, $3$,
 $7$, $10$. LADs in these clusters experience higher than average mean speeds and
-rank high to middle on measures of service reliability. As mentioned before, LADs
-in these clusters are on the right side of the first level digital divide. However,
-while all of them are more likely to be populated by people employed in managerial
-jobs, only LADs in cluster $2$ and $10$ are more likely to have highly skilled
-work force, which can more easily take advantage of working from home opportunities.
-A more mixed picture can be built for LADs in clusters $3$ and $7$, which are
-associated, on the one hand, with lower skills and, on the other hand, with higher
-likelihood of individuals in managerial occupations. A similar contradicting
-pattern can be illustrated for cluster $6$, which is the largest one with average 
-quality of internet service. Arguably, LADs in clusters $2$ and $10$ are the ones
-benefiting more by resilient internet infrastructure in an era that working
-from home became a vehicle for economic resilience.
+rank high to middle on measures of service reliability. 
+LADs in these clusters are on the right side of the first level digital divide. 
+However, only LADs in cluster $2$ and $10$ are more likely to have highly skilled
+work force, which might more easily take advantage of working from home 
+opportunities.
+Cluster $2$ is comprised of just two LADs, with the lowest job density of any
+cluster -- these are East Lothian near Edinburgh, and North East Lincolnshire, 
+home to Grimsby.
+Cluster $10$ is comprised of four LADs, including two peripheral suburban areas 
+of Birmingham, the East London Borough of Newham, and Dundee.
+Suburbs are considered the most likely urban form in which telecommuters live, 
+and Dundee has a reputation for tech startups **insert ref**.
+Yet although those in clusters $2$ and $10$ may be making the most of their 
+resilient internet, those in cluster $7$ have the highest earnings.
+The four LADs in cluster $7$ include the suburbs South of Belfast, a suburban 
+district of Greater Manchester, the villages between York and Leeds, and a
+couple of small West Midlands towns.
+LADs in cluster $3$ are associated more with lower skills and have the highest
+proportion of individuals in machine operation jobs. 
+They include the Southeast commuter towns of Harlow and Luton and the slightly more
+distant towns of Eastbourne and Corby.
+Arguably, LADs in clusters $3$ benefit the least from their resilient internet 
+infrastructure in an era when working from home became a vehicle for economic 
+resilience.
 
-Moving on to the next tier of clusters $8$ and $12$, which are characterised by
-LADs enjoying close to average mean upload speeds, but different patterns of internet
-reliability, we see a differentiated picture. On the one hand, both of them are
-likely to host individuals employed in managerial occupations while the opposite
-applies on skilled, professional and leisure occupations. On the other hand,
-LADs in cluster $8$ are characterised by a very small positive and LADs in cluster
-$12$ by a negative likelihood to host highly skilled individuals. Moreover, LADs
-in these two clusters have a rather
-similar profile regarding the occupational variables, but different tendencies
-regarding the stock of businesses. In total, LADs in these clusters do not
-benefit by great internet services and could only marginally benefit by working
-from home opportunities.
+Finally, clusters $8$ and $12$, are characterised by LADs enjoying close to average 
+mean upload speeds, but different patterns of internet reliability. 
+LADs in cluster $8$ are likely to host more individuals employed in tech and
+administrative occupations than any other cluster, as well as many in managerial 
+occupations, whilst the opposite applies to skilled trade and leisure occupations. 
+These LADs are characterised by a very small positive likelihood of more educated 
+residents, but are not significantly likely to earn more than other clusters.
+Including suburbs of Leicester, Cardiff, Birmingham, the green belt area south of 
+London straddling the M25 motorway, and rural West Devon, the LADs in cluster $8$
+seem to likely to have the skills and occupations that would benefit from 
+quality internet services, but suffer from poor internet resilience and reliability.
 
-Lastly, clusters $1$ and $13$, which appear to suffer most from a lack of quality
-internet services are more likely to also suffer from low skilled workforce. LADs
-in cluster $13$. Contradictory, the likelihood of workforce employed in managerial
-occupations is positive for LADs in both clusters, but only individuals in LADs
-in cluster $13$ are more likely to enjoy high earnings.
+In comparison, LADs in cluster $12$ are less likely to be able to benefit from
+quality internet services if they had them, with fewer individuals achieving 
+NVQ4 or better and lower levels of occupations that would benefit from homeworking. 
+Yet LADs in this cluster benefit from the second highest level of earnings, and
+have the largest stock of businesses per inhabitant and the highest job density. 
+This density of businesses could be why cluster $12$ is the only cluster with higher
+speeds in the morning peak during the study period.
+If people are at home, business premises might well be abandoned.
+Cluster $12$ is home to $1.5$million people spread across twelve LADs, including
+the City of Westminster and the London Borough of Hammersmith.
+However, it also includes a LAD in Northern Ireland, two in Wales, two suburban areas
+North of London, Preston in the Northwest, East Staffordshire in the Midlands, and
+Fenland in the East of England.
+This spatial diversity demonstrates that the temporal clustering of internet 
+resilience does not create spatial clusters, and digital divides do not necessarily
+overlap with economic ones.
 
 # Conclusions {#sec:5}
 
@@ -911,26 +994,6 @@ Upload speeds are not used as benchmarks in the UK, nor have been seen as integr
 universal service, considering there has never before been such extreme demand for
 telecommuting and operations such as video calls.
 
-those in cluster $6$, including people living in Birmingham, Leeds and
-Sheffield, in twelve London Boroughs, and many suburban areas and smaller cities like
-Cardiff, Oxford and Cambridge
-This lower level of reliability may be as a result of increased demand,
-e.g. for telecommuting, especially as there are few truly remote areas
-in this cluster.
-
-The eight LADs in clusters $3$ and $10$ are home to over one million people,
-and are all more urban and suburban than cluster $1$, including the London Borough
-of Newham, the Southeast commuter towns of Harlow and Luton, the Birmingham suburbs
-of Bromsgrove and Cannock Chase, Dundee City, and the towns of Eastbourne and Corby.
-
-Although not all of the local authorities in these clusters $9$ and $11$ are urban,
-among the $65$ LADs are Manchester and three of the nine other boroughs of
-Greater Manchester, Glasgow, Nottingham, both Portsmouth and Southampton,
-eight London Boroughs, four of the seven constituent authorities of the
-West Midlands Combined Authority.
-There are also a number of other tightly bounded urban areas, such as Aberdeen,
-Blackpool, Ipswich, Norwich, Slough, and Stevenage, and urban areas at the centre
-of less confined districts like Burnley, Milton Keynes, and Northampton.
 
 Clusters $3$, $9$, $10$ and $11$ seem to benefit most from high quality and
 resilient broadband services.
