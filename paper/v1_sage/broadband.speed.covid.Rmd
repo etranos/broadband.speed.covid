@@ -72,20 +72,19 @@ The ability to work from home or telecommute meant millions retained their jobs 
 to a varying extent, maintained productivity during periods of strict
 lockdowns around the world.
 However, this ability has not been evenly distributed socially or spatially,
-creating a new type of digital divide.
+creating new intersections of economic and digital divisions, never tested before.
 On one side are those who can work from home, supported by digital technologies,
 and have thus been able to enjoy both economic resilience and greater personal safety.
 On the other side, previously employed individuals have been forced to accept
 furlough or redundancy packages unless they are part of the cadre of essential
 workers, who are potentially at high risk of infection.
-Whilst the basis for this new digital divide has been viewed as mainly occupational,
-here we consider whether the divide is also technological.
+Whilst the basis for this pandemic-generated divide has been viewed as mainly 
+occupational, here we consider whether it is also technological.
 
 <!-- our approach -->
 Using the UK as a case study, this paper aims to understand how the quality and
 reliability of internet service, as reflected in *experienced* internet speeds,
-may reinforce or redress the spatial and social dimensions of the digital division
-exposed by the pandemic.
+may reinforce or redress the spatial and social dimensions of digital divisions.
 To do so, we employ volunteered geographic data on individual broadband speed tests
 and state-of-the-art time-series clustering methods to create clusters of UK local
 authorities with similar temporal signatures of experienced internet speeds.
@@ -123,25 +122,24 @@ services can accommodate the increased demand.
 For example, $47$% of people in employment in the UK worked solely from home in April
 $2020$, whilst the same figure only reached $5$% the year before [@ons2020;
 @ons2020lm2019].
-A back of the envelope calculation suggests that up to 40% of the working force
+A back of the envelope calculation suggests that up to 40% of the labour force
 could work from home on an ongoing basis [@batty2020editorial].
 Similar figures have been reported for other countries [@felstead2020homeworking].
-For instance, $37$% of the European workforce worked from home in April $2020$ with
+Approximately $37$% of the European workforce worked from home in April $2020$ with
 countries like Finland reaching $60$% [@eurofound2020].
 In the US, almost half of the working population worked from home during the same
 period because of the pandemic [@brynjolfsson2020covid],
 and a recent estimate indicated that $37$% of all jobs in the US can be permanently
 performed entirely from home [@NBERw26948].
-
-<!-- ICT infrastructure and digital divides-->
 None of these changes could have happened in the absence of reliable information
 and communication technology (ICT) infrastructure -- both in terms of software
 and hardware.
 But while software innovations are easily diffused across space and
 society^[See for example the huge success of videoconferencing apps such as Zoom
-[@marks2020zoom].],
-the same does not apply for ICT hardware infrastructure such as internet
-broadband connectivity.
+[@marks2020zoom].], the same does not apply for ICT hardware infrastructure such as 
+internet broadband connectivity.
+
+<!-- ICT infrastructure and digital divides-->
 The literature describes first level digital divides in terms of the
 availability and quality of internet connectivity, such as that manifest in
 different geographies in the UK [@riddlesden2014broadband; @philip2017digital].
@@ -159,27 +157,28 @@ pandemic.
 The extreme level of demand for telecommuting fundamentally alters the
 potential returns of internet use for the user and wider community,
 assumes skills or functions that are present in some occupations but not in others,
-and relies upon access to high quality internet services.
+and relies upon access to high quality and reliable internet services.
 
-As the quality of internet infrastructure and services, as well as variation in
-occupations are spatially dependent and clustered in space, our approach offers a
-framework for understanding the impact of and interactions between
-the different levels of digital division in different places
-with different characteristics.
-By asking how resilient broadband speeds, and particularly upload speeds are
-as experienced in different parts of the UK during a time of extreme demand,
+As the quality of internet infrastructure and services, as well as the concentration
+of different occupations are spatially dependent and clustered in space, 
+our approach offers a framework for understanding the impact of and interactions 
+between digital divisions geographically and socioeconomically.
+By asking how resilient broadband speeds, and particularly upload speeds, are
+experienced in different parts of the UK during a time of extreme demand,
 we interrogate which places benefit from the greater economic resilience
 digital technologies can offer, not only during the pandemic,
 but also into the future.
 The structure of this paper is as follows.
 First we review the literature on telecommuting and digital divides to better
-understand the structural and spatial development of these practices pre-pandemic,
+understand their structural and spatial development pre-pandemic,
 and thus their importance to the economic resilience of different places.
 We then describe our data and methodology.
 Our results section first offers a classification of how internet services vary
-across the UK local authorities and then assesses whether these clusters replicate
-or repudiate other socio-economic and geographic patterns of economic resilience.
-The paper ends with a conclusions section.
+across clusters of UK local authorities and then assesses whether these clusters 
+replicate or repudiate other socio-economic and geographic patterns of economic 
+resilience.
+We conclude with a discussion of the insights we've gained from our new perspective 
+on digital divisions.
 
 # Literature review {#sec:2}
 
@@ -231,11 +230,11 @@ to use digital technologies to work from home benefit from a high rate of return
 their use of the internet in terms of autonomy, flexibility, and time saved from
 commuting [@peters2004employees; @siha2006telecommuting; @singh2013modeling].
 These returns have been even greater during the Covid-19 crisis,
-when those with the ability to telecommute also have the ability to maintain
+when those with the capability to telecommute also have the ability to maintain
 their employment whilst protecting their health.
 However, the success of these arrangements has been dependent upon the first
-level digital divide, which is associated with access and quality of internet
-connectivity at a time of extremely high demand.
+level digital divide, which is associated with access to and quality of internet
+connectivity.
 @SALEMINK2017360 provides a systematic review of the pre-pandemic,
 first level digital divide in infrastructure quality between urban and rural areas
 in various advanced economies.
@@ -246,10 +245,10 @@ not previously been the cause of greatest demand and pressure on internet servic
 
 There are indications that those who purchase high speed connections consume
 more data of all sorts and use their connections for a variety of purposes
-[@hauge2011consumer],
-and that there is a correlation between access to internet services and a
+[@hauge2011consumer].
+There is also a correlation between access to internet services and a
 reduction in household transport spend [@bris2017ict].
-Whether the implication is more internet use and less travel
+Independently of whether the additional internet use and reduced travel is
 because of increased telecommuting, these studies suggest that better internet
 services enable households to make savings and efficiencies,
 an example of the first level digital divide reinforcing the third level.
@@ -260,21 +259,20 @@ how infrastructure accessibility, quality, and reliability affects telecommuting
 particularly in light of the high volumes of bandwidth-intensive video conferencing
 required in order to avoid the face-to-face contact that could increase
 the spread of infection.
-We seek to answer how internet service resilience contributes to or reduces
-economic resilience when the latter is dependent upon
-the capability to work from home.
-We also aim to improve our understanding of the impact
-of first level digital division on telecommuting, and whether this results in
-much more fundamental third level digital division than has previously been perceived.
+We seek to answer how internet service resilience contributes to or reduces economic 
+resilience when the latter is dependent upon the capability to work from home.
+We also aim to improve our understanding of the impact of first level digital 
+division on telecommuting, and whether this results in much more fundamental third 
+level digital division than has previously been perceived.
 
 <!-- Covid-19 and working from home, cities, urban structure -->
 Furthermore, these multi-layered digital divides intersect with material divides
 and the economic geography of the UK.
-Following the regional economic resilience literature, which
-underlines the differentiated capacity of cities and regions to escape or
-recover from economic crises [@martin2012regional; @kitsos2018economic],
-different places have different industrial and occupational profiles,
-and these affect the aggregated potential capacity of places for telecommuting.
+Following the regional economic resilience literature, which underlines the 
+differentiated capacity of cities and regions to escape or recover from economic 
+crises [@martin2012regional; @kitsos2018economic], different places have different 
+industrial and occupational profiles, and these affect the aggregated potential 
+capacity of places for telecommuting.
 Such profiles are associated with longstanding inequalities in the UK and their
 spatial representation as a North-South divide [@martin_north_south].
 Various studies have illustrated severe inequalities between the north and the
@@ -283,10 +281,10 @@ unemployment, productivity and prosperity [@lee2014grim; @mccann2020perceptions;
 @dorling2018peak].
 Some scholars have even argued that the UK suffers some of the highest level of
 interregional inequalities in the global north [@gal2018reducing; @mccann2016uk].
-Not only are all three levels of digital divides associated, to a certain extent,
-with or shaped by the geography of the UK, but the intersection of the digital and
-material divides affects the capacity of places to overcome
-some of the economic effects of the Covid-19 pandemic.
+Not only are all three levels of digital divides associated with or shaped by the 
+geography of the UK, but the intersection of the digital and material divides 
+affects the capacity of places to overcome some of the economic effects of the 
+Covid-19 pandemic.
 Importantly, this is the first time that digital technologies became an essential
 tool for economic resilience for such a great part of the population.
 
@@ -327,7 +325,7 @@ How is internet speed data a better source than mobility?-->
 
 ## Time-Series Clustering {#sec:3.1}
 <!-- clustering in general -->
-The starting point of our methodological framework is cluster analysis, which can
+First we identified our methodological framework as cluster analysis, which can
 be defined within the modern machine learning framework as an unsupervised
 learning task, partitioning unlabelled observations into homogeneous groups
 known as clusters [@montero2014tsclust].
@@ -337,24 +335,20 @@ Clustering is particularly useful for exploratory studies as it identifies
 structures within the data [@aghabozorgi2015time].
 Therefore, cluster analysis is a widely used family of techniques in geography
 [@gordon1977classification; @everitt1974cluster].
-For instance, clustering methods are the basis of *geodemographics*, a research domain
-which aims to create small area indicators or typologies of neighbourhoods
-based on various and sometimes diverse variables
-[@SINGLETON2009289; @harris2005geodemographics].
+For instance, clustering methods are the basis of *geodemographics*, a research 
+domain which aims to create small area indicators or typologies of neighbourhoods
+based on diverse variables [@SINGLETON2009289; @harris2005geodemographics].
 Clustering techniques have also been employed to solve *regionalisation* problems
 [@niesterowicz2016].
-
-<!-- time-series clustering -->
 Common characteristics of these studies are the cross-sectional nature of the data
 they employ.
 Indeed, most clustering problems in geography deal with observations that are
 fixed in time.
-However, for this paper we are interested in internet speeds, which vary over time
-and, therefore, create clusters of local authorities in the UK with similar temporal
-signatures of experienced internet speeds.
-Hence, we deviate from the established geographical clustering tools and
-employ time-series clustering methods.
+However, for this paper we are interested in internet speeds, which vary over time.
+We therefore create clusters of local authorities in the UK with similar temporal
+signatures of experienced internet speeds, and employ time-series clustering methods.
 
+<!-- time-series clustering -->
 Time-series clustering methods have been developed in order to deal with clustering
 problems linked to, for instance, stock or other financial data, economic,
 governmental or medical data as well as machine monitoring
@@ -372,27 +366,18 @@ similar times series objects together considering the whole length of the time-s
 and overcoming issues around noise, outliers and shifts [@lin2004iterative;
 @aghabozorgi2015time].
 
-<!-- Time-series clustering methods utilising the whole length of time-series can be grouped in three categories. The first -- model-based approaches -- is based on recovering the underlying model for each time-series and then applying clustering algorithms on the model parameters of each time-series [@aghabozorgi2015time]. The main criticism is the cluster accuracy for nearby clusters [@mitsa2010temporal].The second approach is based the formation of vectors of features derived from the original time-series. These new data of reduced dimensionality are then clustered using conventional clustering algorithms. -->
-
 For this paper we utilise a category of time-series clustering methods
 known as shape-based approaches.
 These methods match two sperate time-series objects based on the similarity of
 their shapes through the calculation of distances between the shapes,
-and are thus better equipped to capture similarities between short length
-time-series [@aghabozorgi2015time].
-This approach serves best this paper because (i) we identify clusters of
-UK local authorities with similar temporal signatures -- i.e. shapes -- of
-experienced internet speeds and (ii) the length of our time-series is short
-(see the data discussion in this section).
-
-Another import element of time-series clustering is the actual clustering algorithm.
-Similar to the clustering of cross-sectional data, we can employ partitioning
-algorithms, which lead to non-overlapping clusters, hierarchical clustering,
-which classifies clusters at different levels, and fuzzy algorithms, which
-create overlapping clusters [@sardatime].
-Because of the simplicity of the implementation and the interpretability of the
-results, we utilise here partitioning clustering based on the widely used *k*-means
-algorithm.
+and are better equipped to capture similarities between short length time-series 
+[@aghabozorgi2015time], such as our data.
+We thus identify clusters of UK local authorities with similar temporal signatures --
+i.e. shapes -- of experienced internet speeds.
+The clusters are identified using a partitioning algorithm, which leads to 
+non-overlapping clusters, and particularly the widely use *k*-means algorithm because
+of the simplicity of the implementation and the interpretability of the
+results.
 This is an iterative algorithm, which begins with defining the desired number of
 clusters *k*.
 Then each observation is randomly assigned to a cluster from the $[1,k]$ space.
@@ -401,8 +386,8 @@ the distance between the centroids of the clusters and the observations
 assigned to these clusters [@james2013introduction].
 
 <!-- difference between clustering cross-sectional and time-series data -->
-There are a number of differences between the above described application of
-*k*-means for cross-sectional data and its application for times series data.
+There are a number of differences between the application of *k*-means for 
+cross-sectional data and its application for times series data.
 Instead of creating clusters around centroids, a common approach is to create
 clusters around *medoids*, which are representative time-series objects with a
 minimal distance to all other cluster objects [@sardatime].
@@ -410,74 +395,69 @@ Also, instead of calculating the Euclidean distance between centroids and data
 points, more complex distance measures need to be employed in order to capture
 the similarity between a time-series object and a medoid.
 A common distance measure for shape-based time-series clustering is
-Dynamic Time Warping (DTW).
-Using its underpinning dynamic programming algorithm, DTW compares two time-series
-objects to find the optimum warping path between them.
+Dynamic Time Warping (DTW), an algorithm comparing two time-series objects to find 
+the optimum warping path between them.
 DTW is widely used in order to overcome limitations linked to the use of Euclidean
 distance [@sardatime; @berndt1994using; @ratanamahatana2004everything].
 The `R` package `dtwclust` has been used for the time-series clustering [@dtwclust].
 
 ## Experienced Broadband Speeds {#sec:3.2}
 <!-- introduction of our broadband speeds data -->
-To assess the quality and reliability of internet across local authorities
-in the UK during the time when the population were told to work from home if at
-all possible we utilise unique data comprising individual internet speed tests from
+To assess the internet quality and reliability across local authorities in the UK, 
+we utilise unique data comprising individual internet speed tests from
 Speedchecker Ltd^[[https://www.broadbandspeedchecker.co.uk/](https://www.broadbandspeedchecker.co.uk/)].
 This is a private company that allows internet users to check their own broadband
 upload and download speeds, and stores every speed-check with timestamp and
 geolocation information.
 These data have been used before to assess digital divides [@riddlesden2014broadband]
-and the impact of local loop unbundling regulatory processes [@nardotto2015unbundling].
-By using volunteered geographic data, we are able to assess the *experienced*
-internet speed by users, which may differ from the *advertised* maximum speeds of ISPs.
-
+and the impact of local loop unbundling regulatory processes 
+[@nardotto2015unbundling], and we followed the former's approach to remove outliers. 
+By using this volunteered geographic data, we are able to assess the internet speed 
+*experienced* by users, which may differ from the maximum speeds *advertised* by 
+ISPs.
 We are particularly interested in upload speeds and the frequency of speed tests
 over the period from March to May $2020$, as government statements indicate this is
-when UK workers were told to work from home if at all possible [@GovUK2020].
+when UK workers were first told to work from home if at all possible [@GovUK2020].
 Average upload speeds are slower than average download speeds, at $9.3$Mb/s
 mean upload speed for the whole sample during the period of interest,
 compared to $29.6$Mb/s for download speeds, but they are also less associated
 with internet-based, high-demand, leisure activities such as video streaming.
 Therefore, upload speeds are more relevant to work-related activities such as
 uploading documents or two-way audio, video, and text-based communication systems.
-Meanwhile, the frequency of speed tests was important in identifying
-the temporal profile which would give us most insight into
-experienced internet service and resilience, and provide
-an indication of the volume of experience over particular units of time.
 
 <!-- data transformation -->
-The first step in the workflow after dropping some outliers following
-@riddlesden2014broadband was to transform the individual, geolocated and time-stamped
-tests to more meaningful aggregates both in terms of space and time.
-The frequency of testing indicates that whilst there is an overall trend of increased
-testing from March to April and then a slight reduction from April to May,
+The frequency of speed tests was important in identifying the temporal profile which 
+would give us most insight into experienced  internet service and resilience over 
+units of time.
+Our analysis indicates that whilst there is an overall trend of increased testing 
+from March to April and then a slight reduction from April to May,
 this trend masks substantial variation by not only the day of the week,
 but also time of day, as can be seen in Figure \ref{test2020}.
 Thus, a daily aggregation of upload speeds would mask the variation in experienced
 service over the course of each weekday.
 Furthermore, the importance of this variation is highlighted by a comparison
-with the same period in $2019$, as in Figure \ref{test2019},
-when the volume of testing and thus of experience of internet service quality
-was much more tied to the evening leisure peak and presumably to download speeds.
-Since the increase in testing during the working day in $2020$ is an indication that
-users have a greater perception of the variable quality of internet service,
-particularly during a new morning peak of testing for service reliability,
-we decided to include a measure of hourly variation in our temporal profiles.
+with the same period in $2019$, as in Figure \ref{test2019}, when the volume of 
+testing and thus of experience of internet service quality peaked in the evening, 
+presumably in response to demand for leisure activities and download speeds.
+In contrast, the majority of the increase in testing in $2020$ is during the working
+day, creating a new morning peak in Figure \ref{test2020}.
+Therefore, we include a measure of hourly variation in our temporal profiles to
+reflect the change in users' perception of the workday reliability of internet 
+services.
 
-However, although this is a large data set -- $241,088$ individual tests performed
-during weekday hours across the study period --
-there are not enough observations for each Local Authority District (LAD)
-and for each working hour of each working day -- $631$ speed tests per LAD on average
--- to profile speeds at that level of detail.
-Therefore, we aggregate all the speed-checks during the $13$ weeks of March to May
-inclusive for weekdays in $2020$ by each hour of the day and day of the week.
+However, we judged that there were insufficient observations -- only $631$ speed 
+tests per LAD on average -- for each for each working hour of each working day in 
+each Local Authority District (LAD) to profile speeds at that level of detail.
+Spatial aggregation was also necessary because we could not follow individuals or
+households and connect data points.
+Therefore, we aggregate the $241,088$ individual, geolocated and time-stamped 
+speed-checks during the $13$ weeks of March to May inclusive for weekdays in $2020$ 
+by each hour of the day and day of the week.
 As our research aims to identify the geography of internet service resilience for
 work purposes, bank holidays and the hours between midnight and $6:00$ were excluded,
 as well as weekend days.
 The composite week time-series thus comprise $18$ hours multiplied by $5$ weekdays or
 $90$ time points per series.
-We also aggregate these data spatially because we could not follow individuals or
-households and connect data points.
 The time-series were calculated for each of the $382$ LADs in the UK, standardised,
 and then a *k*-means partitioning around medoids clustering algorithm
 was applied using DTW.
@@ -510,21 +490,20 @@ print(nrow(TSbb20sp)/length(unique(TSbb20sp$LAD19NM)))
 
 <!-- metrics -->
 In Section [4.1](#sec:4.1), we review the temporal profile of upload speed
-by hour of the day and day of the composite week, as well as
-the experienced speed characteristics of each cluster.
+by hour of the day and day of the composite week for each cluster.
 Since the quality and reliability of internet services vary in time and space due
-to both supply and demand-side influences, we use a number of different measures
+to both supply and demand-side influences, we also use a number of different measures
 to describe experienced upload speeds per cluster.
 These include: a) mean, experienced connection speed,
 b) standard deviation or the amount of fluctuation from the mean, and
-c) the variation in speeds at particular times of day when working from home is
-more likely to take place.
+c) the variation in speeds during the new morning peak of testing when working 
+from home is more likely to take place.
 We take account of all three measurements in our descriptive statistics of
 upload speeds in order to determine how resilient broadband speeds are
 as experienced in different parts of the UK during a time of extreme demand.
 
 <!-- link to auxillary regressions method -->
-The cause of these different experiences of broadband resilience may be different in
+The cause of these different experiences of broadband resilience may vary across
 different areas, as they may reflect either similarities in patterns of demand
 or similar quality of infrastructure.
 Our approach is also limited by potential endogeneity, as for example, better
@@ -535,7 +514,7 @@ Therefore, we avoid attributing any cause to our analysis of the experienced lev
 of quality and reliability of upload speeds.
 Instead, we run an auxiliary regression in order to understand how the spatial and
 temporal patterns of internet service relate to the economic geography of the UK.
-More specifically, we estimate the following multinomial model:
+More specifically, we estimate the following multinomial logit model:
 
 \begin{align}
 Pr(Y_{i}=j) = \frac{exp^{X_{i}\beta_{j}}}{\sum_{i=1}^j exp^{X_{i}\beta_{j}}}
@@ -549,21 +528,23 @@ Based on the outcomes of the time-series clustering, we identify $J$ distinct
 and crisp clusters.
 We then regress this cluster membership against a vector $X_{i}$ of
 socio-economic and geographic variables, which are discussed in detail in
-the relevant Section [4.2](#sec:4.2), in order to explore how the different patterns
-might support or undermine efforts to work from home and maintain safe productivity
-and whether they reinforce existing spatial and social inequalities.
-This analysis enables us to provide a more nuanced understanding of how
-telecommuting and technology intersect at a time of extreme demand, and what
-lessons this time has for a future where telecommuting is likely to remain a
-common means of accessing work and broadband services, as well as infrastructure,
-must be fit for purpose.
-
+the relevant Section [4.2](#sec:4.2).
 <!-- limitations-->
-Our analysis is not free of limitations as, for instance, although we do have
-individual data we cannot identify individuals or households and, therefore, we
-need to aggregate our data at the LAD level. However, such individual data could
-only be found though surveys which by definition result in limited samples
-and, importantly, less detailed data about the quality of internet connectivity.
+Although we do have individual data, we cannot identify individuals or households 
+and, therefore, we need to aggregate our data at the LAD level. 
+Therefore, our results offer only correlations between the socioeconomic 
+characteristics of certain geographic locations and internet service quality,
+not a record of who was using the internet services to telecommute and maintain
+safe productivity.
+Such individual data could be found though surveys, but these offer less 
+detailed data about the experience of internet resilience due to enforced, 
+rather than leisure demand, which is the main contribution of this paper.
+Our auxiliary regression, therefore, provides no more than an indication of how 
+internet connectivity can reinforce or redress existing spatial and social 
+inequalities in different places.
+However, it opens a path to future research by highlighting the importance of  
+understanding of how telecommuting capabilities and digital infrastructure divisions 
+intersect.  
 
 # Results {#sec:4}
 
@@ -631,68 +612,59 @@ of any of the clusters,
 and the second highest ratio of the standard deviation to the mean.
 This suggests that those living in local authorities in this cluster experienced
 some of the lowest quality broadband services in terms of upload speeds in the UK.
-However, the variation in upload speeds in cluster $13$,
-which can be an indication of its reliability, does not seem to disproportionately
-affect the morning peak from $9:00$-$10:59$, as upload speeds are, on average,
-only $2.6$% slower than in the evening peak period between $19:00$ and $20:59$,
+However, Figure \ref{UpClusterL} shows that the high standard deviation, 
+which is one indication of unreliable internet, did not disproportionately affect 
+the morning peak from $9:00$-$10:59$, when upload speeds were, on average, 
+only $2.6$% slower than in the evening peak period between $19:00$ and $20:59$, 
 when entertainment purposes are likely to be using the most bandwidth.
-In comparison, the five LADs that are home to $343$ thousand people in cluster $1$
-not only experience the second slowest mean upload speeds
-and the highest ratio of standard deviation to the mean,
-but are also much more affected during the morning peak.
+In comparison, the five LADs in cluster $1$, home to $343$ thousand people, not only 
+experience the second slowest mean upload speeds and the highest ratio of standard 
+deviation to the mean, but are also much more affected during the morning peak.
 
-Meanwhile, those living in the largest cluster -- $6$, with $155$ LADs home to $29.5$
+Meanwhile, those living in the largest cluster -- $6$, with $155$ LADs and $29.5$
 million people, experienced aggregate mean upload speeds of about $1$Mb/s faster
 than those in cluster $13$, but still lower than the other three large clusters
 and most of the smaller clusters, suggesting a middling quality of service.
-However, the temporal profile for cluster $6$ in Figure \ref{UpClusterL} shows
-that upload speeds are highest at $6:00$ on a Monday morning
-and peak between $23:00$ and midnight on Wednesday and Thursday,
-but tend to be lower during the working day.
-Indeed, experienced mean upload speeds in the morning peak are $4.4$% lower
+The temporal profile for cluster $6$ in Figure \ref{UpClusterL} shows that upload 
+speeds are highest at $6:00$ on a Monday morning and peak between $23:00$ and 
+midnight on Wednesday and Thursday, but tend to be lower during the working day.
+Furthermore, experienced mean upload speeds in the morning peak are $4.4$% lower
 than in the evening peak -- a greater, more noticeable change than any of the other
-large clusters experience, but smaller than any of the clusters with temporal
+large clusters experience, suggesting poorer reliability during the working day.
+This difference is less, however than any of the clusters with temporal
 profiles shown in Figure \ref{UpClusterS}.
-Clusters $8$ and $12$ also have mean upload speeds under $10$Mb/s, but higher than
-clusters $1$ and $13$, and their standard deviation is not dissimilar.
-However, this masks great variation in when lower speeds are experienced,
-with the mean upload speeds much lower between $9:00-10:59$ than
-between $19:00-20:59$ in cluster $8$, but slightly faster in the morning in
-cluster $12$.
 
-Indeed cluster $12$ is the only cluster to experience higher speeds in the evening
-peak, compared to the morning peak, suggesting that widespread telecommuting
-has generally changed the temporal profile of internet activity throughout the UK.
-Yet even if all but one cluster is showing slower speeds in the morning than
-the evening, the reliability of internet services in different clusters
+Clusters $8$ and $12$ also have mean upload speeds under $10$Mb/s, but higher than
+clusters $1$, $13$, and $6$. However, mean upload speeds are much lower between 
+$9:00-10:59$ than between $19:00-20:59$ in cluster $8$, but slightly faster in the 
+morning than in the evening in cluster $12$.
+Indeed, cluster $12$ is the only cluster to experience higher speeds in the morning
+peak compared to the evening, and thus the only cluster where the temporal profile 
+of internet use is closer to what might have been expected pre-pandemic.
+And yet even among the other clusters, the reliability of internet services
 during the working day still varies considerably.
 Interpreting this variation from the large spikes and dips shown on
 Figures \ref{UpClusterL} and \ref{UpClusterS} is difficult,
 but the statistics in Table \ref{up.cluster.descr} show that clusters $9$ and $11$
 have the most reliable internet services.
-The ratio of standard deviation to mean in both these clusters is below 55%,
-and the ratio of upload speeds in the peak periods indicates that speeds are
-only about 2% slower in the morning than the evening.
+The ratio of standard deviation to mean in both these clusters is lowest,
+and speeds are only about 2% slower in the morning than the evening.
 Mean speeds are also higher than in any other cluster, excluding cluster $2$,
 where measures of reliability suggests poorer performance.
 
 Thus, broadband services in clusters $9$ and $11$, home to over twelve million people
 performed the best during the study period, in terms of both quality and reliability.
 In Figure \ref{UpClusterL}, cluster $11$ shows more noticeable peaks and troughs,
-but the lowest points are not at the peak times described in Table \ref{up.cluster.descr}.
-Rather, the slowest upload speeds on average occur between $6:00-7:00$ on
-Monday morning, $14:00-15:00$ on Friday, and $16:00-17:00$ on Thursday.
-These slowest times are still mostly faster than the average hourly upload speeds
-in cluster $13$.
-Finally, ignoring the smallest clusters in terms of population,
-that is clusters $4$ and $5$,
-clusters $3$, $7$ and $10$ also have relatively high mean upload speeds.
-Clusters $3$ and $10$ pair high mean speeds with low standard deviations
-relative to the mean speeds, suggesting reliability and resilience,
-as well as quality broadband services.
-Cluster $7$ has a higher ratio of standard deviation to mean, but there is less
-difference in average speeds between the morning and evening peaks than in clusters
-$3$ and $10$.
+but the lowest points are not during the morning peak, but occur, on average, 
+between $6:00-7:00$ on Monday morning, $14:00-15:00$ on Friday, and $16:00-17:00$ on 
+Thursday. These slow periods still offer better speeds than the average hourly 
+profile of cluster $13$. Finally, ignoring the smallest clusters in terms of 
+population, that is clusters $4$ and $5$, clusters $3$, $7$ and $10$ also have 
+relatively high mean upload speeds. Clusters $3$ and $10$ pair high mean speeds with 
+low standard deviations relative to the mean speeds, suggesting reliability and 
+resilience, as well as quality broadband services. Cluster $7$ has a higher ratio of 
+standard deviation to mean, but there is less difference in average speeds between 
+the morning and evening peaks than in clusters $3$ and $10$.
 
 In summary, the local authorities in clusters $9$ and $11$ experienced resilient
 broadband internet that could support high levels of telecommuting.
@@ -711,10 +683,10 @@ Clusters $8$ and $12$ are also close to average mean upload speeds, but show ver
 different patterns in terms of reliability, whilst clusters $1$ and $13$ appear to
 suffer most from a lack of quality internet services, with slow speeds and
 high standard deviations.
-With those in cluster $1$ in particular more likely to experience that poor
-reliability during the morning peak, is this first level digital divide occurring
-in areas where few are occupationally able to telecommute anyway, and what are the
-implications for economic resilience?
+With those in cluster $1$ more likely to experience that poor reliability during the 
+morning peak, is this first level digital divide occurring in areas where few are 
+occupationally able to telecommute anyway, and what are the implications for 
+economic resilience?
 
 ## Post-clustering regression analysis {#sec:4.2}
 
@@ -763,10 +735,9 @@ stargazer(aux.up,
 ```
 
 Using an auxiliary multinomial regression, we test whether the clusters that
-have higher mean
-speeds and more reliable services consist of LADs that are more urban, affluent,
-and / or more likely
-to benefit from a choice of high quality internet services.
+have higher mean speeds and more reliable services consist of LADs that are more 
+urban, affluent, and / or more likely to benefit from a choice of high quality 
+internet services.
 We also estimate which of our clusters are more likely to have a higher proportion of
 occupations which enable telecommuting because of the nature of the work.
 The results of the auxiliary regression are presented in Table \ref{aux}.
@@ -775,27 +746,27 @@ The dependent variable is the LAD cluster membership as described in the
 and equation \ref{eq1} and each column represent a different cluster.
 The reference case is cluster $4$, which includes only the local authority of
 Hambleton in North Yorkshire, a rural area of just over ninety thousand people.
-Mean, experienced upload speeds in cluster $4$ are close to both the average speeds
-for the $13$ clusters ($9.9$Mb/s) and the pre-clustered average for the whole sample
-($9.3$Mb/s) as shown in Table \ref{up.cluster.descr}.
+Mean, experienced upload speeds in cluster $4$ (see Table \ref{up.cluster.descr}) 
+are close to both the average speeds for the $13$ clusters ($9.9$Mb/s) and the 
+pre-clustered average for the whole sample ($9.3$Mb/s).
 However, the standard deviation for cluster $4$ and the difference between average
 speeds in the morning compared to the evening peak periods are indications of
-worse reliability than many of the other clusters.
-Hence, the results in Table \ref{aux} should be seen as relative
-rather than absolute probabilities.
+worse reliability than many of the other clusters. Hence, the results in Table 
+\ref{aux} should be seen as relative rather than absolute probabilities.
 
 First, we control for the number of speed tests run per cluster inhabitant
 between $9:00$-$10:59$ as well as the share of fast Virgin Media internet
 connections. Regarding the former, we expect people in LADs with more unreliable
-connections to test more often their internet speeds and the results validate our
-priors. Regarding the former, fast Virgin Media cable connections have historically
+connections to test their internet speeds more often, and the results validate our
+priors. Meanwhile, fast Virgin Media cable connections have historically
 only been available to $45$% of premises in the UK [@ofcom2016], where the more
 lucrative and competitive market originally attracted the cable TV provider.
 Those in clusters $2$, $3$, $9$ and $11$ benefit from a higher proportion of
 Virgin connections, which is an indication that people in these clusters are
 more likely to live in urban areas, with more choice of broadband services,
 or in other words, are more likely to be on the right side of the first level,
-infrastructure-based digital divide.
+infrastructure-based digital divide, as we expected from the analysis in Section 
+[4.1](#sec:4.1).
 
 <!-- is an indication of satisfaction or at least a lack of concern over broadband speeds -->
 <!-- and quality of service. -->
@@ -803,7 +774,6 @@ infrastructure-based digital divide.
 <!-- (at a per capita basis) -->
 <!-- at this time of day, whilst people in cluster $11$ were the least likely to do so. -->
 <!-- This high level of satisfaction matches the high quality and reliability of service -->
-<!-- we would expect from the analysis in Section [4.1](#sec:4.1). -->
 <!-- Those in clusters $2$, $3$, $9$ and $10$ were also less likely to ran speed tests per -->
 <!-- capita than those in the other six multi-authority clusters. -->
 <!-- Cluster $7$ was the only cluster with higher mean speeds and middle to high measures -->
@@ -812,20 +782,19 @@ infrastructure-based digital divide.
 <!-- LADs, as, along with cluster $12$, those in cluster $7$ were least likely to have -->
 <!-- Virgin Media connections. -->
 
-Then, we employ distance from London and for the nearest metropolitan area (including
-London) as two variables depicting peripherality, urban structure and,
+Then, we employ distance from London and from the nearest metropolitan area 
+(including London) as two variables depicting peripherality, urban structure and,
 potentially, first level digital divides.
 The broadband speed tests run in the authorities in cluster $3$ are more likely to
-be taking place close to London than those run in any of the other clusters,
-a result that makes sense considering two of the four authorities in cluster $3$
-are the London commuter towns of Harlow and Luton.
+be taking place close to London than those run in any of the other clusters, and
+two of the four authorities in cluster $3$ are the London commuter towns of Harlow 
+and Luton.
 However, even though London was also included in the variable calculating distance
 from the centre of one of either the ten largest metropolitan areas in England,
 or Glasgow or Cardiff, tests run in cluster $3$ are likely to be furthest away.
-Still, whilst significant, the effect is tiny and the other members of cluster $3$
-are Corby and Eastbourne, two towns which, whilst not part of metropolitan areas,
-are also not in remote parts of the country, and are home to an estimated population
-of $175$ thousand people between them.
+Thus, it is important to consider the membership of each cluster as well as the
+regression results. Corby and Eastbourne, the other two authorities in cluster $3$ 
+are, whilst not part of metropolitan areas, are also large, accessible towns.
 
 ```{r echo=FALSE, out.width = "95%",fig.cap="\\label{map.up.clusters}Upload speed clusters for LADs"}
 img1_path <- "figures/map.up.clusters.png"
@@ -835,44 +804,42 @@ include_graphics(img1_path)
 Meanwhile, LADs in cluster $7$ are most likely to be near the centre of a large
 metropolitan area, even though the four local authorities of cluster $7$ include
 no central urban boroughs and only one LAD that is part of a metropolitan area of
-governance - Tameside in Greater Manchester.
-This may explain why those in cluster $7$ are not served by Virgin Media.
+governance - Tameside in Greater Manchester. This may explain why those in cluster 
+$7$ are the second least likely to be served by Virgin Media.
 It also is a demonstration of the complexity of experienced broadband upload speeds
-as captured by time-series clustering, and their likely interaction with first level
-digital divides.
+as captured by time-series clustering, and how quality and reliability, not only 
+availability, engender first level digital divides.
 Cluster $1$, which our analysis suggests lacks broadband resilience, contains five,
 mainly rural authorities.
-However, they are scattered around the country --
-Ceredigion in West Wales, Darlington in the Northeast, Eden between the Lake District
-and the North Penines, Rossendale in the Northwest, and Rutland in the East Midlands
--- and therefore, the results in Table \ref{aux} indicate that these authorities
-are not as far from the centre of a metropolitan area as authorities in cluster $3$,
+However, they are scattered around the country -- Ceredigion in West Wales, 
+Darlington in the Northeast, Eden and Rossendale in the Northwest, and Rutland in 
+the East Midlands -- and therefore, the results in Table \ref{aux} indicate that 
+these authorities are closer to a metropolitan area than authorities in cluster $3$,
 but furthest from London.  
 
-Internet resilience, as measured here, seems to be more nuanced than our --
-arguably crude -- dummy variable depicting the North-South economic divide either,
-which assigns $1$ to LADs locates in Greater London, Southeast, Southwest and East
-of England regions, and $0$ to the rest.
+Internet resilience as measured here is also more nuanced than our -- arguably crude 
+-- dummy variable depicting the North-South economic divide, which assigns $1$ to 
+LADs located in Greater London, Southeast, Southwest and East of England regions, 
+and $0$ to the rest.
 The authorities most likely to be in the South are those in cluster $13$,
 which was identified as having the slowest mean upload speeds of any of the clusters,
 and thus a low level of service.
-However, cluster $13$ does include some rural, remote areas of the country,
-such as Northwest Scotland, Cornwall and Powys in Wales as shown on Figure
-\ref{map.up.clusters}.
-It also includes the major metropolitan centres of Bristol, Liverpool,
-and Newcastle, as well as nine (of $32$) London Boroughs,
-including the City of London and plenty of home county and suburban areas.
-Although by the standard deviation measure cluster $13$ has unreliable internet
-services, speed variation was less during the morning peak, suggesting that
-the estimates for reliability are inconsistent.
-Considering that this is one of the largest clusters, and thus the averages
-incorporate more noise than some of the smaller clusters,
+However, cluster $13$ includes some rural, remote areas of the country, such as 
+Northwest Scotland, Cornwall and Powys in Wales as shown on Figure 
+\ref{map.up.clusters}. 
+It also includes major metropolitan centres in the North -- Liverpool, Newcastle -- 
+and South -- Bristol, nine (of $32$) London Boroughs.
+There are also plenty of Southern home county and suburban areas.
+The standard deviation measure for cluster $13$ is high, but speed variation is 
+low during the morning peak, suggesting that the estimates for reliability are 
+inconsistent. Considering that this is one of the largest clusters, and thus the 
+averages incorporate more noise than some of the smaller clusters,
 it may be that the LADs in this cluster do not all suffer equally from
 a first level digital divide.
 
 Yet we need to consider the results for other variables in Table \ref{aux} to better
-determine whether clusters $1$ and $13$, which appear to suffer most from a lack
-of quality internet services, are also more likely to have a low skilled workforce,
+determine whether clusters $1$ and $13$, which appear to suffer most from poor
+quality internet services, are also more likely to have a low skilled workforce,
 less able to benefit from telecommuting.
 Cluster $1$ has the lowest propotion of educated people of any of the clusters,
 and the lowest earnings, despite recording the highest proportion of managerial,
@@ -880,104 +847,85 @@ professional jobs, and the second highest proportion of tech jobs.
 Rural areas such as those in cluster $1$ are often home to many retired people,
 which might explain these results or perhaps, as these figures are relative,
 we could note that cluster $1$ also has a greater proportion of skilled trades
-than other clusters.
-Either way, it seems likely that the first level digital divide reinforces
-other inequities in cluster $1$.
-In comparison, those in cluster $13$ are more likely to earn more and have a better
-education.
+than other clusters. It seems likely that the first level digital divide reinforces
+other inequities in cluster $1$, whilst those in cluster $13$ are more likely 
+to earn more and have a better education despite poor internet services.
 Cluster $13$ also has the most businesses per inhabitant, but is somewhere in the
-middle in terms of job density.
-If this is an indication of a high number of SMEs, it can explain
-the variable internet quality, considering that small businesses have not been
-seen as the most valuable customers for higher speed broadband services **insert ref**.
+middle in terms of job density. If this is an indication of a high number of SMEs, 
+it could explain the variable internet quality, considering that small businesses 
+have not been seen as the most valuable customers for higher speed broadband services
+if they are not located near residential customers [@ofcom2016].
 
 Cluster $6$ is the largest cluster, and thus, like cluster $13$, there is more
-noise within the averages we use to measure internet quality and reliability,
-and the result indicates an average level of service, even if better than LADs
-in cluster $13$.
-Cluster $6$ also falls towards the middle of the clusters on many of the socio-
-economic variables in Table \ref{aux}.
-It ranks third or fourth out of the eleven clusters in the table in terms of the
-likelihood of
-having a higher proportion of managerial, professional, and tech jobs, as well as
-higher earnings, but is fourth from bottom in terms of education.
-The LADs in cluster $6$ are also diverse, with few truly remote areas,
-but many urban areas in both the North, including Birmingham, Leeds and Sheffield,
-and South, including twelve London Boroughs, and many suburban areas and
-smaller cities like Oxford and Cambridge.
-The capital cities of the other UK nations, Belfast, Cardiff and Edinburgh, are
-also in this cluster, suggesting perhaps that the lower level of reliability
-discussed in Section [4.1](#sec:4.1) may be as a result of increased demand,
-e.g. for telecommuting.
+noise within the averages we use to measure internet quality and reliability.
+Our results indicate average mean speeds, and Table \ref{aux} shows that 
+cluster $6$ also falls towards the middle of the clusters on many of the 
+socioeconomic variables. It ranks third or fourth out of the eleven in terms of 
+the likelihood of having a higher proportion of managerial, professional, and 
+tech jobs, as well as higher earnings, but is fourth from bottom for educational
+attainment. The LADs in cluster $6$ are also diverse, with few truly remote areas,
+but urban areas throughout England, including Birmingham, Leeds, Sheffield, 
+twelve London Boroughs, and many suburban areas and smaller cities like Oxford 
+and Cambridge. The capital cities of the other UK nations, Belfast, Cardiff and 
+Edinburgh, are also in this cluster, suggesting perhaps that the lower level of  
+reliability discussed in Section [4.1](#sec:4.1) may be due to increased demand, 
+e.g. for telecommuting, when it is not supported by the most resilient internet
+connections.
 
-In comparison, clusters $9$ and $11$, which enjoy the most resilient
-internet connections, are characterised by higher share of occupations that
-may benefit from the ability to telecommute (e.g. managerial).
-Also, LADs in Cluster $9$ are more likely to host highly educated individuals with
-higher earning than cluster $11$, which has fewer businesses per inhabitant and
-lower job density.
-Indeed, cluster $11$ has a negative coefficient for the NVQ4 variable, whilst
-for cluster $9$ the coefficient is positive, and cluster $11$ has the second
-highest job density and cluster $9$ the second lowest.
-The former might be an indication of the higher returns that resilient
-broadband infrastructure can generate for cluster $9$ versus cluster $11$.
-Indeed, we did detect slightly more slowdown in the AM peak in cluster $9$ than
-in cluster $11$ (see Table \ref{up.cluster.descr}).
-Meanwhile, a propensity for a higher job density indicate higher urbanization
-rate in LADs in cluster $11$ than those in cluster $9$.
-
+In contrast, Clusters $9$ and $11$ enjoy resilient internet connections and are 
+characterised by higher share of occupations that may benefit from the ability 
+to telecommute (e.g. managerial). LADs in Cluster $9$ are more likely to host 
+highly educated individuals with higher earnings than cluster $11$, which has a 
+negative coefficient for the NVQ4 variable. Cluster $11$ has fewer businesses per 
+inhabitant and the second highest job density and cluster $9$ the second lowest.
+These coefficients might indicate that resilient broadband infrastructure 
+generates higher returns for those in cluster $9$, where slightly more slowdown in 
+the AM peak was detected (see Table \ref{up.cluster.descr}).
+<!--Meanwhile, a propensity for a higher job density could indicate a higher urbanization rate in LADs in cluster $11$ than those in cluster $9$. I DON't
+QUITE UNDERSTAND THIS SENTENCE, SO SINCE WE NEED TO CUT WORDS...?-->
 LADs in cluster $9$ are also less likely to be in the South and those in cluster $11$
 more likely, although the coefficient for cluster $9$ might be skewed by
-the presence of the Scottish cities of Glasgow and Aberdeen,
-as Scotland has a different economic profile than England.
-Still, both clusters consist of larger LADs in terms of population,
-including the urban centre of Manchester and three of the nine other districts of
-Greater Manchester, Nottingham, both Portsmouth and Southampton,
-eight London Boroughs, and four of the seven constituent authorities of the
-West Midlands Combined Authority.
-Among the $65$ LADs are also a number of other tightly bounded urban areas,
-such as Blackpool, Ipswich, Norwich, Slough, and Stevenage, and urban areas
-at the centre of less confined districts like Burnley,
+the presence of the Scottish cities of Glasgow and Aberdeen. Scotland has a 
+different economic profile than England. Still, both clusters consist of larger 
+LADs in terms of population, including the city centre among four of the ten 
+districts of Greater Manchester, eight London Boroughs, four of the seven 
+constituent authorities of the West Midlands Combined Authority, Nottingham, and 
+both Portsmouth and Southampton. Among the $65$ LADs are also a number of other 
+tightly bounded urban areas, such as Blackpool, Ipswich, Norwich, Slough, and 
+Stevenage, and urban areas at the centre of less confined districts like Burnley, 
 the digital hub of Milton Keynes, and Northampton.
-Thus, our findings confirm the importance of geography and urban locations
-for being on the right side of the first level digital divide, and suggest that
-internet resilience cuts across other digital and economic divides.
+These urban locations are on the right side of the first level digital divide, 
+and the regression results suggest that internet resilience is supporting a wide
+range of small and large urban economies.
 
-A similarly divided picture can be built for the next tier of clusters: $2$, $3$,
-$7$, $10$. LADs in these clusters experience higher than average mean speeds and
-rank high to middle on measures of service reliability.
-LADs in these clusters are on the right side of the first level digital divide.
+LADs in clusters $2$, $3$, $7$, $10$ are also on the right side of the first level 
+digital divide, experiencing higher than average mean speeds and ranking high to 
+middle on measures of service reliability.
 However, only LADs in cluster $2$ and $10$ are more likely to have highly skilled
-work force, which might more easily take advantage of working from home
-opportunities.
-Cluster $2$ is comprised of just two LADs, with the lowest job density of any
-cluster -- these are East Lothian near Edinburgh, and North East Lincolnshire,
-home to Grimsby.
-Cluster $10$ is comprised of four LADs, including two peripheral suburban areas
-of Birmingham, the East London Borough of Newham, and Dundee.
-Suburbs are considered the most likely urban form in which telecommuters live,
-and Dundee has a reputation for tech startups **insert ref**.
-Yet although those in clusters $2$ and $10$ may be making the most of their
-resilient internet, those in cluster $7$ have the highest earnings.
-The four LADs in cluster $7$ include the suburbs South of Belfast, a suburban
-district of Greater Manchester, the villages between York and Leeds, and a
-couple of small West Midlands towns.
-LADs in cluster $3$ are associated more with lower skills and have the highest
-proportion of individuals in machine operation jobs.
-They include the Southeast commuter towns of Harlow and Luton and the slightly
-more distant towns of Eastbourne and Corby.
-Arguably, LADs in clusters $3$ benefit the least from their resilient internet
-infrastructure in an era when working from home became a vehicle for economic
-resilience.
+work force to take advantage of working from home opportunities. 
+Cluster $2$ is comprised of just two LADs, with the lowest job density of any 
+cluster -- these are East Lothian near Edinburgh, and North East Lincolnshire, 
+home to the town of Grimsby. Cluster $10$ is comprised of four LADs, including two 
+peripheral suburban areas of Birmingham, the East London Borough of Newham, 
+and Dundee. Suburbs are considered the most likely urban form in which telecommuters 
+live [@e2018does], and Dundee has a reputation for tech startups [@technation2017].
+LADs in cluster $7$, which include the suburbs South of Belfast, a suburban
+district of Greater Manchester, the villages between York and Leeds, and a couple of 
+small West Midlands towns have the highest earnings, and thus may also be making the 
+most of their resilient internet. In contrast, LADs in cluster $3$ are associated 
+more with lower skills and have the highest proportion of individuals in machine 
+operation jobs. Arguably, LADs in clusters $3$ benefit the least from their 
+resilient internet infrastructure in an era when working from home became a vehicle 
+for economic resilience.
 
 Finally, clusters $8$ and $12$, are characterised by LADs enjoying close to average
-mean upload speeds, but different patterns of internet reliability.
-LADs in cluster $8$ are likely to host more individuals employed in tech and
+mean upload speeds, but opposing patterns of internet reliability during the morning
+peak. LADs in cluster $8$ are likely to host more individuals employed in tech and
 administrative occupations than any other cluster, as well as many in managerial
 occupations, whilst the opposite applies to skilled trade and leisure occupations.
 These LADs are characterised by a very small positive likelihood of more educated
 residents, but are not significantly likely to earn more than other clusters.
-Including suburbs of Leicester, Cardiff, Birmingham, the green belt area south of
+Including suburbs near Leicester, Cardiff, Birmingham, the green belt area south of
 London straddling the M25 motorway, and rural West Devon, the LADs in cluster $8$
 seem to likely to have the skills and occupations that would benefit from
 quality internet services, but suffer from poor internet resilience and reliability.
@@ -988,71 +936,71 @@ NVQ4 or better and lower levels of occupations that would benefit from homeworki
 Yet LADs in this cluster benefit from the second highest level of earnings, and
 have the largest stock of businesses per inhabitant and the highest job density.
 This density of businesses could be why cluster $12$ is the only cluster with higher
-speeds in the morning peak during the study period.
-If people are at home, business premises might well be abandoned.
-Cluster $12$ is home to $1.5$million people spread across twelve LADs, including
-the City of Westminster and the London Borough of Hammersmith.
-However, it also includes a LAD in Northern Ireland, two in Wales, two suburban areas
-North of London, Preston in the Northwest, East Staffordshire in the Midlands, and
-Fenland in the East of England.
-This spatial diversity demonstrates that the temporal clustering of internet
+speeds in the morning peak during the study period. If people are at home, business 
+premises might well have been abandoned. Cluster $12$ is home to $1.5$million people 
+spread across twelve LADs, including the City of Westminster but also a LAD in 
+Northern Ireland, two in Wales, Preston in the Northwest, and Fenland in the East of 
+England. This spatial diversity demonstrates that the temporal clustering of internet
 resilience is not necessarily spatially dependent, and digital divides do not
 necessarily overlap with economic ones.
 
 # Conclusions {#sec:5}
 
 This paper offers a new perspective on telecommuting from the viewpoint of the
-complex web of digital divides. Good and reliable internet connections are
-necessary for the population to be able to work from home, but at the same time
-not every place hosts individuals in occupations which allow for telecommuting and
-not every place hosts individuals with the necessary skills to effectively use
-the internet and work form home. Importantly, not every place can utilise good
-internet connectivity -- even if they have them -- in order to achieve economic
-resilience in a period like the current pandemic, but also for a future when
-working from home might be a more common activity.
+complex web of digital divides, and employs time series clustering methods, 
+a family of unsupervised machine learning techniques which are not often utilised 
+in geographical research. Fast, reliable internet connections are
+necessary for the population to be able to work from home.
+Although not every place hosts individuals in occupations which allow for 
+telecommuting nor with the necessary skills to effectively use the internet to 
+telecommute, this paper raises the issue that without good internet connectivity,
+these places would struggle more to achieve economic resilience in a period like 
+the current pandemic in any case. 
+Indeed, our analysis demonstrated that the temporal profiles of twelve of our 
+thirteen clusters had slower upload speeds in the morning than in the evening.
+The opposite is likely to have been the norm prior to the pandemic, as the level of 
+demand and bandwidth management is the most common cause of temporal variation in 
+experienced speeds, and why evening download speeds, rather than daytime upload 
+speeds have been used to benchmark the performance of internet services. 
+Thus, the new patterns can be taken as evidence of widespread telecommuting 
+and other daytime internet use which changed the temporal profile of 
+internet activity throughout the UK, not just in areas with more digital industry 
+or better skills. 
 
-Contrary to the previous literature, we employ experienced upload speeds as a
-benchmark of internet resilience concerning the capacity to work from home.
-Upload speeds are not used as benchmarks in the UK, nor have been seen as integral
-to universal service, considering there has never before been such extreme demand
-for telecommuting and operations such as video calls. While download speeds are
-associated more with video streaming services, fast upload internet speed are
-necessary for seamless video calls and uploading large files, activities associated
-with work. Given the granular nature of our data, we are able to consider upload
-internet speeds during working hours. To analyse these data we employ time series
-clustering methods, a family of unsupervised machine learning techniques which
-are not often utilised in geographical research.
-
-Using the UK as a case study, our analysis illustrated a nuanced picture, which
-is the outcome of the intersection between the different digital divides and the
-potential to telecommute. While some LADs appear to benefit both from reliable
-internet connections and population which can work from home and, in essence,
-capitalise the digital infrastructure, other LADs are suffering by both unreliable
-internet and low share of individuals who can potentially telecommute.
-
-- different places have different levels of preparedness, some places have some ground to cover
-
-- benefits
-
-Clusters $3$, $9$, $10$ and $11$ seem to benefit most from high quality and
-resilient broadband services.
-The dips in mean upload speeds in clusters $6$, $3$ and $10$ during the morning
-peak are suggestive of more use during the working day, and potentially more
-telecommuting.
+Upload speeds have not previously been seen as integral to universal service, 
+considering there has never before been such extreme demand for telecommuting 
+and operations such as video calls. 
+This may be why the average upload speeds for the largest two clusters 
+-- $6$ and $13$ -- contain so many LADs that are centres of the knowledge economy, 
+from Oxford and Cambridge in the former, to areas like Reading, which has the 
+highest concentration of digital businesses in the country [@technation2017]. 
+Thus, whilst some areas suffer from an intersection of digital and economic divides, 
+such as those in cluster $1$, others found their digital infrastructure to be less
+reliable when confronted with the sudden change in the timing and type of demand.
+Still other LADs, such as Milton Keynes in cluster $9$ were able to benefit both 
+from reliable internet connections and populations which were familiar with working 
+from home and could capitalise on their digital infrastructure.
+Yet the nuanced picture we gained through our analysis of the UK case study suggests 
+that quality internet connectivity would also enabled other LADs to gain ground
+during the pandemic despite lower skills or earnings currently, especially in a
+future where telecommuting might be a more common means of accessing work 
+and broadband services, as well as infrastructure, must be fit for purpose..
 
 <!-- WFH broader consequences-->
-The long-term effects of such drastic changes in telecommuting and attitudes
+Indeed, the long-term effects of such drastic changes in telecommuting and attitudes
 towards working from home are difficult to predict. Nevertheless,
 they span through various aspects of economy and society: from changes to
-transportation planning due to altered commuting patters, to changes in land
+transportation planning due to altered commuting patterns to changes in land
 use and urban planning to accommodate people who work from home
-[@BUDNITZ2020102713; @ELLDER2020102777] and from productivity
-and innovation changes, to changes in agglomeration externalities and the
-attraction of large cities [@econobs] just to name a few.
-The take home message from this paper is that working form home and, consequently,
-its long term effects cannot be understood, set aside plan our cities for, without
-considering the underpinning digital divides and how telecommuting intersects
-with them.
+[@BUDNITZ2020102713; @ELLDER2020102777], and from productivity
+and innovation changes to changes in agglomeration externalities and the
+attraction of large cities [@econobs].
+Further research may be able to measure the economic resilience of the different 
+clusters of places discussed in this paper once this pandemic is firmly past.
+However, our analysis demonstrates that the economic resilience made possible by
+working from home cannot be understood without considering the underpinning digital 
+divides and cannot be achieved without planning for how the levels of digital,
+social and economic divides might intersect. 
 
 # Acknowledgement(s) {-}
 
