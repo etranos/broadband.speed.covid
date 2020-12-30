@@ -1,5 +1,5 @@
 ---
-title: "Working from home and digital divides: resilience in the time of a pandemic"
+title: "Working from home and digital divides: resilience during the pandemic"
 author:
 - name: A. Uthor*
   num: 1,2
