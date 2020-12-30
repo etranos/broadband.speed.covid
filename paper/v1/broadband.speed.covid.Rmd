@@ -422,7 +422,7 @@ Following @sardatime the majority vote for the following CVIs was used: Silhouet
 (max), Score function (max), Calinski-Harabasz (max), Davies-Bouldin (min), Modified
 Davies-Bouldin (DB*, min), Dunn (max), COP (min).
 
-![Speed tests over time, 2020 \label{test2020}](figures/time.var.plot2020.png){height=40% width=75%}
+![Speed tests over time, 2020 \label{test2020}](figures/time.var.plot2020.png){height=50% width=85%}
 
 ![Speed tests over time, 2019 \label{test2019}](figures/time.var.plot2019.png){height=40% width=75%}
 
