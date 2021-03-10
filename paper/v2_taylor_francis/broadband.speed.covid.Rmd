@@ -74,25 +74,7 @@ On the other side, previously employed individuals have been forced to accept
 furlough or redundancy packages unless they are part of the cadre of essential
 workers, who are potentially at high risk of infection.
 Whilst the basis for this pandemic-generated divide has been viewed as mainly
-occupational, here we consider whether it is also technological and, consequently, geographical.
-
-<!-- our approach -->
-Using the UK as a case study, this paper aims to understand how the quality and
-reliability of internet service, as reflected in *experienced* internet speeds
-during the spring 2020 lockdown,
-may reinforce or redress the spatial and social dimensions of digital divisions.
-We employ volunteered geographic data on individual broadband speed tests
-and state-of-the-art time-series clustering methods to create clusters of UK local
-authorities with similar temporal signatures of experienced internet speeds.
-We then associate these clusters of local authorities with their socioeconomic
-and geographic characteristics to explore how they overlap with or diverge from
-the existing economic and digital geography of the UK.
-Our analysis enables us to better understand how the spatial and social distribution
-of education, occupation and online accessibility intersect to enable or hinder the
-practice of telecommuting at a time of extreme demand.
-We also consider what lessons can be learned from this time for a future where
-telecommuting is likely to remain a more common means of accessing work,
-at least in comparison to the pre-Covid era.
+occupational, here we consider whether it is also technological and geographical.
 
 <!-- capability to WFH -->
 The capability to work from home has previously been studied from the
@@ -102,23 +84,22 @@ location or co-location with colleagues, including supervisors
 [@allen2015effective; @singh2013modeling]. However, successful telecommuting also 
 requires that the quality and reliability of digital services, particularly home 
 internet connection speeds, enable the completion of work tasks with a minimum of 
-delay or interruption. Prior to the pandemic, the performance of broadband services 
-with respect to telecommuters was never tested at scale, as working from home and 
-connecting to colleagues and workplace resources via the internet was the purview of 
-a small minority of workers.
-Instead, leisure use in the evening, when video streaming services are at their peak,
-has been used to benchmark broadband performance and service delivery by different
-Internet Service Providers (ISPs) [@ofcom2017].
+delay or interruption. High levels of demand are one of the main causes of reduced 
+reliability and slower connection speeds, as network bandwidth becomes congested. 
+Yet prior to the pandemic, the performance of broadband services with respect to 
+telecommuters was never tested at scale, as working from home and connecting to 
+colleagues and workplace resources via the internet was the purview of a small 
+minority of workers. Instead, leisure use in the evening, when video streaming 
+services are at their peak, has been used to benchmark broadband performance and 
+service delivery by different Internet Service Providers (ISPs) [@ofcom2017].
 
-Yet the shift towards telecommuting during various stages of lockdown around the world
-has been drastic and there are speculations that post-Covid, the tendency to work from
-home will be much higher, raising questions around whether internet
+The shift towards telecommuting during various stages of lockdown around the world
+has been drastic and there are speculations that post-Covid, the tendency to work 
+from home will be much higher, raising questions around whether internet
 services can accommodate the increased demand.
 For example, $47$% of people in employment in the UK worked solely from home in April
 $2020$, whilst the same figure only reached $5$% the year before [@ons2020;
 @ons2020lm2019].
-A back of the envelope calculation suggests that up to 40% of the labour force
-could work from home on an ongoing basis [@batty2020editorial].
 Similar figures have been reported for other countries [@felstead2020homeworking].
 Approximately $37$% of the European workforce worked from home in April $2020$ with
 countries like Finland reaching $60$% [@eurofound2020].
@@ -134,26 +115,28 @@ society^[See for example the huge success of videoconferencing apps such as Zoom
 [@marks2020zoom].], the same does not apply for ICT hardware infrastructure such as
 internet broadband connectivity.
 
-<!-- ICT infrastructure and digital divides-->
-The literature describes first level digital divides in terms of the
-availability and quality of internet connectivity, such as that manifest in
-different geographies in the UK [@riddlesden2014broadband; @philip2017digital].
-Second level digital divides consider the presence or lack of the necessary skills
-to effectively utilise digital technologies and the internet
-[@blank2014dimensions; @van2011internet].
-The third level focuses on the heterogenous returns of internet usage among
-different socioeconomic groups and, consequently, how digital technologies can
-assist in bridging or further enhancing existing socioeconomic divides.
-[@stern2009levels; @van2014digital; @van2015third].
-The capability to telecommute is related to all three levels of digital divides,
-but more importantly leads to differentiated outcomes regarding the economic
-resilience of people and places to overcome a systemic shock such as the current
-pandemic.
-
+<!-- our approach -->
+Using the UK as a case study, this paper aims to understand how the quality and
+reliability of internet service, as reflected in *experienced* internet speeds
+during the spring 2020 lockdown,
+may reinforce or redress the spatial and social dimensions of digital divisions.
+We employ volunteered geographic data on individual broadband speed tests
+and state-of-the-art time-series clustering methods to create clusters of UK local
+authorities with similar temporal signatures of experienced internet speeds.
+We then associate these clusters of local authorities with their socioeconomic
+and geographic characteristics to explore how they overlap with or diverge from
+the existing economic and digital geography of the UK.
 As the quality of internet infrastructure and services, as well as the concentration
 of different occupations are spatially dependent and clustered in space,
 our approach offers a framework for understanding the impact of and interactions
 between digital divisions geographically and socioeconomically.
+Our analysis enables us to better understand how the spatial and social distribution
+of education, occupation and online accessibility intersect to enable or hinder the
+practice of telecommuting at a time of extreme demand.
+We also consider what lessons can be learned from this time for a future where
+telecommuting is likely to remain a more common means of accessing work,
+at least in comparison to the pre-Covid era.
+
 By asking how resilient broadband speeds, and particularly upload speeds, are as
 experienced in different parts of the UK during a time of extreme demand,
 we interrogate which places benefit from the greater economic resilience
@@ -213,12 +196,27 @@ $14$% of those primary education did so [@eurofound2020].
 
 ## Digital divides and economic resilience {#sec:2.2}
 <!-- WFH and digital divides-->
+The literature describes first level digital divides in terms of the
+availability and quality of internet connectivity, such as that manifest in
+different geographies in the UK [@riddlesden2014broadband; @philip2017digital].
+Second level digital divides consider the presence or lack of the necessary skills
+to effectively utilise digital technologies and the internet
+[@blank2014dimensions; @van2011internet].
+The third level focuses on the heterogenous returns of internet usage among
+different socioeconomic groups and, consequently, how digital technologies can
+assist in bridging or further enhancing existing socioeconomic divides.
+[@stern2009levels; @van2014digital; @van2015third].
+The capability to telecommute is related to all three levels of digital divides,
+but more importantly leads to differentiated outcomes regarding the economic
+resilience of people and places to overcome a systemic shock such as the current
+pandemic.
+
 Our understanding of telecommuting as a product of enabled occupations can be
 described as a manifestation of the third level digital divide, as those who are able
 to use digital technologies to work from home benefit from a high rate of return on
 their use of the internet in terms of autonomy, flexibility, and time saved from
 commuting [@peters2004employees; @siha2006telecommuting; @singh2013modeling].
-These returns have been even greater during the Covid-19 crisis,
+In some aspects, these returns may have increased during the Covid-19 crisis,
 when those with the capability to telecommute also have the ability to maintain
 their employment whilst protecting their health.
 However, the success of these arrangements has been dependent upon the first
@@ -226,23 +224,35 @@ level digital divide, which is associated with access to and quality of internet
 connectivity.
 @SALEMINK2017360 provides a systematic review of the pre-pandemic,
 first level digital divide in infrastructure quality between urban and rural areas
-in various advanced economies.
-Rural areas, predictably, fare worse, yet as @blank2018local highlight, variation
+in various advanced economies. Rural areas, predictably, fare worse.
+This finding broadly applies in the UK, where studies that also analysed broadband 
+speed checks concluded that average speeds are lower in rural areas, something that
+has not been improved by policy measures to increase competition [@riddlesden2014broadband; @nardotto2015unbundling].
+@riddlesden2014broadband found that levels of deprivation did not correlate with 
+first level digital divides.
+
+However, as @blank2018local highlight, variation
 in individual internet uptake and use is a product of more complex spatial and 
 demographic characteristics than simple rurality or urbanisation.
-Yet whether this variation in infrastructure quality affects the spatial footprint of
-telecommuting has not previously been investigated, in part because telecommuting has
-not previously been a cause of concentrated demand and pressure on internet services.
-
+Dense urban areas were shown to suffer more from slow down during peak hours, 
+although these services were more likely to be improved by increased competition 
+between providers, such as between new entrants and Virgin Media cable connections
+[@riddlesden2014broadband; @nardotto2015unbundling]. The latter were historically 
+available to only $45$% of premises in the UK [@ofcom2016], where the more
+lucrative and competitive market originally attracted the cable TV provider. 
+Whether the variation in infrastructure quality and reliability affects the 
+spatial footprint of telecommuting has not previously been investigated, in part 
+because telecommuting has not previously been a cause of concentrated demand and 
+pressure on internet services. Other intersections between digital divides have been
+subject to study.
 There are indications that those who purchase high speed connections consume
 more data of all sorts and use their connections for a greater variety of purposes
 [@hauge2011consumer].
 There is also a correlation between access to internet services and a
 reduction in household transport spend [@bris2017ict].
-Independently of whether the additional internet use and reduced travel is
-because of increased telecommuting, these studies suggest that better internet
-services enable households to make savings and efficiencies,
-an example of the first level digital divide reinforcing the third level.
+These studies suggest that better internet services enable households to make 
+savings and efficiencies, an example of the first level digital divide reinforcing 
+the third level.
 
 <!-- Covid-19 and working from home, cities, urban structure -->
 Multi-layered digital divides may also intersect with material divides
@@ -367,9 +377,17 @@ and the impact of local loop unbundling regulatory processes
 By using this volunteered geographic data, we are able to assess the internet speed
 *experienced* by users, which may differ from the maximum speeds *advertised* by
 ISPs.
+Indeed, those who seek to test their broadband are most likely to do so because 
+they are experiencing slower speeds than expected, although any skew towards slower
+speeds is balanced by the likelihood that those who test their broadband are also 
+more ‘tech-savvy’ and / or have purchased higher speed packages that are not 
+delivering the promised level of service.
+
 We are particularly interested in upload speeds and the frequency of speed tests
-over the period from March to May $2020$, as government statements indicate this is
-when UK workers were first told to work from home if at all possible [@GovUK2020].
+over the period from March to May $2020$, as government statements indicate this 
+encompasses the period when UK workers were told to work from home if at all possible [@GovUK2020].
+Schools and various retail, leisure and hospitality businesses were closed from late 
+March, and restrictions were gradually eased from late May.
 Average upload speeds are slower than average download speeds, at $9.3$Mb/s
 mean upload speed for the whole sample,
 compared to $29.6$Mb/s for download speeds, but they are also less associated
@@ -398,8 +416,9 @@ reflect the change in users' perception of the workday reliability of internet
 services.
 
 However, there were insufficient observations -- only $631$ speed
-tests per LAD on average -- for each for each working hour of each working day in
-each Local Authority District (LAD) to profile speeds at that level of detail.
+tests per Local Authority District (LAD) on average -- 
+for each for each working hour of each working day in each LAD to profile speeds at 
+that level of detail.
 Spatial aggregation was also necessary because we could not follow individuals or
 households and connect data points.
 Therefore, we aggregate the $241,088$ individual, geolocated and time-stamped
@@ -707,9 +726,7 @@ First, we control for the number of speed tests run per cluster inhabitant
 between $9:00$-$10:59$ as well as the share of fast Virgin Media internet
 connections. Regarding the former, we expect people in LADs with more unreliable
 connections to test their internet speeds more often, and the results validate our
-priors. Meanwhile, fast Virgin Media cable connections have historically
-only been available to $45$% of premises in the UK [@ofcom2016], where the more
-lucrative and competitive market originally attracted the cable TV provider.
+priors. 
 Those in clusters $2$, $3$, $9$ and $11$ benefit from a higher proportion of
 Virgin connections, which is an indication that people in these clusters are
 more likely to live in urban areas, with more choice of broadband services.
