@@ -29,6 +29,7 @@ library(rgeos)
 library(raster)
 library(httr)
 library(readxl)
+library(httr)
 
 # This is the project path
 path <- find_rstudio_root_file()
@@ -168,6 +169,18 @@ lad <- lad %>%
 sapply(lad, function(x) sum(is.na(x)))
 ```
 
+## furlough
+
+```{r}
+url <- "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/891607/Coronavirus_Job_Retention_Scheme_Statistics_Tables_June_2020.xlsx"
+GET(url, write_disk(tf <- tempfile(fileext = ".xlsx")))
+f <- readxl::read_excel(tf, 6L, range = "B7:D486", col_names = F) %>% 
+  rename(lad19cd = 1,
+         lad19nm = 2,
+         furlough = 3) %>% 
+  filter(!is.na(furlough) & !is.na(lad19cd)) %>% 
+  dplyr::select(-lad19nm)
+```
 
 ## Load socio-econ data and merge
 
@@ -175,7 +188,8 @@ sapply(lad, function(x) sum(is.na(x)))
 data.old.path <- paste0(path, "/data/temp/data_for_aux.csv")
 data <- read_csv(data.old.path) %>% 
   dplyr::select(-c(1,4:19)) %>% 
-  left_join(x = lad, y = . )
+  left_join(x = lad, y = . ) %>% 
+  left_join(x = ., y = f )
 
 # NOT RUN
 # export file for future reference / backup
@@ -200,17 +214,18 @@ data.cor <- data %>%
 m <- cor(data.cor)
 corrplot(m, type="upper",method = "number", number.cex = .5, tl.cex = .75)
 
-data.cor <- data %>%
-  dplyr::select(LAD.tests.am20,
-                pop, pop16_64,
-                managers, tech,
-                skilled, earnings,
-                total.busi)
+# data.cor <- data %>%
+#   dplyr::select(LAD.tests.am20,
+#                 pop, pop16_64,
+#                 managers, tech,
+#                 skilled, earnings,
+#                 total.busi)
 
 
 data.cor <- data %>%
-  dplyr::select(pop16_64, 
-                pop.dens,
+  dplyr::select(#pop16_64,
+                pop,
+                #pop.dens,
                 job.dens2018, 
                 distMet,
                 distLondon,
@@ -224,12 +239,14 @@ data.cor <- data %>%
                 plant,
                 earnings,
                 total.busi,
+                nvq4,
+                furlough,
                 LAD.tests.am20,
-                pop,
                 virgin) %>%
   mutate('LAD.tests.am20/pop' = LAD.tests.am20/pop) %>%
   mutate('total.busi/pop' = total.busi/pop) %>%
-  dplyr::select(-LAD.tests.am20,-pop, -total.busi)
+  mutate('furlough/pop' = furlough/pop) %>% 
+  dplyr::select(-LAD.tests.am20,-pop, -total.busi, -furlough)
 
 
 m <- cor(data.cor, use = "pairwise.complete.obs")
@@ -259,7 +276,7 @@ aux.up <- multinom(cluster.up ~
                      job.dens2018 + # pop.dens is still insignificant when job.dens is excluded
                      distMet + distLondon + south +
                      managers + tech + skilled + prof + admin + caring + plant +
-                     earnings + I(total.busi/pop) + nvq4 +
+                     earnings + I(total.busi/pop) + nvq4 + I(furlough/pop) +
                      I(LAD.tests.am20/pop) + # non sensitive to addition of other tests pm
                      virgin
                    , data = data, 
@@ -278,7 +295,7 @@ stargazer(aux.up,
           digits = 3,
           covariate.labels=c(#"pop. 16-64, 2018",
             "pop, 2018",
-            #"pop. densuty, 2018",
+            #"pop. density, 2018",
             "job density, 2018",
             "distance to nearest met. area",
             "distance to London",
@@ -293,6 +310,66 @@ stargazer(aux.up,
             "earnings, 2019",
             "n. business est. per hab., 2019",
             "% of NVQ4+",
+            "% furloughed pop., 2020",
+            "n. of AM broadband tests per hab., 2020",
+            "% of Virgin Media connections"),
+          add.lines = list(c("McFadden's R squared",
+                             round(r2.up[1],3), round(r2.up[1],3), round(r2.up[1],3),
+                             round(r2.up[1],3), round(r2.up[1],3), round(r2.up[1],3),
+                             round(r2.up[1],3), round(r2.up[1],3), round(r2.up[1],3)
+                             , round(r2.up[1],3), round(r2.up[1],3)),
+                           (c("N",
+                              n.obs, n.obs, n.obs,
+                              n.obs, n.obs, n.obs,
+                              n.obs, n.obs, n.obs
+                              , n.obs, n.obs))))
+
+```
+
+## Auxiliary regression, dep. var.: upload clusters, NO NVQ4
+
+```{r upload regression no NVQ4, results= 'asis', message=F, error=F, warning=F}
+aux.up <- multinom(cluster.up ~ 
+                     #pop16_64 + # non sign, while pop is
+                     pop +
+                     #pop.dens + 
+                     job.dens2018 + # pop.dens is still insignificant when job.dens is excluded
+                     distMet + distLondon + south +
+                     managers + tech + skilled + prof + admin + caring + plant +
+                     earnings + I(total.busi/pop) + I(furlough/pop) +
+                     I(LAD.tests.am20/pop) + # non sensitive to addition of other tests pm
+                     virgin
+                   , data = data, 
+                   trace = F) # to avoid messages 
+
+# McFadden's R squared
+aux.up.null <- multinom(cluster.up ~ 1, data = data)
+r2.up <- 1-logLik(aux.up)/logLik(aux.up.null)
+
+n.obs <- dim(aux.up$fitted.values)[1]
+
+stargazer(aux.up, 
+          type = "html",
+          #type = "text",
+          nobs = T,
+          digits = 3,
+          covariate.labels=c(#"pop. 16-64, 2018",
+            "pop, 2018",
+            #"pop. density, 2018",
+            "job density, 2018",
+            "distance to nearest met. area",
+            "distance to London",
+            "South of the UK",
+            "% of managerial jobs, 2020",
+            "% of tech jobs, 2020",
+            "% of skilled trade jobs, 2020",
+            "% of professional jobs, 2020",
+            "% of administrative jobs, 2020",
+            "% of leisure jobs, 2020",
+            "% of machine operation jobs, 2020",
+            "earnings, 2019",
+            "n. business est. per hab., 2019",
+            "% furloughed pop., 2020",
             "n. of AM broadband tests per hab., 2020",
             "% of Virgin Media connections"),
           add.lines = list(c("McFadden's R squared",
