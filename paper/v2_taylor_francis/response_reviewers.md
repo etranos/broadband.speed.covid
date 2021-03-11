@@ -1,6 +1,7 @@
 ---
 output:
   pdf_document: default
+bibliography: bibliography.bib
 ---
 Dear Prof. Bian,
 
@@ -16,63 +17,97 @@ Kind Regards,
 
 ## Reviewer: 1
 
->The paper reports research of detecting clusters of network access speed, especially under the pandemic for resilience. Such a topic is of great importance as we are all in the pandemic and we rely on the network cyberinfrastructure for work as stated, and also for online education for all levels of students. Therefore, it worth supports with a few major revisions needed:
+> The paper reports research of detecting clusters of network access speed, especially under the pandemic for resilience. Such a topic is of great importance as we are all in the pandemic and we rely on the network cyberinfrastructure for work as stated, and also for online education for all levels of students. Therefore, it worth supports with a few major revisions needed:
+
+Thank you for your very supportive comments. 
 
 > 1. The VGI approach of obtaining network speed maybe bias given that this probably is the digital guru group that will respond, maybe a discussion on this and picture the steps of selecting/soliciting and how representative this is.
+
 We have added the following sentence to the first paragraph in section 3.2, explaining why we believe any bias balances out: 
-'Indeed, those who seek to test their broadband are most likely to do so because 
+"Indeed, those who seek to test their broadband are most likely to do so because 
 they are experiencing slower speeds than expected, although any skew towards slower
 speeds is balanced by the likelihood that those who test their broadband are also 
-more ‘tech-savvy’ and / or have purchased higher speed packages that are not 
-delivering the promised level of service.'
+more 'tech-savvy' and / or have purchased higher speed packages that are not 
+delivering the promised level of service."
+
 As we explain, our intentions were to analyse a dataset of experienced internet speeds.
-Those who use the speedcheck service are not solicited in any way, and no personally identifying data is included other than the geolocation of the test.
+Those who use the speedcheck service are not solicited in any way, and no personally 
+identifying data is included other than the geolocation of the test.
 
 > 2. The results for network speed for the different regions are not very different with 1-2 out of 10Mbps difference and probably can not reflect the social disparities. Not sure if this is the facts in U.K. If so, then it's not a problem?
-Firstly, mean speeds are not likely to be that different between regions of the UK (e.g. North or South England). The greater differences are between urban, built-up areas, and more rural areas within regions, although there are some local initiatives to address this in some areas.
-However, we assume that your comment refers to Table 1 and the differences in mean network speed between clusters? Whilst these differences are not large, the range for upload speeds is smaller than for download speeds, and a difference of 1-2Mbps slower may well be noticeable at the wrong moment. This is why we created the clusters by how the time series of speeds changes by day of the week and hour of the day, rather than focusing our analysis on mean speeds.
+
+Firstly, mean speeds are not likely to be that different between regions of the UK 
+(e.g. North or South England). The greater differences are between urban, built-up 
+areas, and more rural areas within regions, although there are some local initiatives 
+to address this in some areas. However, we assume that your comment refers to Table 1 
+and the differences in mean network speed between clusters? Whilst these differences 
+are not large, the range for upload speeds is smaller than for download speeds, 
+and a difference of 1-2Mbps slower may well be noticeable at the wrong moment. 
+Importantly, we only consider the test which took place during working hours, so 
+when speed drops during, let's say, a work Zoom call or when uploading large files,
+it will be noticeable. This is why we created the clusters by how the time series 
+of speeds changes by day of the week and hour of the day, rather than focusing our 
+analysis on mean speeds.
 
 > 3. The relevance to pandemic is not very straightforward. This may be improved by adding some studies, e.g., how the clusters impact the effectiveness of work from home through survey. Or relates to the employment rate.
-We did not have the opportunity to run a survey. As we say in the introduction, prior to the pandemic, the demand for telecommuting would not have put a strain on internet connection speeds. We have clarified this with the addition of the following sentence:
-'High levels of demand are one of the main causes of reduced reliability and slower connection speeds, as network bandwidth becomes congested.'
 
-Also consider whether we add % furlough to regression? https://www.gov.uk/government/statistics/coronavirus-job-retention-scheme-statistics-june-2020
+Regrettably, we did not have the opportunity to run a survey. As we say in the introduction, 
+prior to the pandemic, the demand for telecommuting would not have put a strain 
+on internet connection speeds. We have clarified this with the addition of the following sentence:
+"High levels of demand are one of the main causes of reduced reliability and slower connection speeds, as network bandwidth becomes congested".
+
+**Also consider whether we add % furlough to regression? https://www.gov.uk/government/statistics/coronavirus-job-retention-scheme-statistics-june-2020**
 
 > 4. The time series may be enhanced by putting a time range according to different events of the pandemic or other factors that relates to the pandemic.
+
 We chose the time range to reflect the period of first lockdown in the UK, as we say in the first paragraph of 3.2: 
-'We are particularly interested in upload speeds and the frequency of speed tests
+"We are particularly interested in upload speeds and the frequency of speed tests
 over the period from March to May $2020$, as government statements indicate this 
 encompasses the period when UK workers were first told to work from home if at all 
-possible [@GovUK2020].'
-We have added:
-'Schools and various retail, leisure and hospitality businesses were closed from late 
-March, and restrictions were gradually eased from late May.'
+possible [@GovUK2020]".
+
+We have also added the following text:
+"Schools and various retail, leisure and hospitality businesses were closed from late 
+March, and restrictions were gradually eased from late May".
 
 > 5. Would suggest a review of the spatiotemporal challenges of the covid-19.
 
 ??
 
 > 6. A review of cyberinfrastructure and how network varies in different region would be useful.
+
 In section 2.2 of the literature review, we have added additional detail specific to the UK:
-'This finding broadly applies in the UK, where studies that also analysed broadband 
+
+"This finding broadly applies in the UK, where studies that also analysed broadband 
 speed checks concluded that average speeds are lower in rural areas, something that
 has not been improved by policy measures to increase competition [@riddlesden2014broadband; @nardotto2015unbundling].
 @riddlesden2014broadband found that levels of deprivation did not correlate with 
-first level digital divides.'
-AND 'Dense urban areas were shown to suffer more from slow down during peak hours, 
+first level digital divides".
+
+and 
+
+"Dense urban areas were shown to suffer more from slow down during peak hours, 
 although these services were more likely to be improved by increased competition 
 between providers, such as between new entrants and Virgin Media cable connections
 [@riddlesden2014broadband; @nardotto2015unbundling]. The latter were historically 
 available to only $45$% of premises in the UK [@ofcom2016], where the more
-lucrative and competitive market originally attracted the cable TV provider.'
+lucrative and competitive market originally attracted the cable TV provider".
+
 The latter bit about Virgin Media is moved from the results section, in response to reviewer 2, q7.
 
 > 7. The first part introduction can be shorted to reflect the importance of network bandwidth to resilience of pandemic impacted life.
-As mentioned in response to comment 3, we have added a sentence of clarification to highlight the link between speed and bandwidth. We have also restructured the introduction, so this becomes the second paragraph, the 3rd paragraph is slightly shorter, and we introduce our case study approach in the 4th paragraph. We also move the paragraph describing the three levels of digital divides to the literature review.
+
+As mentioned in response to comment 3, we have added a sentence of clarification 
+to highlight the link between speed and bandwidth. We have also restructured the 
+introduction, so this becomes the second paragraph, the 3rd paragraph is slightly 
+shorter, and we introduce our case study approach in the 4th paragraph. We also 
+moved the paragraph describing the three levels of digital divides to the literature review.
 
 ## Reviewer: 2
 
 >This article presents interesting and timely research in digital geography, which is directly relevant to digital divide associated with the COVID-19 pandemic. The pandemic provides a once-in-a-lifetime opportunity to examine the barriers of broadband usage for telecommuting. The first two sections were very well written. I enjoyed reading them. However, I have a few major concerns on the methodology and a lack of discussion.
+
+Thank you for your very supportive comments. 
 
 > 1. The paper used k-means, a popular unsupervised classification in this study. The optimal number of clusters was determined as 13 based on cluster validation indices (CVIs). While this number could be well justified, I feel it is too high to properly interpret the results. The interpretation and knowledge discovery from clustering results with a high k tend to be tedious. Being affected by the high k, the Results section appears to be very difficult to read and follow. As there are many different CVIs, I feel a lower k will benefit the interpretation of results.
 
@@ -93,8 +128,11 @@ ET: after we finalise k, we can rerun k-means for 2019 and decide - could also s
 > 6. A few suggestions on the figures. Fig 1 and 2 have crowded tick labels for x-axis month and weekday. Fig 3 and 4 may be placed side by side with the same y-axis for easy comparison. Actually, I feel “Figure 3 shows that the high standard deviation” may be inaccurate as Fig 4 appears to exhibit higher variability. Fig 5 maps may include the locations of metropolitan or major cities to help interpretation. The warmer-cooler color scheme may match the population size instead of the ordinal cluster numbers. The current color scheme does not help interpretation at all.
 
 > 7. A few minor things. In Sec 2.2, the statement “These returns have been even greater …” appears to be controversial. LAD acronym appears before it was defined. Virgin Media as a major broadband provider should be briefly introduced in the manuscript.
+
 We have toned down the statement on returns to say:
-'In some aspects, these returns may have increased during the Covid-19 crisis...'
+"In some aspects, these returns may have increased during the Covid-19 crisis..."
+
 Apologies on LAD acronym, now corrected.
+
 We also moved and integrated introduction of Virgin Media to the literature review s2.2. See also response to reviewer 1, q6.
 
