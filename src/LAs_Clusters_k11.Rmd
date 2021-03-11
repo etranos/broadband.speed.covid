@@ -1,0 +1,314 @@
+---
+title: "LAs_clusters k = 11"
+date: "`r format(Sys.time(), '%d %B, %Y, %H:%M')`"
+output: 
+  html_document:
+    df_print: paged
+    toc: true
+    toc_float: FALSE
+knit: (function(inputFile, encoding) {
+    rmarkdown::render(inputFile, encoding = encoding, output_dir = "../output")
+  })
+---
+  
+```{r settings, include = FALSE}
+library(ggplot2)
+library(tidyverse)
+library(rprojroot)
+library(lubridate)
+library(knitr)
+library(rprojroot)
+library(nnet)
+library(stargazer)
+library(openair)
+library(rgdal)
+library(corrplot)
+library(DescTools)
+library(geosphere)
+library(rgeos)
+library(raster)
+library(httr)
+library(readxl)
+
+# This is the project path
+path <- find_rstudio_root_file()
+```
+
+## Load cluster data
+
+```{r include = FALSE}
+
+# load the data created by Data_Spatial.Rmd and ts_clusters.Rmd
+path.cluster <- paste(path, "/data/temp/clusters_nodiff_11.csv", sep = "")
+clusters <- read_csv(path.cluster)
+names(clusters) [1] <- "LAD19NM"
+
+path.data <- paste(path, "/data/temp/TSbb19_20sp.csv", sep = "")
+TSbb19_20sp <- read_csv(path.data)
+
+#split out 2020 before join to clusters to create descriptives
+TS2020 <- selectByDate(TSbb19_20sp, year = 2020) 
+TS2019 <- selectByDate(TSbb19_20sp, year = 2019)
+
+# LAD codes and names
+# get LA 
+# this is the heaviest version:
+# (i) directly from the web
+#la <- readOGR("http://geoportal1-ons.opendata.arcgis.com/datasets/b6d2e15801de45328b760a4f55d74318_0.geojson?outSR={%22latestWkid%22:3857,%22wkid%22:102100}")#, layer="OGRGeoJSON")
+# or, (ii) from the json I saved locally
+# path.json <- paste(path, "./data/raw/Local_Authority_Districts_(April_2019)_Boundaries_UK_BFE.geojson", sep = "")
+# la <- readOGR(path.json)#, layer="OGRGeoJSON")
+# UK BGC: 
+la <- readOGR("https://opendata.arcgis.com/datasets/0e07a8196454415eab18c40a54dfbbef_0.geojson")
+codes <- la@data %>%
+  dplyr::select(lad19cd, lad19nm) %>%
+  rename(LAD19NM = lad19nm)
+
+# LAD broadband characteristics AM
+LAD.up.am19 <- TS2019 %>%
+  filter(hour == 9 | hour == 10) %>%
+  group_by(LAD19NM) %>%
+  summarise(LAD.up.am19 = mean(speedup))
+
+LAD.up.am20 <- TS2020 %>%
+  filter(hour == 9 | hour == 10) %>%
+  group_by(LAD19NM) %>%
+  summarise(LAD.up.am20 = mean(speedup))
+
+LAD.down.am19 <- TS2019 %>%
+  filter(hour == 9 | hour == 10) %>%
+  group_by(LAD19NM) %>%
+  summarise(LAD.down.am19 = mean(speeddown))
+
+LAD.down.am20 <- TS2020 %>%
+  filter(hour == 9 | hour == 10) %>%
+  group_by(LAD19NM) %>%
+  summarise(LAD.down.am20 = mean(speeddown))
+
+LAD.tests.am19 <- TS2019 %>%
+  filter(hour == 9 | hour == 10) %>%
+  group_by(LAD19NM) %>%
+  summarise(LAD.tests.am19 = n())
+
+LAD.tests.am20 <- TS2020 %>%
+  filter(hour == 9 | hour == 10) %>%
+  group_by(LAD19NM) %>%
+  summarise(LAD.tests.am20 = n())
+
+# LAD broadband characteristics PM
+LAD.up.pm19 <- TS2019 %>%
+  filter(hour == 19 | hour == 20) %>%
+  group_by(LAD19NM) %>%
+  summarise(LAD.up.pm19 = mean(speedup))
+
+LAD.up.pm20 <- TS2020 %>%
+  filter(hour == 19 | hour == 20) %>%
+  group_by(LAD19NM) %>%
+  summarise(LAD.up.pm20 = mean(speedup))
+
+LAD.down.pm19 <- TS2019 %>%
+  filter(hour == 19 | hour == 20) %>%
+  group_by(LAD19NM) %>%
+  summarise(LAD.down.pm19 = mean(speeddown))
+
+LAD.down.pm20 <- TS2020 %>%
+  filter(hour == 19 | hour == 20) %>%
+  group_by(LAD19NM) %>%
+  summarise(LAD.down.pm20 = mean(speeddown))
+
+LAD.tests.pm19 <- TS2019 %>%
+  filter(hour == 19 | hour == 20) %>%
+  group_by(LAD19NM) %>%
+  summarise(LAD.tests.pm19 = n())
+
+LAD.tests.pm20 <- TS2020 %>%
+  filter(hour == 19 | hour == 20) %>%
+  group_by(LAD19NM) %>%
+  summarise(LAD.tests.pm20 = n())
+
+# this is a share of Virgin provider variable
+virgin <- TS2020 %>%
+  filter(provider == "Virgin Media") %>%
+  group_by(LAD19NM) %>%
+  summarise(virgin = n())
+
+virgin.denom <- TS2020 %>%
+  #filter(provider == "Virgin Media") %>%
+  group_by(LAD19NM) %>%
+  summarise(virgin.denom = n())
+
+virgin <- merge(virgin.denom, virgin, by = "LAD19NM", all.x = T)
+virgin$virgin <- ifelse(is.na(virgin$virgin), 0, virgin$virgin)
+virgin$virgin <- virgin$virgin/virgin.denom$virgin.denom
+virgin$virgin.denom <- NULL
+
+# LAD characteristcs merge
+lad <- list(codes,
+            clusters,
+            LAD.up.am19,
+            LAD.up.am20,
+            LAD.down.am19,
+            LAD.down.am20,
+            LAD.tests.am19,
+            LAD.tests.am20,
+            LAD.up.pm19,
+            LAD.up.pm20,
+            LAD.down.pm19,
+            LAD.down.pm20,
+            LAD.tests.pm19,
+            LAD.tests.pm20,
+            virgin)
+
+sapply(lad, function(x) dim(x))
+sapply(lad, function(x) sum(is.na(x)))
+
+# merge with reduce
+lad <- lad %>% 
+  reduce(inner_join, by = "LAD19NM")
+sapply(lad, function(x) sum(is.na(x)))
+```
+
+
+## Load socio-econ data and merge
+
+```{r}
+data.old.path <- paste0(path, "/data/temp/data_for_aux.csv")
+data <- read_csv(data.old.path) %>% 
+  dplyr::select(-c(1,4:19)) %>% 
+  left_join(x = lad, y = . )
+
+# NOT RUN
+# export file for future reference / backup
+# data.out.path <- paste0(path, "/data/temp/data_for_aux_k11.csv")
+# write.csv(data, data.out.path)
+```
+
+## Descriptive statistics and correlations
+
+There is surprisingly low correlation between upload and download, morning and night. 
+Number of tests are the most correlated variables.
+
+```{r correlations, results = 'asis'}
+data.cor <- data %>%
+  dplyr::select(LAD.up.am19, LAD.down.am19,  
+                LAD.tests.am19, LAD.up.pm19, 
+                LAD.down.pm19, LAD.tests.pm19, 
+                LAD.up.am20, LAD.down.am20,
+                LAD.tests.am20, LAD.up.pm20, 
+                LAD.down.pm20, LAD.tests.pm20)
+
+m <- cor(data.cor)
+corrplot(m, type="upper",method = "number", number.cex = .5, tl.cex = .75)
+
+data.cor <- data %>%
+  dplyr::select(LAD.tests.am20,
+                pop, pop16_64,
+                managers, tech,
+                skilled, earnings,
+                total.busi)
+
+
+data.cor <- data %>%
+  dplyr::select(pop16_64, 
+                pop.dens,
+                job.dens2018, 
+                distMet,
+                distLondon,
+                south,
+                managers, 
+                tech,
+                skilled,
+                prof,
+                admin, 
+                caring,
+                plant,
+                earnings,
+                total.busi,
+                LAD.tests.am20,
+                pop,
+                virgin) %>%
+  mutate('LAD.tests.am20/pop' = LAD.tests.am20/pop) %>%
+  mutate('total.busi/pop' = total.busi/pop) %>%
+  dplyr::select(-LAD.tests.am20,-pop, -total.busi)
+
+
+m <- cor(data.cor, use = "pairwise.complete.obs")
+corrplot(m, type="upper",method = "number", number.cex = .5, tl.cex = .75)
+
+stargazer(data.cor,
+          type="html",
+          #type="text", 
+          summary = T,
+          nobs = T)
+```
+
+## Auxiliary regression, dep. var.: upload clusters
+
+```{r upload regression , results= 'asis', message=F, error=F, warning=F}
+# helpful sources: http://www.princeton.edu/~otorres/LogitR101.pdf
+# https://thestatsgeek.com/2014/02/08/r-squared-in-logistic-regression/
+
+# convert dependent variable to factor
+data$cluster.up <- as.factor(data$cluster.up)
+data$cluster.up <- relevel(data$cluster.up, "4") # base category: cluster 4
+
+aux.up <- multinom(cluster.up ~ 
+                     #pop16_64 + # non sign, while pop is
+                     pop +
+                     #pop.dens + 
+                     job.dens2018 + # pop.dens is still insignificant when job.dens is excluded
+                     distMet + distLondon + south +
+                     managers + tech + skilled + prof + admin + caring + plant +
+                     earnings + I(total.busi/pop) + nvq4 +
+                     I(LAD.tests.am20/pop) + # non sensitive to addition of other tests pm
+                     virgin
+                   , data = data, 
+                   trace = F) # to avoid messages 
+
+# McFadden's R squared
+aux.up.null <- multinom(cluster.up ~ 1, data = data)
+r2.up <- 1-logLik(aux.up)/logLik(aux.up.null)
+
+n.obs <- dim(aux.up$fitted.values)[1]
+
+stargazer(aux.up, 
+          type = "html",
+          #type = "text",
+          nobs = T,
+          digits = 3,
+          covariate.labels=c(#"pop. 16-64, 2018",
+            "pop, 2018",
+            #"pop. densuty, 2018",
+            "job density, 2018",
+            "distance to nearest met. area",
+            "distance to London",
+            "South of the UK",
+            "% of managerial jobs, 2020",
+            "% of tech jobs, 2020",
+            "% of skilled trade jobs, 2020",
+            "% of professional jobs, 2020",
+            "% of administrative jobs, 2020",
+            "% of leisure jobs, 2020",
+            "% of machine operation jobs, 2020",
+            "earnings, 2019",
+            "n. business est. per hab., 2019",
+            "% of NVQ4+",
+            "n. of AM broadband tests per hab., 2020",
+            "% of Virgin Media connections"),
+          add.lines = list(c("McFadden's R squared",
+                             round(r2.up[1],3), round(r2.up[1],3), round(r2.up[1],3),
+                             round(r2.up[1],3), round(r2.up[1],3), round(r2.up[1],3),
+                             round(r2.up[1],3), round(r2.up[1],3), round(r2.up[1],3)
+                             , round(r2.up[1],3), round(r2.up[1],3)),
+                           (c("N",
+                              n.obs, n.obs, n.obs,
+                              n.obs, n.obs, n.obs,
+                              n.obs, n.obs, n.obs
+                              , n.obs, n.obs))))
+
+```
+
+```{r}
+path.out <- paste0(path, "/data/temp/LAs_Clusters_k11.RData")
+save.image(path.out)
+```

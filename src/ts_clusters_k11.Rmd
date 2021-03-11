@@ -1,0 +1,588 @@
+---
+title: "Time series clusters, k = 11"
+date: "`r format(Sys.time(), '%d %B, %Y, %H:%M')`"
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    toc_float: true
+knit: (function(inputFile, encoding) {
+    rmarkdown::render(inputFile, encoding = encoding, output_dir = "../output")
+  })
+---
+  
+```{r settings, include = FALSE}
+library(tsbox)
+library(ggplot2)
+library(tidyverse)
+library(geojsonio)
+library(tsfeatures)
+library(rprojroot)
+library(openair)
+library(reshape2)
+library(lubridate)
+library(rgdal)
+library(maptools)
+library(sp)
+library(rgeos)
+library(classInt)
+library(RColorBrewer)
+library(knitr)
+library(rprojroot)
+library(viridis)
+library(hrbrthemes)
+library(imputeTS)
+library(tsbox)
+library(dtwclust)
+library(leaflet)
+library(ggmap)
+library(cowplot)
+
+# This is the project path
+path <- find_rstudio_root_file()
+```
+
+```{r include = FALSE}
+
+# load the data created by Data_Spatial.Rmd
+
+path.data <- paste(path, "/data/temp/TSbb19_20sp.csv", sep = "")
+
+TSbb19_20sp <- read_csv(path.data)
+
+#split by year before create stats by each hour of each day of the week
+TS2019 <- selectByDate(TSbb19_20sp, year = 2019) #272248 obs
+TS2020 <- selectByDate(TSbb19_20sp, year = 2020) #343268 obs
+```
+
+## Time series clusters
+
+I create clusters based on upload, download and number of tests time series for tests working hours and days from 16/2/2020 onwards.
+
+More work needs to be done to select the optimal *k* as well as the clustering methods.
+The `dtwclust` package comes with quite some readings, saved in the `.\literature\`.
+
+Also, we need to think about upload / download / differnces / period + **imputation**.
+
+```{r include=TRUE, echo=FALSE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
+
+# download 2020
+ts.down2020 <- TS2020 %>%
+  group_by(weekday, hour, LAD19NM) %>%
+  summarise(mean.down = mean(speeddown))#, mean.down = mean(speeddown), n.tests = n())
+
+# upload 2020
+ts.up2020 <- TS2020 %>%
+  group_by(weekday, hour, LAD19NM) %>%
+  summarise(mean.up = mean(speedup))
+
+# tests 2020
+ts.tests2020 <- TS2020 %>%
+  group_by(weekday, hour, LAD19NM) %>%
+  summarise(n.tests = n())
+
+# download 2019
+ts.down2019 <- TS2019 %>%
+  group_by(weekday, hour, LAD19NM) %>%
+  summarise(mean.down = mean(speeddown))#, mean.down = mean(speeddown), n.tests = n())
+
+# upload 2019
+ts.up2019 <- TS2019 %>%
+  group_by(weekday, hour, LAD19NM) %>%
+  summarise(mean.up = mean(speedup))
+
+# tests 2019
+ts.tests2019 <- TS2019 %>%
+  group_by(weekday, hour, LAD19NM) %>%
+  summarise(n.tests = n())
+
+```
+
+### Upload speed
+
+```{r eval=TRUE, echo=TRUE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
+
+# create a 'fake' week for a ts id
+help.dates <- tibble(help.date.time = c(make_datetime(year = 2020, month = 3, day = 2),
+                                        make_datetime(year = 2020, month = 3, day = 3),
+                                        make_datetime(year = 2020, month = 3, day = 4),
+                                        make_datetime(year = 2020, month = 3, day = 5),
+                                        make_datetime(year = 2020, month = 3, day = 6)),
+                     weekday = c("Mon", "Tue", "Wed", "Thu", "Fri"))
+ts.wide <- merge(ts.up2020, help.dates, by = "weekday")
+ts.wide$hour <- paste(ts.wide$hour, ":00", sep="")
+ts.wide$help.date.time <- with(ts.wide, as.POSIXct(paste(help.date.time, hour), format="%Y-%m-%d %H:%M"))
+
+ts.wide <- ts.wide %>%
+  dplyr::select(help.date.time, LAD19NM, mean.up) #%>%
+#filter(date > "2020-2-15")
+
+# turn to a wide format
+ts.wide <- ts_wide(ts.wide)
+
+# impute with means of each TS
+# TODO check sensitivity
+ts.wide <- na_mean(ts.wide)
+#sapply(ts.wide, function(x) sum(is.na(x)))
+
+# extract names
+ts.wide.names <- names(ts.wide[,-1])
+ts.wide <- ts.wide[,-1]
+
+# standardise
+ts.wide <- zscore(ts.wide)
+
+# convert to list for tsclust
+ts.wide <- split(ts.wide, rep(1:ncol(ts.wide), each = nrow(ts.wide)))
+
+# Define k instead of selecting it
+k <- 11
+
+pc_k <- tsclust(ts.wide, k = k, seed = 94L, 
+                type="partitional", 
+                distance = "dtw_basic", centroid = "pam", trace = T, 
+                args = tsclust_args(dist = list(window.size = 20L)))
+plot(pc_k)
+
+cluster_up <- data.frame(LAD=ts.wide.names,
+                         cluster=pc_k@cluster)
+```
+
+### Download speed
+
+```{r eval=TRUE, echo=TRUE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
+
+ts.wide <- merge(ts.down2020, help.dates, by = "weekday")
+ts.wide$hour <- paste(ts.wide$hour, ":00", sep="")
+ts.wide$help.date.time <- with(ts.wide, as.POSIXct(paste(help.date.time, hour), format="%Y-%m-%d %H:%M"))
+
+ts.wide <- ts.wide %>%
+  dplyr::select(help.date.time, LAD19NM, mean.down) #%>%
+#filter(date > "2020-2-15")
+
+# turn to a wide format
+ts.wide <- ts_wide(ts.wide)
+
+# impute with means of each TS
+# TODO check sensitivity
+ts.wide <- na_mean(ts.wide)
+#sapply(ts.wide, function(x) sum(is.na(x)))
+
+# extract names
+ts.wide.names <- names(ts.wide[,-1])
+ts.wide <- ts.wide[,-1]
+
+# standardise
+ts.wide <- zscore(ts.wide)
+
+# convert to list for tsclust
+ts.wide <- split(ts.wide, rep(1:ncol(ts.wide), each = nrow(ts.wide)))
+
+# Define k instead of selecting it
+
+pc_k <- tsclust(ts.wide, k = k, seed = 94L, 
+                type="partitional", 
+                distance = "dtw_basic", centroid = "pam", trace = T, 
+                args = tsclust_args(dist = list(window.size = 20L)))
+plot(pc_k)
+
+cluster_down <- data.frame(LAD=ts.wide.names,
+                           cluster=pc_k@cluster)
+```
+
+### N. of speed tests
+
+```{r eval=TRUE, echo=TRUE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
+
+# tests 
+ts.wide <- merge(ts.tests2020, help.dates, by = "weekday")
+ts.wide$hour <- paste(ts.wide$hour, ":00", sep="")
+ts.wide$help.date.time <- with(ts.wide, as.POSIXct(paste(help.date.time, hour), format="%Y-%m-%d %H:%M"))
+
+ts.wide <- ts.wide %>%
+  dplyr::select(help.date.time, LAD19NM, n.tests) #%>%
+#filter(date > "2020-2-15")
+
+# turn to a wide format
+ts.wide <- ts_wide(ts.wide)
+
+# impute with means of each TS
+# TODO check sensitivity
+ts.wide <- na_mean(ts.wide)
+#sapply(ts.wide, function(x) sum(is.na(x)))
+
+# extract names
+ts.wide.names <- names(ts.wide[,-1])
+ts.wide <- ts.wide[,-1]
+
+# standardise
+ts.wide <- zscore(ts.wide)
+
+# convert to list for tsclust
+ts.wide <- split(ts.wide, rep(1:ncol(ts.wide), each = nrow(ts.wide)))
+
+# Define k instead of selecting it
+
+pc_k <- tsclust(ts.wide, k = k, seed = 94L, 
+                type="partitional", 
+                distance = "dtw_basic", centroid = "pam", trace = T, 
+                args = tsclust_args(dist = list(window.size = 20L)))
+plot(pc_k)
+
+cluster_tests <- data.frame(LAD=ts.wide.names,
+                            cluster=pc_k@cluster)
+```
+
+### Upload speed diff 2019-2020
+
+```{r eval=TRUE, echo=TRUE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
+
+# 2020 copied from above
+
+# create a 'fake' week for a ts id
+help.dates <- tibble(help.date.time = c(make_datetime(year = 2020, month = 3, day = 2),
+                                        make_datetime(year = 2020, month = 3, day = 3),
+                                        make_datetime(year = 2020, month = 3, day = 4),
+                                        make_datetime(year = 2020, month = 3, day = 5),
+                                        make_datetime(year = 2020, month = 3, day = 6)),
+                     weekday = c("Mon", "Tue", "Wed", "Thu", "Fri"))
+ts.wide <- merge(ts.up2020, help.dates, by = "weekday")
+ts.wide$hour <- paste(ts.wide$hour, ":00", sep="")
+ts.wide$help.date.time <- with(ts.wide, as.POSIXct(paste(help.date.time, hour), format="%Y-%m-%d %H:%M"))
+
+ts.wide <- ts.wide %>%
+  dplyr::select(help.date.time, LAD19NM, mean.up) #%>%
+#filter(date > "2020-2-15")
+
+# turn to a wide format
+ts.wide <- ts_wide(ts.wide)
+
+# impute with means of each TS
+# TODO check sensitivity
+ts.wide <- na_mean(ts.wide)
+
+# 2019
+
+# create a 'fake' week for a ts id
+help.dates <- tibble(help.date.time = c(make_datetime(year = 2019, month = 3, day = 4),
+                                        make_datetime(year = 2019, month = 3, day = 5),
+                                        make_datetime(year = 2019, month = 3, day = 6),
+                                        make_datetime(year = 2019, month = 3, day = 7),
+                                        make_datetime(year = 2019, month = 3, day = 8)),
+                     weekday = c("Mon", "Tue", "Wed", "Thu", "Fri"))
+ts.wide2019 <- merge(ts.up2019, help.dates, by = "weekday")
+ts.wide2019$hour <- paste(ts.wide2019$hour, ":00", sep="")
+ts.wide2019$help.date.time <- with(ts.wide2019, as.POSIXct(paste(help.date.time, hour), format="%Y-%m-%d %H:%M"))
+
+ts.wide2019 <- ts.wide2019 %>%
+  dplyr::select(help.date.time, LAD19NM, mean.up) #%>%
+#filter(date > "2020-2-15")
+
+# turn to a wide format
+ts.wide2019 <- ts_wide(ts.wide2019)
+
+# impute with means of each TS
+# TODO check sensitivity
+ts.wide2019 <- na_mean(ts.wide2019)
+#sapply(ts.wide, function(x) sum(is.na(x)))
+
+# diff 2020-2019
+ts.wide <- mapply('-', ts.wide, ts.wide2019, SIMPLIFY = FALSE)
+ts.wide <- as.data.frame(ts.wide)
+
+# extract names
+ts.wide.names <- names(ts.wide[,-1])
+ts.wide <- ts.wide[,-1]
+
+# standardise
+ts.wide <- zscore(ts.wide)
+
+# convert to list for tsclust
+ts.wide <- split(ts.wide, rep(1:ncol(ts.wide), each = nrow(ts.wide)))
+
+# Define k instead of selecting it
+
+pc_k <- tsclust(ts.wide, k = k, seed = 94L, 
+                type="partitional", 
+                distance = "dtw_basic", centroid = "pam", trace = T, 
+                args = tsclust_args(dist = list(window.size = 20L)))
+plot(pc_k)
+
+cluster_up.diff <- data.frame(LAD=ts.wide.names,
+                              cluster=pc_k@cluster)
+
+```
+
+### download speed diff 2019-2020
+
+```{r eval=TRUE, echo=TRUE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
+
+# 2020 copied from above
+
+# create a 'fake' week for a ts id
+help.dates <- tibble(help.date.time = c(make_datetime(year = 2020, month = 3, day = 2),
+                                        make_datetime(year = 2020, month = 3, day = 3),
+                                        make_datetime(year = 2020, month = 3, day = 4),
+                                        make_datetime(year = 2020, month = 3, day = 5),
+                                        make_datetime(year = 2020, month = 3, day = 6)),
+                     weekday = c("Mon", "Tue", "Wed", "Thu", "Fri"))
+ts.wide <- merge(ts.down2020, help.dates, by = "weekday")
+ts.wide$hour <- paste(ts.wide$hour, ":00", sep="")
+ts.wide$help.date.time <- with(ts.wide, as.POSIXct(paste(help.date.time, hour), format="%Y-%m-%d %H:%M"))
+
+ts.wide <- ts.wide %>%
+  dplyr::select(help.date.time, LAD19NM, mean.down) #%>%
+#filter(date > "2020-2-15")
+
+# turn to a wide format
+ts.wide <- ts_wide(ts.wide)
+
+# impute with means of each TS
+# TODO check sensitivity
+ts.wide <- na_mean(ts.wide)
+
+# 2019
+
+# create a 'fake' week for a ts id
+help.dates <- tibble(help.date.time = c(make_datetime(year = 2019, month = 3, day = 4),
+                                        make_datetime(year = 2019, month = 3, day = 5),
+                                        make_datetime(year = 2019, month = 3, day = 6),
+                                        make_datetime(year = 2019, month = 3, day = 7),
+                                        make_datetime(year = 2019, month = 3, day = 8)),
+                     weekday = c("Mon", "Tue", "Wed", "Thu", "Fri"))
+ts.wide2019 <- merge(ts.down2019, help.dates, by = "weekday")
+ts.wide2019$hour <- paste(ts.wide2019$hour, ":00", sep="")
+ts.wide2019$help.date.time <- with(ts.wide2019, as.POSIXct(paste(help.date.time, hour), format="%Y-%m-%d %H:%M"))
+
+ts.wide2019 <- ts.wide2019 %>%
+  dplyr::select(help.date.time, LAD19NM, mean.down) #%>%
+#filter(date > "2020-2-15")
+
+# turn to a wide format
+ts.wide2019 <- ts_wide(ts.wide2019)
+
+# impute with means of each TS
+# TODO check sensitivity
+ts.wide2019 <- na_mean(ts.wide2019)
+#sapply(ts.wide, function(x) sum(is.na(x)))
+
+# diff 2020-2019
+ts.wide <- mapply('-', ts.wide, ts.wide2019, SIMPLIFY = FALSE)
+ts.wide <- as.data.frame(ts.wide)
+
+# extract names
+ts.wide.names <- names(ts.wide[,-1])
+ts.wide <- ts.wide[,-1]
+
+# standardise
+ts.wide <- zscore(ts.wide)
+
+# convert to list for tsclust
+ts.wide <- split(ts.wide, rep(1:ncol(ts.wide), each = nrow(ts.wide)))
+
+# Define k instead of selecting it
+
+pc_k <- tsclust(ts.wide, k = k, seed = 94L, 
+                type="partitional", 
+                distance = "dtw_basic", centroid = "pam", trace = T, 
+                args = tsclust_args(dist = list(window.size = 15L)))
+plot(pc_k)
+
+cluster_down.diff <- data.frame(LAD=ts.wide.names,
+                                cluster=pc_k@cluster)
+```
+
+
+## Mapping the clusters
+
+```{r include=TRUE, echo=FALSE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
+
+# all clusters data frame
+clusters <- merge(cluster_up, cluster_down, by = "LAD")
+names(clusters)[2] <- "cluster.up"
+names(clusters)[3] <- "cluster.down"
+
+clusters <- merge(clusters, cluster_up.diff, by = "LAD")
+names(clusters)[4] <- "cluster.up.diff"
+
+clusters <- merge(clusters, cluster_down.diff, by = "LAD")
+names(clusters)[5] <- "cluster.down.diff"
+
+clusters <- merge(clusters, cluster_tests, by = "LAD")
+names(clusters)[6] <- "cluster.tests"
+#sapply(clusters, function(x) sum(is.na(x)))
+
+# clusters  %>% arrange(cluster.up) %>% kable() 
+
+# save clusters file
+out.clusters <- paste(path, "/data/temp/clusters_all_11.csv", sep = "")
+write_csv(clusters, out.clusters)
+
+# clusters data frame WITHOUT the diff clusters
+clusters.nodiff <- merge(cluster_up, cluster_down, by = "LAD")
+names(clusters.nodiff)[2] <- "cluster.up"
+names(clusters.nodiff)[3] <- "cluster.down"
+
+clusters.nodiff <- merge(clusters.nodiff, cluster_tests, by = "LAD")
+names(clusters.nodiff)[4] <- "cluster.tests"
+#sapply(clusters, function(x) sum(is.na(x)))
+
+clusters.nodiff  %>% arrange(cluster.up) %>% kable() 
+
+# save clusters file
+out.clusters <- paste(path, "/data/temp/clusters_nodiff_11.csv", sep = "")
+write_csv(clusters.nodiff, out.clusters)
+
+# get LA 
+# this is the heaviest version:
+# (i) directly from the web
+#la <- readOGR("http://geoportal1-ons.opendata.arcgis.com/datasets/b6d2e15801de45328b760a4f55d74318_0.geojson?outSR={%22latestWkid%22:3857,%22wkid%22:102100}")#, layer="OGRGeoJSON")
+# or, (ii) from the json I saved locally
+# path.json <- paste(path, "./data/raw/Local_Authority_Districts_(April_2019)_Boundaries_UK_BFE.geojson", sep = "")
+# la <- readOGR(path.json)#, layer="OGRGeoJSON")
+# UK BGC: 
+la <- readOGR("https://opendata.arcgis.com/datasets/0e07a8196454415eab18c40a54dfbbef_0.geojson")
+# UK BFC: la <- readOGR("https://opendata.arcgis.com/datasets/1d78d47c87df4212b79fe2323aae8e08_0.geojson") 
+
+# source: https://data.gov.uk/dataset/7c387c64-d25f-474a-b07e-b933578caea2/local-authority-districts-april-2019-boundaries-uk-bfe
+
+# spatial transformations
+la <- spTransform(la, CRS("+init=epsg:4326"))
+#la@data$LAD19NM <- as.character(la@data$LAD19NM)
+la@data$lad19nm <- as.character(la@data$lad19nm)
+
+# ggplot2 maps
+la.f <- fortify(la, region = "lad19nm")
+la.f <- merge(la.f, clusters.nodiff, by.x = "id", by.y = "LAD")
+la.f <- la.f[order(la.f$order),] # if i don't order merge.nuts.f loses order and the map has gaps
+
+ggplot(la.f, aes(x = long, y = lat)) +
+  geom_polygon(aes( group = group, fill = as.factor(cluster.tests))) +
+  #theme_nothing(legend = TRUE) +
+  labs(title = "Test clusters") +
+  scale_fill_viridis_d()+
+  guides(fill=guide_legend(title="Clusters")) +
+  theme_void()
+
+ggplot(la.f, aes(x = long, y = lat)) +
+  geom_polygon(aes( group = group, fill = as.factor(cluster.up))) +
+  #theme_nothing(legend = TRUE) +
+  labs(title = "Upload clusters") +
+  scale_fill_viridis_d()+
+  guides(fill=guide_legend(title="Clusters")) +
+  theme_void()
+
+#ggsave("all_maps2.png") # this is the colour map for the preprint
+# out.path.map <- paste0(path, "/paper/v1/figures/map.up.clusters11.png")
+# ggsave(out.path.map)#,
+#width = 210, #A4
+#height = 297, #A4
+#units = "mm")
+```
+
+```{r, eval=FALSE}
+# leaflet maps
+
+# !!!WRONG CATEGORY VISUALISATION!!!
+
+#la@data <- merge(la@data, clusters, by.x = "LAD19NM", by.y = "LAD")
+la@data <- merge(la@data, clusters.nodiff, by.x = "lad19nm", by.y = "LAD")
+
+# from handbook
+la@data$cluster.tests <- as.factor(la@data$cluster.tests)
+factpal <- colorFactor(topo.colors(5), la@data$cluster.tests)
+
+leaflet(la) %>%
+  addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
+              color = ~factpal(la@data$cluster.tests)) %>%
+  addMarkers(lng=la$long, lat=la$lat, popup=la@data$lad19nm) %>%
+  addLegend(pal = factpal, 
+            values = ~la@data$cluster.tests,
+            opacity = 1,
+            #group = "cluster.tests",
+            title = "Test clusters") 
+
+leaflet(la) %>%
+  addPolygons(
+    fillColor = factpal(la$cluster.tests),
+    weight = 2,
+    opacity = 1,
+    color = "white",
+    dashArray = "3",
+    fillOpacity = 0.7) %>%
+  addMarkers(lng=la$long, lat=la$lat, popup=la@data$lad19nm)
+
+# circles
+leaflet(la@data) %>%
+  addTiles() %>%
+  addCircles(lng = ~long, lat = ~lat, weight = 1, 
+             radius = 500L, popup = ~lad19nm, color = ~factpal(cluster.tests))
+
+
+# factors
+la@data$cluster.up <- as.factor(la@data$cluster.up)
+la@data$cluster.down <- as.factor(la@data$cluster.down)
+#la@data$cluster.up.diff <- as.factor(la@data$cluster.up.diff)
+#la@data$cluster.down.diff <- as.factor(la@data$cluster.down.diff)
+la@data$cluster.tests <- as.factor(la@data$cluster.tests)
+
+# palettes
+factpal.up <- colorFactor("RdYlBu", la@data$cluster.up)
+factpal.down <- colorFactor("RdYlBu", la@data$cluster.down)
+#factpal.up.diff <- colorFactor("RdYlBu", la@data$cluster.up.diff)
+#factpal.down.diff <- colorFactor("RdYlBu", la@data$cluster.down.diff)
+factpal.tests <- colorFactor("RdYlBu", la@data$cluster.tests)
+
+leaflet(la) %>%
+  # add polygons as groups
+  addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
+              color = ~factpal.up(cluster.up), group = "cluster.up") %>%
+  addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
+              color = ~factpal.down(cluster.down), group = "cluster.down") %>%
+  #addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
+  #  color = ~factpal.up.diff(cluster.up.diff), group = "cluster.up.diff") %>%
+  #addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
+  #  color = ~factpal.down.diff(cluster.down.diff), group = "cluster.down.diff") %>%
+  addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
+              color = ~factpal.tests(cluster.tests), group = "cluster.tests") %>%
+  addMarkers(lng=la$long, lat=la$lat, popup=la$lad19nm) %>%
+  # hide groups, so they don't appear all on in the begining 
+  hideGroup("cluster.up") %>%
+  hideGroup("cluster.down") %>%
+  #hideGroup("cluster.up.diff") %>%
+  #hideGroup("cluster.down.diff") %>%
+  hideGroup("cluster.tests") %>%
+  # layer control
+  addLayersControl(
+    #baseGroups = c("Upload)", "Download"),
+    overlayGroups = c("cluster.up","cluster.down", "cluster.down", "cluster.tests"), #"cluster.up.diff", "cluster.down.diff", 
+    options = layersControlOptions(collapsed = FALSE)) %>%
+  # add different legends
+  addLegend(pal = factpal.up, 
+            values = la@data$cluster.up,
+            opacity = 1,
+            group = "cluster.up",
+            title = "Upload clusters") %>%
+  addLegend(pal = factpal.down, 
+            values = la@data$cluster.down,
+            opacity = 1,
+            group = "cluster.down",
+            title = "Download clusters") %>%
+  #addLegend(pal = factpal.up.diff, 
+  #          values = la@data$cluster.up.diff,
+  #          opacity = 1,
+  #          group = "cluster.up.diff",
+  #          title = "Upload diff. clusters") %>%
+  #addLegend(pal = factpal.down.diff, 
+  #          values = la@data$cluster.down.diff,
+  #          opacity = 1,
+  #          group = "cluster.down.diff",
+  #          title = "Download diff. clusters") %>%
+  addLegend(pal = factpal.tests, 
+            values = la@data$cluster.tests,
+            opacity = 1,
+            group = "cluster.tests",
+            title = "Test clusters") 
+
+```
+
