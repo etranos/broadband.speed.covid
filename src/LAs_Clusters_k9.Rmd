@@ -385,6 +385,73 @@ stargazer(aux.up,
 
 ```
 
+## Auxiliary regression, dep. var.: upload clusters, NO PROF
+
+```{r upload regression no prof, results= 'asis', message=F, error=F, warning=F}
+# helpful sources: http://www.princeton.edu/~otorres/LogitR101.pdf
+# https://thestatsgeek.com/2014/02/08/r-squared-in-logistic-regression/
+
+# convert dependent variable to factor
+data$cluster.up <- as.factor(data$cluster.up)
+data$cluster.up <- relevel(data$cluster.up, "4") # base category: cluster 4
+
+aux.up <- multinom(cluster.up ~ 
+                     #pop16_64 + # non sign, while pop is
+                     pop +
+                     #pop.dens + 
+                     job.dens2018 + # pop.dens is still insignificant when job.dens is excluded
+                     distMet + distLondon + south +
+                     managers + tech + skilled + admin + caring + plant +
+                     earnings + I(total.busi/pop) + nvq4 + I(furlough/pop) +
+                     I(LAD.tests.am20/pop) + # non sensitive to addition of other tests pm
+                     virgin
+                   , data = data, 
+                   trace = F) # to avoid messages 
+
+# McFadden's R squared
+aux.up.null <- multinom(cluster.up ~ 1, data = data)
+r2.up <- 1-logLik(aux.up)/logLik(aux.up.null)
+
+n.obs <- dim(aux.up$fitted.values)[1]
+
+stargazer(aux.up, 
+          type = "html",
+          #type = "text",
+          nobs = T,
+          digits = 3,
+          covariate.labels=c(#"pop. 16-64, 2018",
+            "pop, 2018",
+            #"pop. density, 2018",
+            "job density, 2018",
+            "distance to nearest met. area",
+            "distance to London",
+            "South of the UK",
+            "% of managerial jobs, 2020",
+            "% of tech jobs, 2020",
+            "% of skilled trade jobs, 2020",
+            #"% of professional jobs, 2020",
+            "% of administrative jobs, 2020",
+            "% of leisure jobs, 2020",
+            "% of machine operation jobs, 2020",
+            "earnings, 2019",
+            "n. business est. per hab., 2019",
+            "% of NVQ4+",
+            "% furloughed pop., 2020",
+            "n. of AM broadband tests per hab., 2020",
+            "% of Virgin Media connections"),
+          add.lines = list(c("McFadden's R squared",
+                             round(r2.up[1],3), round(r2.up[1],3), round(r2.up[1],3),
+                             round(r2.up[1],3), round(r2.up[1],3), round(r2.up[1],3),
+                             round(r2.up[1],3), round(r2.up[1],3), round(r2.up[1],3)
+                             , round(r2.up[1],3), round(r2.up[1],3)),
+                           (c("N",
+                              n.obs, n.obs, n.obs,
+                              n.obs, n.obs, n.obs,
+                              n.obs, n.obs, n.obs
+                              , n.obs, n.obs))))
+
+```
+
 ```{r}
 path.out <- paste0(path, "/data/temp/LAs_Clusters_k9.RData")
 save.image(path.out)

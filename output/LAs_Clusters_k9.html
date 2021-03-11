@@ -1633,7 +1633,7 @@ summary {
 
 
 <h1 class="title toc-ignore">LAs_clusters k = 9</h1>
-<h4 class="date">11 March, 2021, 15:50</h4>
+<h4 class="date">11 March, 2021, 18:41</h4>
 
 </div>
 
@@ -1647,7 +1647,10 @@ summary {
 <li><a href="#weights-18-8-variable">weights: 18 (8 variable)</a><ul>
 <li><a href="#auxiliary-regression-dep.-var.-upload-clusters-no-nvq4">Auxiliary regression, dep. var.: upload clusters, NO NVQ4</a></li>
 </ul></li>
-<li><a href="#weights-18-8-variable-1">weights: 18 (8 variable)</a></li>
+<li><a href="#weights-18-8-variable-1">weights: 18 (8 variable)</a><ul>
+<li><a href="#auxiliary-regression-dep.-var.-upload-clusters-no-prof">Auxiliary regression, dep. var.: upload clusters, NO PROF</a></li>
+</ul></li>
+<li><a href="#weights-18-8-variable-2">weights: 18 (8 variable)</a></li>
 </ul>
 </div>
 
@@ -1659,11 +1662,11 @@ summary {
 <pre class="r"><code>url &lt;- &quot;https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/891607/Coronavirus_Job_Retention_Scheme_Statistics_Tables_June_2020.xlsx&quot;
 GET(url, write_disk(tf &lt;- tempfile(fileext = &quot;.xlsx&quot;)))</code></pre>
 <pre><code>## Response [https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/891607/Coronavirus_Job_Retention_Scheme_Statistics_Tables_June_2020.xlsx]
-##   Date: 2021-03-11 15:51
+##   Date: 2021-03-11 18:42
 ##   Status: 200
 ##   Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
 ##   Size: 105 kB
-## &lt;ON DISK&gt;  C:\Users\nw19521\AppData\Local\Temp\RtmpKMWthw\file43302382df6.xlsx</code></pre>
+## &lt;ON DISK&gt;  C:\Users\nw19521\AppData\Local\Temp\RtmpUPxw6J\file5a4819763f8f.xlsx</code></pre>
 <pre class="r"><code>f &lt;- readxl::read_excel(tf, 6L, range = &quot;B7:D486&quot;, col_names = F) %&gt;% 
   rename(lad19cd = 1,
          lad19nm = 2,
@@ -5574,6 +5577,1646 @@ Akaike Inf. Crit.
 </td>
 <td>
 742.901
+</td>
+</tr>
+<tr>
+<td colspan="9" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+<em>Note:</em>
+</td>
+<td colspan="8" style="text-align:right">
+<sup><em></sup>p&lt;0.1; <sup><strong></sup>p&lt;0.05; <sup></strong></em></sup>p&lt;0.01
+</td>
+</tr>
+</table></li>
+</ol></li>
+</ol>
+<div id="auxiliary-regression-dep.-var.-upload-clusters-no-prof" class="section level2">
+<h2>Auxiliary regression, dep. var.: upload clusters, NO PROF</h2>
+<pre class="r"><code># helpful sources: http://www.princeton.edu/~otorres/LogitR101.pdf
+# https://thestatsgeek.com/2014/02/08/r-squared-in-logistic-regression/
+
+# convert dependent variable to factor
+data$cluster.up &lt;- as.factor(data$cluster.up)
+data$cluster.up &lt;- relevel(data$cluster.up, &quot;4&quot;) # base category: cluster 4
+
+aux.up &lt;- multinom(cluster.up ~ 
+                     #pop16_64 + # non sign, while pop is
+                     pop +
+                     #pop.dens + 
+                     job.dens2018 + # pop.dens is still insignificant when job.dens is excluded
+                     distMet + distLondon + south +
+                     managers + tech + skilled + admin + caring + plant +
+                     earnings + I(total.busi/pop) + nvq4 + I(furlough/pop) +
+                     I(LAD.tests.am20/pop) + # non sensitive to addition of other tests pm
+                     virgin
+                   , data = data, 
+                   trace = F) # to avoid messages 
+
+# McFadden&#39;s R squared
+aux.up.null &lt;- multinom(cluster.up ~ 1, data = data)</code></pre>
+</div>
+</div>
+<div id="weights-18-8-variable-2" class="section level1">
+<h1>weights: 18 (8 variable)</h1>
+<p>initial value 837.142564 iter 10 value 406.254340 iter 20 value 402.562154 iter 30 value 402.529544 iter 30 value 402.529544 iter 30 value 402.529544 final value 402.529544 converged</p>
+<pre class="r"><code>r2.up &lt;- 1-logLik(aux.up)/logLik(aux.up.null)
+
+n.obs &lt;- dim(aux.up$fitted.values)[1]
+
+stargazer(aux.up, 
+          type = &quot;html&quot;,
+          #type = &quot;text&quot;,
+          nobs = T,
+          digits = 3,
+          covariate.labels=c(#&quot;pop. 16-64, 2018&quot;,
+            &quot;pop, 2018&quot;,
+            #&quot;pop. density, 2018&quot;,
+            &quot;job density, 2018&quot;,
+            &quot;distance to nearest met. area&quot;,
+            &quot;distance to London&quot;,
+            &quot;South of the UK&quot;,
+            &quot;% of managerial jobs, 2020&quot;,
+            &quot;% of tech jobs, 2020&quot;,
+            &quot;% of skilled trade jobs, 2020&quot;,
+            #&quot;% of professional jobs, 2020&quot;,
+            &quot;% of administrative jobs, 2020&quot;,
+            &quot;% of leisure jobs, 2020&quot;,
+            &quot;% of machine operation jobs, 2020&quot;,
+            &quot;earnings, 2019&quot;,
+            &quot;n. business est. per hab., 2019&quot;,
+            &quot;% of NVQ4+&quot;,
+            &quot;% furloughed pop., 2020&quot;,
+            &quot;n. of AM broadband tests per hab., 2020&quot;,
+            &quot;% of Virgin Media connections&quot;),
+          add.lines = list(c(&quot;McFadden&#39;s R squared&quot;,
+                             round(r2.up[1],3), round(r2.up[1],3), round(r2.up[1],3),
+                             round(r2.up[1],3), round(r2.up[1],3), round(r2.up[1],3),
+                             round(r2.up[1],3), round(r2.up[1],3), round(r2.up[1],3)
+                             , round(r2.up[1],3), round(r2.up[1],3)),
+                           (c(&quot;N&quot;,
+                              n.obs, n.obs, n.obs,
+                              n.obs, n.obs, n.obs,
+                              n.obs, n.obs, n.obs
+                              , n.obs, n.obs))))</code></pre>
+<table style="text-align:center">
+<tr>
+<td colspan="9" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="8">
+<em>Dependent variable:</em>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td colspan="8" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+1
+</td>
+<td>
+2
+</td>
+<td>
+3
+</td>
+<td>
+5
+</td>
+<td>
+6
+</td>
+<td>
+7
+</td>
+<td>
+8
+</td>
+<td>
+9
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(1)
+</td>
+<td>
+(2)
+</td>
+<td>
+(3)
+</td>
+<td>
+(4)
+</td>
+<td>
+(5)
+</td>
+<td>
+(6)
+</td>
+<td>
+(7)
+</td>
+<td>
+(8)
+</td>
+</tr>
+<tr>
+<td colspan="9" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+pop, 2018
+</td>
+<td>
+-0.00004<sup>**</sup>
+</td>
+<td>
+0.00001
+</td>
+<td>
+0.00001
+</td>
+<td>
+0.00000
+</td>
+<td>
+0.00001
+</td>
+<td>
+0.00001
+</td>
+<td>
+0.00001
+</td>
+<td>
+0.00001
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.00002)
+</td>
+<td>
+(0.00002)
+</td>
+<td>
+(0.00002)
+</td>
+<td>
+(0.00002)
+</td>
+<td>
+(0.00002)
+</td>
+<td>
+(0.00002)
+</td>
+<td>
+(0.00002)
+</td>
+<td>
+(0.00002)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+job density, 2018
+</td>
+<td>
+0.843<sup>***</sup>
+</td>
+<td>
+-1.027<sup>***</sup>
+</td>
+<td>
+3.068<sup>***</sup>
+</td>
+<td>
+1.705<sup>***</sup>
+</td>
+<td>
+2.827<sup>***</sup>
+</td>
+<td>
+-7.679<sup>***</sup>
+</td>
+<td>
+-4.295<sup>***</sup>
+</td>
+<td>
+2.616<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+distance to nearest met. area
+</td>
+<td>
+-0.010<sup>***</sup>
+</td>
+<td>
+0.033<sup>***</sup>
+</td>
+<td>
+-0.001<sup>***</sup>
+</td>
+<td>
+0.018<sup>***</sup>
+</td>
+<td>
+-0.005<sup>**</sup>
+</td>
+<td>
+-0.144<sup>***</sup>
+</td>
+<td>
+-0.014<sup>***</sup>
+</td>
+<td>
+-0.009<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.0005)
+</td>
+<td>
+(0.0001)
+</td>
+<td>
+(0.0003)
+</td>
+<td>
+(0.00001)
+</td>
+<td>
+(0.002)
+</td>
+<td>
+(0.0001)
+</td>
+<td>
+(0.0001)
+</td>
+<td>
+(0.002)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+distance to London
+</td>
+<td>
+0.015<sup>***</sup>
+</td>
+<td>
+-0.0001
+</td>
+<td>
+0.013<sup>***</sup>
+</td>
+<td>
+-0.001<sup>***</sup>
+</td>
+<td>
+0.018<sup>***</sup>
+</td>
+<td>
+0.024<sup>***</sup>
+</td>
+<td>
+0.015<sup>***</sup>
+</td>
+<td>
+0.016<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.001)
+</td>
+<td>
+(0.0001)
+</td>
+<td>
+(0.002)
+</td>
+<td>
+(0.00002)
+</td>
+<td>
+(0.001)
+</td>
+<td>
+(0.001)
+</td>
+<td>
+(0.001)
+</td>
+<td>
+(0.001)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+South of the UK
+</td>
+<td>
+-2.143<sup>***</sup>
+</td>
+<td>
+-0.377<sup>***</sup>
+</td>
+<td>
+4.360<sup>***</sup>
+</td>
+<td>
+-8.438<sup>***</sup>
+</td>
+<td>
+4.374<sup>***</sup>
+</td>
+<td>
+4.252<sup>***</sup>
+</td>
+<td>
+-0.734<sup>***</sup>
+</td>
+<td>
+2.808<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.000)
+</td>
+<td>
+(0.00001)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00001)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+% of managerial jobs, 2020
+</td>
+<td>
+1.241<sup>***</sup>
+</td>
+<td>
+0.947<sup>***</sup>
+</td>
+<td>
+1.005<sup>***</sup>
+</td>
+<td>
+0.501<sup>***</sup>
+</td>
+<td>
+1.025<sup>***</sup>
+</td>
+<td>
+0.718<sup>***</sup>
+</td>
+<td>
+1.078<sup>***</sup>
+</td>
+<td>
+0.981<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.00002)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00003)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00002)
+</td>
+<td>
+(0.00003)
+</td>
+<td>
+(0.00003)
+</td>
+<td>
+(0.00002)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+% of tech jobs, 2020
+</td>
+<td>
+0.044<sup>***</sup>
+</td>
+<td>
+-0.441<sup>***</sup>
+</td>
+<td>
+-0.102<sup>***</sup>
+</td>
+<td>
+0.099<sup>***</sup>
+</td>
+<td>
+-0.002<sup>***</sup>
+</td>
+<td>
+0.307<sup>***</sup>
+</td>
+<td>
+-0.014<sup>***</sup>
+</td>
+<td>
+-0.029<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.00002)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00002)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00003)
+</td>
+<td>
+(0.00004)
+</td>
+<td>
+(0.00003)
+</td>
+<td>
+(0.00003)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+% of skilled trade jobs, 2020
+</td>
+<td>
+0.330<sup>***</sup>
+</td>
+<td>
+0.363<sup>***</sup>
+</td>
+<td>
+0.311<sup>***</sup>
+</td>
+<td>
+-0.365<sup>***</sup>
+</td>
+<td>
+0.297<sup>***</sup>
+</td>
+<td>
+0.948<sup>***</sup>
+</td>
+<td>
+0.400<sup>***</sup>
+</td>
+<td>
+0.206<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.00002)
+</td>
+<td>
+(0.00001)
+</td>
+<td>
+(0.00003)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00004)
+</td>
+<td>
+(0.0001)
+</td>
+<td>
+(0.00003)
+</td>
+<td>
+(0.00003)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+% of administrative jobs, 2020
+</td>
+<td>
+-0.135<sup>***</sup>
+</td>
+<td>
+-1.246<sup>***</sup>
+</td>
+<td>
+-0.162<sup>***</sup>
+</td>
+<td>
+0.078<sup>***</sup>
+</td>
+<td>
+-0.254<sup>***</sup>
+</td>
+<td>
+0.058<sup>***</sup>
+</td>
+<td>
+-0.204<sup>***</sup>
+</td>
+<td>
+-0.195<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.00002)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00002)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00002)
+</td>
+<td>
+(0.00004)
+</td>
+<td>
+(0.00002)
+</td>
+<td>
+(0.00002)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+% of leisure jobs, 2020
+</td>
+<td>
+-0.620<sup>***</sup>
+</td>
+<td>
+-0.700<sup>***</sup>
+</td>
+<td>
+-0.929<sup>***</sup>
+</td>
+<td>
+-1.379<sup>***</sup>
+</td>
+<td>
+-0.999<sup>***</sup>
+</td>
+<td>
+-1.307<sup>***</sup>
+</td>
+<td>
+-1.011<sup>***</sup>
+</td>
+<td>
+-0.964<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.00002)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00002)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00001)
+</td>
+<td>
+(0.00002)
+</td>
+<td>
+(0.00002)
+</td>
+<td>
+(0.00001)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+% of machine operation jobs, 2020
+</td>
+<td>
+-0.315<sup>***</sup>
+</td>
+<td>
+-0.001<sup>***</sup>
+</td>
+<td>
+-0.061<sup>***</sup>
+</td>
+<td>
+-0.965<sup>***</sup>
+</td>
+<td>
+-0.276<sup>***</sup>
+</td>
+<td>
+-0.495<sup>***</sup>
+</td>
+<td>
+-0.315<sup>***</sup>
+</td>
+<td>
+-0.276<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.00001)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00002)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00001)
+</td>
+<td>
+(0.00002)
+</td>
+<td>
+(0.00001)
+</td>
+<td>
+(0.00001)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+earnings, 2019
+</td>
+<td>
+0.028<sup>***</sup>
+</td>
+<td>
+0.046<sup>***</sup>
+</td>
+<td>
+0.031<sup>***</sup>
+</td>
+<td>
+0.073<sup>***</sup>
+</td>
+<td>
+0.031<sup>***</sup>
+</td>
+<td>
+0.044<sup>***</sup>
+</td>
+<td>
+0.025<sup>***</sup>
+</td>
+<td>
+0.038<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.001)
+</td>
+<td>
+(0.0003)
+</td>
+<td>
+(0.001)
+</td>
+<td>
+(0.0001)
+</td>
+<td>
+(0.001)
+</td>
+<td>
+(0.002)
+</td>
+<td>
+(0.001)
+</td>
+<td>
+(0.001)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+<ol start="14" style="list-style-type: lower-alpha">
+<li>business est. per hab., 2019
+</td>
+<td>
+1.544<sup>***</sup>
+</td>
+<td>
+-0.328<sup>***</sup>
+</td>
+<td>
+0.407<sup>***</sup>
+</td>
+<td>
+0.194<sup>***</sup>
+</td>
+<td>
+1.276<sup>***</sup>
+</td>
+<td>
+1.045<sup>***</sup>
+</td>
+<td>
+-1.011<sup>***</sup>
+</td>
+<td>
+-3.663<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+% of NVQ4+
+</td>
+<td>
+-0.475<sup>***</sup>
+</td>
+<td>
+-0.506<sup>***</sup>
+</td>
+<td>
+-0.413<sup>***</sup>
+</td>
+<td>
+-0.771<sup>***</sup>
+</td>
+<td>
+-0.446<sup>***</sup>
+</td>
+<td>
+-0.713<sup>***</sup>
+</td>
+<td>
+-0.276<sup>***</sup>
+</td>
+<td>
+-0.476<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.0001)
+</td>
+<td>
+(0.00001)
+</td>
+<td>
+(0.0001)
+</td>
+<td>
+(0.00001)
+</td>
+<td>
+(0.0001)
+</td>
+<td>
+(0.0001)
+</td>
+<td>
+(0.0001)
+</td>
+<td>
+(0.0001)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+% furloughed pop., 2020
+</td>
+<td>
+0.560<sup>***</sup>
+</td>
+<td>
+-0.192<sup>***</sup>
+</td>
+<td>
+7.938<sup>***</sup>
+</td>
+<td>
+0.538<sup>***</sup>
+</td>
+<td>
+-21.722<sup>***</sup>
+</td>
+<td>
+1.071<sup>***</sup>
+</td>
+<td>
+3.529<sup>***</sup>
+</td>
+<td>
+8.330<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+<ol start="14" style="list-style-type: lower-alpha">
+<li>of AM broadband tests per hab., 2020
+</td>
+<td>
+-0.018<sup>***</sup>
+</td>
+<td>
+-0.007<sup>***</sup>
+</td>
+<td>
+-0.106<sup>***</sup>
+</td>
+<td>
+0.009<sup>***</sup>
+</td>
+<td>
+0.212<sup>***</sup>
+</td>
+<td>
+0.006<sup>***</sup>
+</td>
+<td>
+-0.022<sup>***</sup>
+</td>
+<td>
+-0.076<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.000)
+</td>
+<td>
+(0.000)
+</td>
+<td>
+(0.000)
+</td>
+<td>
+(0.000)
+</td>
+<td>
+(0.000)
+</td>
+<td>
+(0.000)
+</td>
+<td>
+(0.000)
+</td>
+<td>
+(0.000)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+% of Virgin Media connections
+</td>
+<td>
+2.539<sup>***</sup>
+</td>
+<td>
+9.072<sup>***</sup>
+</td>
+<td>
+4.345<sup>***</sup>
+</td>
+<td>
+1.210<sup>***</sup>
+</td>
+<td>
+0.303<sup>***</sup>
+</td>
+<td>
+-12.373<sup>***</sup>
+</td>
+<td>
+-5.267<sup>***</sup>
+</td>
+<td>
+4.857<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Constant
+</td>
+<td>
+-0.145<sup>***</sup>
+</td>
+<td>
+-1.273<sup>***</sup>
+</td>
+<td>
+-5.025<sup>***</sup>
+</td>
+<td>
+2.831<sup>***</sup>
+</td>
+<td>
+3.831<sup>***</sup>
+</td>
+<td>
+0.207<sup>***</sup>
+</td>
+<td>
+-0.184<sup>***</sup>
+</td>
+<td>
+-1.484<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+<td>
+(0.00000)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td colspan="9" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+McFadden’s R squared
+</td>
+<td>
+0.425
+</td>
+<td>
+0.425
+</td>
+<td>
+0.425
+</td>
+<td>
+0.425
+</td>
+<td>
+0.425
+</td>
+<td>
+0.425
+</td>
+<td>
+0.425
+</td>
+<td>
+0.425
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+N
+</td>
+<td>
+322
+</td>
+<td>
+322
+</td>
+<td>
+322
+</td>
+<td>
+322
+</td>
+<td>
+322
+</td>
+<td>
+322
+</td>
+<td>
+322
+</td>
+<td>
+322
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Akaike Inf. Crit.
+</td>
+<td>
+751.032
+</td>
+<td>
+751.032
+</td>
+<td>
+751.032
+</td>
+<td>
+751.032
+</td>
+<td>
+751.032
+</td>
+<td>
+751.032
+</td>
+<td>
+751.032
+</td>
+<td>
+751.032
 </td>
 </tr>
 <tr>
