@@ -41,7 +41,7 @@ path <- find_rstudio_root_file()
 
 # load the data created by Data_Spatial.Rmd and ts_clusters.Rmd
 
-LAD.cluster <- paste(path, "/data/temp/clusters_nodiff.csv", sep = "")
+LAD.cluster <- paste(path, "/data/temp/clusters_nodiff_9.csv", sep = "")
 
 clusters <- read_csv(LAD.cluster)
 
@@ -255,14 +255,14 @@ TestCluster19 + geom_line() + labs(x = "Weekdays March-May 2019") +
                     labels = "%a"), labels = 
                      c("Mon", "Tues", "Weds", "Thurs", "Fri")) + geom_point()
 #summarise upload speed clusters by hour of each weekday and plot
-#plot largest 5 clusters first - all over 1 million pop
+#plot largest 6 clusters - all over 500k pop
 cluster.up <- TS2020 %>%
   group_by(cluster.up, weekday, hour) %>%
   summarise(mean.up = mean(speedup))
 names(cluster.up)[1] <- "clusterID"
 names(LAD.cluster.up)[1] <- "clusterID"
 cluster.up <- left_join(cluster.up, LAD.cluster.up)
-cluster.up <- cluster.up[which(cluster.up$up.LADs > 9),]
+cluster.up <- cluster.up[which(cluster.up$up.LADs > 4),]
 cluster.up$clusterID <- as.factor(cluster.up$clusterID)
 #add fake dates for plotting
 help.dates <- tibble(help.date.time = c(
@@ -276,7 +276,7 @@ cluster.up <- merge(cluster.up, help.dates, by = "weekday")
 cluster.up$hour <- paste(cluster.up$hour, ":00", sep="")
 cluster.up$help.date.time <- with(cluster.up, as.POSIXct(paste(help.date.time, hour), format="%Y-%m-%d %H:%M"))
 #plot cluster statistic for mean upload speed
-UpClusterL <- ggplot(cluster.up, aes(help.date.time, mean.up, 
+UpCluster <- ggplot(cluster.up, aes(help.date.time, mean.up, 
                                       colour = clusterID)) +
   theme_minimal() +
   geom_line() + 
@@ -291,7 +291,7 @@ UpClusterL <- ggplot(cluster.up, aes(help.date.time, mean.up,
         legend.direction = "horizontal")
 
 #export UpClusterL plot for paper
-out.plot <- paste(path, "/paper/v1/figures/UpClusterL.png", sep = "")
+out.plot <- paste(path, "/paper/v1/figures/UpCluster.png", sep = "")
 png(out.plot)
 UpClusterL
 dev.off() 
@@ -332,10 +332,10 @@ UpClusterS <- ggplot(cluster.upS, aes(help.date.time, mean.up,
         legend.direction = "horizontal")
         
 #export UpClusterS plot for paper
-out.plot <- paste(path, "/paper/v1/figures/UpClusterS.png", sep = "")
-png(out.plot)
-UpClusterS
-dev.off() 
+#out.plot <- paste(path, "/paper/v1/figures/UpClusterS.png", sep = "")
+#png(out.plot)
+#UpClusterS
+#dev.off() 
 
 #summarise download speed clusters by hour of each weekday and plot
 cluster.down <- TS2020 %>%
