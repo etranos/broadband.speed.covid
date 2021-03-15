@@ -55,8 +55,10 @@ Regrettably, we did not have the opportunity to run a survey. As we say in the i
 prior to the pandemic, the demand for telecommuting would not have put a strain 
 on internet connection speeds. We have clarified this with the addition of the following sentence:
 "High levels of demand are one of the main causes of reduced reliability and slower connection speeds, as network bandwidth becomes congested".
-
-**Also consider whether we add % furlough to regression? https://www.gov.uk/government/statistics/coronavirus-job-retention-scheme-statistics-june-2020**
+We also have added a variable to the auxiliary regression tracking the share of
+the population that was put on furlough. This was the scheme in the UK which, at 
+least initially, prevented much change in the employment rate, but did show who
+could work and who could not at the height of the first wave of the pandemic.
 
 > 4. The time series may be enhanced by putting a time range according to different events of the pandemic or other factors that relates to the pandemic.
 
@@ -72,7 +74,7 @@ March, and restrictions were gradually eased from late May".
 
 > 5. Would suggest a review of the spatiotemporal challenges of the covid-19.
 
-??
+**?? - a little in lit review, but also in discussion / conclusion added for reviewer 2?**
 
 > 6. A review of cyberinfrastructure and how network varies in different region would be useful.
 
@@ -123,7 +125,18 @@ ET: after we finalise k, we can rerun k-means for 2019 and decide - could also s
 
 > 4. No discussion was included in this manuscript. I expect some insights into various important issues, such as problem causes, any broadband policies and socioeconomic solutions, equitable development, and research uncertainties.
 
+We have tightened up the results section, and begun this discussion in the last 
+paragraph of the results section and then expanded the conclusion to include more
+discussion.
+
 > 5.  There are three levels of digital divide. According to the last paragraph in Section 2, only the intersection of level-1 and level-3 was included in this research. I am wondering how level-2 may fit in the general research framework. Could education and demographic variables be used to represent level-2 digital divide?
+
+We clarify that the occupations included in the regression are more about the level-2 
+digital divide, whereas the average earnings and, particularly during the pandemic 
+the % furloughed, are indications of level-3 digital divides. We did have education
+in the previous submission (NVQ4+), but have removed it due to multicollinearity with
+some of the professions, which give more indication of not only education, but digital
+skills.
 
 > 6. A few suggestions on the figures. Fig 1 and 2 have crowded tick labels for x-axis month and weekday. Fig 3 and 4 may be placed side by side with the same y-axis for easy comparison. Actually, I feel “Figure 3 shows that the high standard deviation” may be inaccurate as Fig 4 appears to exhibit higher variability. Fig 5 maps may include the locations of metropolitan or major cities to help interpretation. The warmer-cooler color scheme may match the population size instead of the ordinal cluster numbers. The current color scheme does not help interpretation at all.
 
