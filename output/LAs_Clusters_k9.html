@@ -1633,7 +1633,7 @@ summary {
 
 
 <h1 class="title toc-ignore">LAs_clusters k = 9</h1>
-<h4 class="date">11 March, 2021, 18:41</h4>
+<h4 class="date">18 March, 2021, 14:43</h4>
 
 </div>
 
@@ -1662,11 +1662,11 @@ summary {
 <pre class="r"><code>url &lt;- &quot;https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/891607/Coronavirus_Job_Retention_Scheme_Statistics_Tables_June_2020.xlsx&quot;
 GET(url, write_disk(tf &lt;- tempfile(fileext = &quot;.xlsx&quot;)))</code></pre>
 <pre><code>## Response [https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/891607/Coronavirus_Job_Retention_Scheme_Statistics_Tables_June_2020.xlsx]
-##   Date: 2021-03-11 18:42
+##   Date: 2021-03-18 14:44
 ##   Status: 200
 ##   Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
 ##   Size: 105 kB
-## &lt;ON DISK&gt;  C:\Users\nw19521\AppData\Local\Temp\RtmpUPxw6J\file5a4819763f8f.xlsx</code></pre>
+## &lt;ON DISK&gt;  C:\Users\nw19521\AppData\Local\Temp\RtmpMnzZRZ\file392878468ad.xlsx</code></pre>
 <pre class="r"><code>f &lt;- readxl::read_excel(tf, 6L, range = &quot;B7:D486&quot;, col_names = F) %&gt;% 
   rename(lad19cd = 1,
          lad19nm = 2,
@@ -2255,7 +2255,7 @@ furlough/pop
 data$cluster.up &lt;- as.factor(data$cluster.up)
 data$cluster.up &lt;- relevel(data$cluster.up, &quot;4&quot;) # base category: cluster 4
 
-aux.up &lt;- multinom(cluster.up ~ 
+aux.up.v1 &lt;- multinom(cluster.up ~ 
                      #pop16_64 + # non sign, while pop is
                      pop +
                      #pop.dens + 
@@ -2269,16 +2269,16 @@ aux.up &lt;- multinom(cluster.up ~
                    trace = F) # to avoid messages 
 
 # McFadden&#39;s R squared
-aux.up.null &lt;- multinom(cluster.up ~ 1, data = data)</code></pre>
+aux.up.v1.null &lt;- multinom(cluster.up ~ 1, data = data)</code></pre>
 </div>
 <div id="weights-18-8-variable" class="section level1">
 <h1>weights: 18 (8 variable)</h1>
 <p>initial value 837.142564 iter 10 value 406.254340 iter 20 value 402.562154 iter 30 value 402.529544 iter 30 value 402.529544 iter 30 value 402.529544 final value 402.529544 converged</p>
-<pre class="r"><code>r2.up &lt;- 1-logLik(aux.up)/logLik(aux.up.null)
+<pre class="r"><code>r2.up.v1 &lt;- 1-logLik(aux.up.v1)/logLik(aux.up.v1.null)
 
-n.obs &lt;- dim(aux.up$fitted.values)[1]
+n.obs &lt;- dim(aux.up.v1$fitted.values)[1]
 
-stargazer(aux.up, 
+stargazer(aux.up.v1, 
           type = &quot;html&quot;,
           #type = &quot;text&quot;,
           nobs = T,
@@ -2304,10 +2304,10 @@ stargazer(aux.up,
             &quot;n. of AM broadband tests per hab., 2020&quot;,
             &quot;% of Virgin Media connections&quot;),
           add.lines = list(c(&quot;McFadden&#39;s R squared&quot;,
-                             round(r2.up[1],3), round(r2.up[1],3), round(r2.up[1],3),
-                             round(r2.up[1],3), round(r2.up[1],3), round(r2.up[1],3),
-                             round(r2.up[1],3), round(r2.up[1],3), round(r2.up[1],3)
-                             , round(r2.up[1],3), round(r2.up[1],3)),
+                             round(r2.up.v1[1],3), round(r2.up.v1[1],3), round(r2.up.v1[1],3),
+                             round(r2.up.v1[1],3), round(r2.up.v1[1],3), round(r2.up.v1[1],3),
+                             round(r2.up.v1[1],3), round(r2.up.v1[1],3), round(r2.up.v1[1],3)
+                             , round(r2.up.v1[1],3), round(r2.up.v1[1],3)),
                            (c(&quot;N&quot;,
                               n.obs, n.obs, n.obs,
                               n.obs, n.obs, n.obs,
@@ -3964,7 +3964,14 @@ Akaike Inf. Crit.
 </ol>
 <div id="auxiliary-regression-dep.-var.-upload-clusters-no-nvq4" class="section level2">
 <h2>Auxiliary regression, dep. var.: upload clusters, NO NVQ4</h2>
-<pre class="r"><code>aux.up &lt;- multinom(cluster.up ~ 
+<pre class="r"><code># helpful sources: http://www.princeton.edu/~otorres/LogitR101.pdf
+# https://thestatsgeek.com/2014/02/08/r-squared-in-logistic-regression/
+
+# convert dependent variable to factor
+data$cluster.up &lt;- as.factor(data$cluster.up)
+data$cluster.up &lt;- relevel(data$cluster.up, &quot;4&quot;) # base category: cluster 4
+
+aux.up &lt;- multinom(cluster.up ~ 
                      #pop16_64 + # non sign, while pop is
                      pop +
                      #pop.dens + 
@@ -5603,7 +5610,7 @@ Akaike Inf. Crit.
 data$cluster.up &lt;- as.factor(data$cluster.up)
 data$cluster.up &lt;- relevel(data$cluster.up, &quot;4&quot;) # base category: cluster 4
 
-aux.up &lt;- multinom(cluster.up ~ 
+aux.up.noprof &lt;- multinom(cluster.up ~ 
                      #pop16_64 + # non sign, while pop is
                      pop +
                      #pop.dens + 
@@ -5617,17 +5624,17 @@ aux.up &lt;- multinom(cluster.up ~
                    trace = F) # to avoid messages 
 
 # McFadden&#39;s R squared
-aux.up.null &lt;- multinom(cluster.up ~ 1, data = data)</code></pre>
+aux.up.noprof.null &lt;- multinom(cluster.up ~ 1, data = data)</code></pre>
 </div>
 </div>
 <div id="weights-18-8-variable-2" class="section level1">
 <h1>weights: 18 (8 variable)</h1>
 <p>initial value 837.142564 iter 10 value 406.254340 iter 20 value 402.562154 iter 30 value 402.529544 iter 30 value 402.529544 iter 30 value 402.529544 final value 402.529544 converged</p>
-<pre class="r"><code>r2.up &lt;- 1-logLik(aux.up)/logLik(aux.up.null)
+<pre class="r"><code>r2.up.noprof &lt;- 1-logLik(aux.up.noprof)/logLik(aux.up.noprof.null)
 
-n.obs &lt;- dim(aux.up$fitted.values)[1]
+n.obs &lt;- dim(aux.up.noprof$fitted.values)[1]
 
-stargazer(aux.up, 
+stargazer(aux.up.noprof, 
           type = &quot;html&quot;,
           #type = &quot;text&quot;,
           nobs = T,
@@ -5653,10 +5660,10 @@ stargazer(aux.up,
             &quot;n. of AM broadband tests per hab., 2020&quot;,
             &quot;% of Virgin Media connections&quot;),
           add.lines = list(c(&quot;McFadden&#39;s R squared&quot;,
-                             round(r2.up[1],3), round(r2.up[1],3), round(r2.up[1],3),
-                             round(r2.up[1],3), round(r2.up[1],3), round(r2.up[1],3),
-                             round(r2.up[1],3), round(r2.up[1],3), round(r2.up[1],3)
-                             , round(r2.up[1],3), round(r2.up[1],3)),
+                             round(r2.up.noprof[1],3), round(r2.up.noprof[1],3), round(r2.up.noprof[1],3),
+                             round(r2.up.noprof[1],3), round(r2.up.noprof[1],3), round(r2.up.noprof[1],3),
+                             round(r2.up.noprof[1],3), round(r2.up.noprof[1],3), round(r2.up.noprof[1],3)
+                             , round(r2.up.noprof[1],3), round(r2.up.noprof[1],3)),
                            (c(&quot;N&quot;,
                               n.obs, n.obs, n.obs,
                               n.obs, n.obs, n.obs,

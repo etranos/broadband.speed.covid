@@ -37,6 +37,9 @@ library(dtwclust)
 library(leaflet)
 library(ggmap)
 library(cowplot)
+library(ggrepel)
+library(maps)
+library(gridExtra)
 
 # This is the project path
 path <- find_rstudio_root_file()
@@ -445,6 +448,7 @@ la <- readOGR("https://opendata.arcgis.com/datasets/0e07a8196454415eab18c40a54df
 # UK BFC: la <- readOGR("https://opendata.arcgis.com/datasets/1d78d47c87df4212b79fe2323aae8e08_0.geojson") 
 
 # source: https://data.gov.uk/dataset/7c387c64-d25f-474a-b07e-b933578caea2/local-authority-districts-april-2019-boundaries-uk-bfe
+# also saved locally \data\raw\Local_Authority_Districts_(December_2019)_Boundaries_UK_BGC.geojson
 
 # spatial transformations
 la <- spTransform(la, CRS("+init=epsg:4326"))
@@ -452,35 +456,161 @@ la <- spTransform(la, CRS("+init=epsg:4326"))
 la@data$lad19nm <- as.character(la@data$lad19nm)
 
 # ggplot2 maps
-la.f <- fortify(la, region = "lad19nm")
+la.f <- broom::tidy(la, region = "lad19nm")
 la.f <- merge(la.f, clusters.nodiff, by.x = "id", by.y = "LAD")
 la.f <- la.f[order(la.f$order),] # if i don't order merge.nuts.f loses order and the map has gaps
 
-ggplot(la.f, aes(x = long, y = lat)) +
-  geom_polygon(aes( group = group, fill = as.factor(cluster.tests))) +
-  #theme_nothing(legend = TRUE) +
-  labs(title = "Test clusters") +
-  scale_fill_viridis_d()+
-  guides(fill=guide_legend(title="Clusters")) +
-  theme_void()
+# ggplot(la.f, aes(x = long, y = lat)) +
+#   geom_polygon(aes( group = group, fill = as.factor(cluster.tests))) +
+#   #theme_nothing(legend = TRUE) +
+#   labs(title = "Test clusters") +
+#   scale_fill_viridis_d()+
+#   guides(fill=guide_legend(title="Clusters")) +
+#   theme_void()
+
+# using world.cities from `maps`
+cities <- world.cities %>% filter(country.etc=="UK")
 
 ggplot(la.f, aes(x = long, y = lat)) +
   geom_polygon(aes( group = group, fill = as.factor(cluster.up))) +
-  #theme_nothing(legend = TRUE) +
-  labs(title = "Upload clusters") +
-  scale_fill_viridis_d()+
+  #labs(title = "Upload clusters") +
+  scale_fill_brewer(palette="Set1", 
+                    direction = -1) +
+  geom_text_repel( data=cities %>% arrange(pop) %>% tail(10), aes(x=long, y=lat, label=name), size=4) +
+  geom_point( data=cities %>% arrange(pop) %>% tail(10), aes(x=long, y=lat), color="black", size=1) +
   guides(fill=guide_legend(title="Clusters")) +
   theme_void()
 
-#ggsave("all_maps2.png") # this is the colour map for the preprint
-# out.path.map <- paste0(path, "/paper/v1/figures/map.up.clusters9.png")
-# ggsave(out.path.map)#,
+# Run only if needed
+# out.path.map <- paste0(path, "/paper/v2_taylor_francis/figures/map.up.clusters.png")
+# ggsave(out.path.map)
 #width = 210, #A4
 #height = 297, #A4
 #units = "mm")
 ```
 
-```{r, eval=FALSE}
+## Mapping median upload speeds for appendix 2019 and 2020
+
+```{r}
+
+# upload 2020
+ts.up2020median <- TS2020 %>%
+  group_by(LAD19NM) %>%
+  summarise(mean.up = median(speedup))
+
+ts.up2019median <- TS2019 %>%
+  group_by(LAD19NM) %>%
+  summarise(mean.up = median(speedup))
+
+# scatter plots
+sp2020 <- ggplot(ts.up2020median, 
+       aes(x=mean.up)) + 
+  geom_histogram() +
+  geom_vline(aes(xintercept=mean(mean.up)), # This line of code adds a vertical line to represent the mean
+             color="blue", linetype="dashed", size=1) +
+  xlim(0, 20000) +
+  ylab("count 2020")
+
+sp2019 <- ggplot(ts.up2019median, 
+       aes(x=mean.up)) + 
+  geom_histogram() +
+  geom_vline(aes(xintercept=mean(mean.up)), # This line of code adds a vertical line to represent the mean
+             color="blue", linetype="dashed", size=1) +
+  xlim(0, 20000) +
+  ylab("count 2019")
+
+sp20192020 <- grid.arrange(sp2019, sp2020, ncol = 1, nrow = 2) #legend
+
+out.plot <- paste0(path, "/paper/v2_taylor_francis/figures/sc2019_2020.png")
+ggsave(out.plot, sp20192020)
+
+
+
+la.f.up <- broom::tidy(la, region = "lad19nm")
+la.f.up <- merge(la.f.up, ts.up2020median, by.x = "id", by.y = "LAD19NM")
+la.f.up <- la.f.up %>% 
+  rename(mean.up2020 = mean.up)
+la.f.up <- merge(la.f.up, ts.up2019median, by.x = "id", by.y = "LAD19NM")
+la.f.up <- la.f.up %>% 
+  rename(mean.up2019 = mean.up)
+la.f.up <- la.f.up[order(la.f.up$order),] # if i don't order merge.nuts.f loses order and the map has gaps
+
+# Already defined
+# using world.cities from `maps`
+# cities <- world.cities %>% filter(country.etc=="UK")
+
+no_classes <- 4
+quantiles2019 <- quantile(ts.up2019median$mean.up, 
+                      probs = seq(0, 1, length.out = no_classes + 1), na.rm = T)
+la.f.up$quantile2019 <- cut(la.f.up$mean.up2019,
+                             breaks = quantiles2019,
+                             labels = c("1st quartile", "2nd quartile", "3rd quartile", "4th quartile"),
+                             right = T)
+quantiles2020 <- quantile(ts.up2020median$mean.up, 
+                      probs = seq(0, 1, length.out = no_classes + 1), na.rm = T)
+la.f.up$quantile2020 <- cut(la.f.up$mean.up2020,
+                             breaks = quantiles2020,
+                             labels = c("1st quartile", "2nd quartile", "3rd quartile", "4th quartile"),
+                             right = T)
+
+map2019 <- ggplot(la.f.up, aes(x = long, y = lat)) +
+  geom_polygon(aes( group = group, fill = quantile2019)) + #mean.up2019
+  #labs(title = "Upload clusters") +
+  scale_fill_brewer(palette = "Greens") +
+  geom_text_repel( data=cities %>% arrange(pop) %>% tail(10), aes(x=long, y=lat, label=name), size=4) +
+  geom_point( data=cities %>% arrange(pop) %>% tail(10), aes(x=long, y=lat), color="black", size=1) +
+  guides(fill=guide_legend(title="Median upload speed")) + #, 2019
+  theme_void() #+ 
+  # theme(legend.text = element_text(size = 11), legend.position="bottom",
+  #       legend.key.size = unit(0.25, "cm"), legend.key.width = unit(0.25,"cm"), 
+  #       legend.box = "horizontal",
+  #       legend.margin=margin(0,0,0,0), legend.box.margin=margin(-40,20,40,20), # This is to bring the legend closer to the map for the grid
+  #       plot.margin = unit(c(0, 1.5, 0, -1.5), "cm")) 
+
+map2020 <- ggplot(la.f.up, aes(x = long, y = lat)) +
+  geom_polygon(aes( group = group, fill = quantile2020)) +
+  #labs(title = "Upload clusters") +
+  scale_fill_brewer(palette = "Greens") +
+  geom_text_repel( data=cities %>% arrange(pop) %>% tail(10), aes(x=long, y=lat, label=name), size=4) +
+  geom_point( data=cities %>% arrange(pop) %>% tail(10), aes(x=long, y=lat), color="black", size=1) +
+  guides(fill=guide_legend(title="Median upload speed, 2020")) +
+  theme_void()
+
+# get legend
+legend <- get_legend(map2019)
+
+# remove legends
+map2019 <- map2019 + theme(legend.position = "map2019")
+map2020 <- map2020 + theme(legend.position = "map2020")
+
+
+up20192020 <- grid.arrange(map2019, map2020, ncol = 2, nrow = 2) #legend
+
+out.plot <- paste0(path, "/paper/v2_taylor_francis/figures/up2019_2020.png")
+ggsave(out.plot, up20192020)
+
+# plot_grid(couk.pop2000, couk.pop2010, noncouk.pop2000, noncouk.pop2010, legend, nrow = 3, ncol = 2,
+#           align = "h", axis = "l", 
+#           #labels = c(".co.uk / pop., 2000", ".co.uk / pop., 2010", "non .co.uk / pop., 2000", "non .co.uk / pop., 2010", ""), 
+#           #label_size = 12,
+#           greedy = T,
+#           rel_heights = c(1, 1, .3)) # this is the relative position of the 3 lines
+
+```
+
+```{r, eval=FALSE, include=FALSE}
+# test for ploty
+
+library(plotly)
+
+p <- 
+  ggplotly(test, layerData = 1, 
+           originalData = T,
+           add_trace(z=~cluster.tests))#, tooltip="text")
+
+```
+
+```{r, eval=FALSE, include=FALSE}
 # leaflet maps
 
 # !!!WRONG CATEGORY VISUALISATION!!!

@@ -261,7 +261,8 @@ stargazer(data.cor,
 
 ## Auxiliary regression, dep. var.: upload clusters
 
-```{r upload regression , results= 'asis', message=F, error=F, warning=F}
+```{r upload regression, results= 'asis', message=F, error=F, warning=F}
+
 # helpful sources: http://www.princeton.edu/~otorres/LogitR101.pdf
 # https://thestatsgeek.com/2014/02/08/r-squared-in-logistic-regression/
 
@@ -269,7 +270,7 @@ stargazer(data.cor,
 data$cluster.up <- as.factor(data$cluster.up)
 data$cluster.up <- relevel(data$cluster.up, "4") # base category: cluster 4
 
-aux.up <- multinom(cluster.up ~ 
+aux.up.v1 <- multinom(cluster.up ~ 
                      #pop16_64 + # non sign, while pop is
                      pop +
                      #pop.dens + 
@@ -283,12 +284,12 @@ aux.up <- multinom(cluster.up ~
                    trace = F) # to avoid messages 
 
 # McFadden's R squared
-aux.up.null <- multinom(cluster.up ~ 1, data = data)
-r2.up <- 1-logLik(aux.up)/logLik(aux.up.null)
+aux.up.v1.null <- multinom(cluster.up ~ 1, data = data)
+r2.up.v1 <- 1-logLik(aux.up.v1)/logLik(aux.up.v1.null)
 
-n.obs <- dim(aux.up$fitted.values)[1]
+n.obs <- dim(aux.up.v1$fitted.values)[1]
 
-stargazer(aux.up, 
+stargazer(aux.up.v1, 
           type = "html",
           #type = "text",
           nobs = T,
@@ -314,10 +315,10 @@ stargazer(aux.up,
             "n. of AM broadband tests per hab., 2020",
             "% of Virgin Media connections"),
           add.lines = list(c("McFadden's R squared",
-                             round(r2.up[1],3), round(r2.up[1],3), round(r2.up[1],3),
-                             round(r2.up[1],3), round(r2.up[1],3), round(r2.up[1],3),
-                             round(r2.up[1],3), round(r2.up[1],3), round(r2.up[1],3)
-                             , round(r2.up[1],3), round(r2.up[1],3)),
+                             round(r2.up.v1[1],3), round(r2.up.v1[1],3), round(r2.up.v1[1],3),
+                             round(r2.up.v1[1],3), round(r2.up.v1[1],3), round(r2.up.v1[1],3),
+                             round(r2.up.v1[1],3), round(r2.up.v1[1],3), round(r2.up.v1[1],3)
+                             , round(r2.up.v1[1],3), round(r2.up.v1[1],3)),
                            (c("N",
                               n.obs, n.obs, n.obs,
                               n.obs, n.obs, n.obs,
@@ -329,6 +330,14 @@ stargazer(aux.up,
 ## Auxiliary regression, dep. var.: upload clusters, NO NVQ4
 
 ```{r upload regression no NVQ4, results= 'asis', message=F, error=F, warning=F}
+
+# helpful sources: http://www.princeton.edu/~otorres/LogitR101.pdf
+# https://thestatsgeek.com/2014/02/08/r-squared-in-logistic-regression/
+
+# convert dependent variable to factor
+data$cluster.up <- as.factor(data$cluster.up)
+data$cluster.up <- relevel(data$cluster.up, "4") # base category: cluster 4
+
 aux.up <- multinom(cluster.up ~ 
                      #pop16_64 + # non sign, while pop is
                      pop +
@@ -395,7 +404,7 @@ stargazer(aux.up,
 data$cluster.up <- as.factor(data$cluster.up)
 data$cluster.up <- relevel(data$cluster.up, "4") # base category: cluster 4
 
-aux.up <- multinom(cluster.up ~ 
+aux.up.noprof <- multinom(cluster.up ~ 
                      #pop16_64 + # non sign, while pop is
                      pop +
                      #pop.dens + 
@@ -409,12 +418,12 @@ aux.up <- multinom(cluster.up ~
                    trace = F) # to avoid messages 
 
 # McFadden's R squared
-aux.up.null <- multinom(cluster.up ~ 1, data = data)
-r2.up <- 1-logLik(aux.up)/logLik(aux.up.null)
+aux.up.noprof.null <- multinom(cluster.up ~ 1, data = data)
+r2.up.noprof <- 1-logLik(aux.up.noprof)/logLik(aux.up.noprof.null)
 
-n.obs <- dim(aux.up$fitted.values)[1]
+n.obs <- dim(aux.up.noprof$fitted.values)[1]
 
-stargazer(aux.up, 
+stargazer(aux.up.noprof, 
           type = "html",
           #type = "text",
           nobs = T,
@@ -440,10 +449,10 @@ stargazer(aux.up,
             "n. of AM broadband tests per hab., 2020",
             "% of Virgin Media connections"),
           add.lines = list(c("McFadden's R squared",
-                             round(r2.up[1],3), round(r2.up[1],3), round(r2.up[1],3),
-                             round(r2.up[1],3), round(r2.up[1],3), round(r2.up[1],3),
-                             round(r2.up[1],3), round(r2.up[1],3), round(r2.up[1],3)
-                             , round(r2.up[1],3), round(r2.up[1],3)),
+                             round(r2.up.noprof[1],3), round(r2.up.noprof[1],3), round(r2.up.noprof[1],3),
+                             round(r2.up.noprof[1],3), round(r2.up.noprof[1],3), round(r2.up.noprof[1],3),
+                             round(r2.up.noprof[1],3), round(r2.up.noprof[1],3), round(r2.up.noprof[1],3)
+                             , round(r2.up.noprof[1],3), round(r2.up.noprof[1],3)),
                            (c("N",
                               n.obs, n.obs, n.obs,
                               n.obs, n.obs, n.obs,
