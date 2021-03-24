@@ -53,14 +53,20 @@ analysis on mean speeds.
 
 > 3. The relevance to pandemic is not very straightforward. This may be improved by adding some studies, e.g., how the clusters impact the effectiveness of work from home through survey. Or relates to the employment rate.
 
-Regrettably, we did not have the opportunity to run a survey. As we say in the introduction,
-prior to the pandemic, the demand for telecommuting would not have put a strain
-on internet connection speeds. We have clarified this with the addition of the following sentence:
+Regrettably, we did not have the opportunity to run a survey. 
+As we say in the introduction, prior to the pandemic, the demand for telecommuting 
+would not have put a strain on internet connection speeds. We have clarified this 
+with the addition of the following sentence:
 "High levels of demand are one of the main causes of reduced reliability and slower connection speeds, as network bandwidth becomes congested".
 We also have added a variable to the auxiliary regression tracking the share of
 the population that was put on furlough. This was the scheme in the UK which, at
 least initially, prevented much change in the employment rate, but did show who
 could work and who could not at the height of the first wave of the pandemic.
+Finally, as we note at the end of the methods and data section, an auxiliary 
+regression was the preferred methodology because:
+"Such individual data could be found though surveys, but these offer less
+detailed information about the experience of internet resilience due to enforced
+demand, which is the main contribution of this paper."
 
 > 4. The time series may be enhanced by putting a time range according to different events of the pandemic or other factors that relates to the pandemic.
 
@@ -77,19 +83,19 @@ March, and restrictions were gradually eased from late May".
 
 > 5. Would suggest a review of the spatiotemporal challenges of the covid-19.
 
-We have now added the following paragraph in the 'Digital divides and economic resilience'
-section.
+We have now added the following short discussion in the 'Digital divides and 
+economic resilience' section.
 
-"Currently there is a hotly debated discussion in the literature regarding these
-exact changes in transportation and the structure of cities. We now have enough
-hard data to observe the drastic change in the space-time geography of cities around
-the world [e.g. @google2020; @shibayama2021impact].
-Although there is a broad agreement that these changes
-during the pandemic have played a pivotal role in stopping the spread of the virus
-[@jia2020population; @yang2020taking; @mu2020interplay],
-we still have no evidence to what extend these increased levels of working from
-home, and the consequent decrease in commuting flows and the structure of cities,
-will remain post-pandemic".
+"Such digital intersections and efficiencies have also changed 
+transportation, connectivity and the structure of cities during the pandemic.
+We now have enough data to confirm the drastic alteration observed in the space-time 
+geography of cities around the world in the last year [e.g. @google2020; @shibayama2021impact]. 
+Yet, although there is a broad agreement that these changes 
+during the pandemic have played a pivotal role in stopping the spread of the virus 
+[@jia2020population; @yang2020taking; @mu2020interplay], the extent to which the 
+increased levels of working from home, the consequent decrease in commuting flows, 
+and the altered structure of cities will remain post-pandemic is the subject
+of considerable debate in the literature."
 
 > 6. A review of cyberinfrastructure and how network varies in different region would be useful.
 
@@ -133,7 +139,7 @@ Please see our response to the next point.
 > 2. Another major comment is on the multinomial logit regression (MLR). This is partly related to my first comment on a larger k. While there is no hard limit on the number of categories in MLR, the interpretation of results will be difficult with a high k as well. In addition, if the dependence among independent variables (collinearity) occurs, the estimation of the multinomial logit model parameters becomes inaccurate. According to Table 2, it is very likely some of the variables could present collinearity (e.g., distance to nearest metro and tech jobs).
 
 Following your suggestion, we have now opted to present the cluster analysis and
-the subsequent multinomial regression using $k = 13$. We indeed believe that the
+the subsequent multinomial regression using $k = 9$. We indeed believe that the
 results are more clear now. we have added the following justification in the Methods
 and Data section:
 
@@ -162,7 +168,9 @@ ET: after we finalise k, we can rerun k-means for 2019 and decide - could also s
 
 We have tightened up the results section, and begun this discussion in the last
 paragraph of the results section and then expanded the conclusion section to include
-a discussion of the results.
+a more in-depth discussion of the results and how they link to some of the issues you 
+suggest at the start. We mention some uncertainties or avenues for future research,
+but also see our response to Reviewer 1, point 1 for an explanation of biases.
 
 > 5.  There are three levels of digital divide. According to the last paragraph in Section 2, only the intersection of level-1 and level-3 was included in this research. I am wondering how level-2 may fit in the general research framework. Could education and demographic variables be used to represent level-2 digital divide?
 
