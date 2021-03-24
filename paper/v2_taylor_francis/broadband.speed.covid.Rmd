@@ -128,7 +128,7 @@ of different occupations are spatially dependent and clustered in space,
 our approach offers a framework for understanding the impact of and interactions
 between digital divisions geographically and socioeconomically.
 Our analysis enables us to better understand how the spatial and social distribution
-of education, occupation and online accessibility intersect to enable or hinder 
+of occupation and online accessibility intersect to enable or hinder 
 the practice of telecommuting at a time of extreme demand.
 We also consider what lessons can be learned from this time for a future where
 telecommuting is likely to remain a more common means of accessing work,
@@ -226,11 +226,11 @@ in various advanced economies. Rural areas, predictably, fare worse.
 This finding broadly applies in the UK, where studies that also analysed broadband 
 speed checks concluded that average speeds are lower in rural areas, something that
 has not been improved by policy measures to increase competition [@riddlesden2014broadband; @nardotto2015unbundling].
-Moreover, @riddlesden2014broadband found that levels of deprivation did not correlate with 
+In contrast, @riddlesden2014broadband found that levels of deprivation did not correlate with 
 first level digital divides.
 
-However, as @blank2018local highlight, variation
-in individual internet uptake and use is a product of more complex spatial and 
+However, as @blank2018local highlight, variation in individual internet 
+availability and uptake is a product of more complex spatial and 
 demographic characteristics than simple rurality or urbanisation.
 Dense urban areas were shown to suffer more from slowdown during peak hours, 
 although these services were more likely to be improved by increased competition 
@@ -241,8 +241,9 @@ lucrative and competitive market originally attracted the cable TV provider.
 Whether the variation in infrastructure quality and reliability affects the 
 spatial footprint of telecommuting has not previously been investigated, in part 
 because telecommuting has not previously been a cause of concentrated demand and 
-pressure on internet services. Other intersections between digital divides have been
-subject to study.
+pressure on internet services. 
+
+Other intersections between digital divides have been subject to study.
 There are indications that those who purchase high speed connections consume
 more data of all sorts and use their connections for a greater variety of purposes
 [@hauge2011consumer].
@@ -250,22 +251,19 @@ There is also a correlation between access to internet services and a
 reduction in household transport spend [@bris2017ict].
 These studies suggest that better internet services enable households to make 
 savings and efficiencies, an example of the first level digital divide reinforcing 
-the third level.
-
-<!-- spatio-temporal -->
-Currently there is a hotly debated discussion in the literature regarding these 
-exact changes in transportation and the structure of cities. We now have enough 
-hard data to observe the drastic change in the space-time geography of cities around 
-the world [e.g. @google2020; @shibayama2021impact]. 
-Although there is a broad agreement that these changes 
+the third level. Such digital intersections and efficiencies have also changed 
+transportation, connectivity and the structure of cities during the pandemic.
+We now have enough data to confirm the drastic alteration observed in the space-time 
+geography of cities around the world in the last year [e.g. @google2020; @shibayama2021impact]. 
+Yet, although there is a broad agreement that these changes 
 during the pandemic have played a pivotal role in stopping the spread of the virus 
-[@jia2020population; @yang2020taking; @mu2020interplay],
-we still have no evidence to what extend these increased levels of working from 
-home, and the consequent decrease in commuting flows and the structure of cities, 
-will remain post-pandemic. 
+[@jia2020population; @yang2020taking; @mu2020interplay], the extent to which the 
+increased levels of working from home, the consequent decrease in commuting flows, 
+and the altered structure of cities will remain post-pandemic is the subject
+of considerable debate in the literature. 
 
 <!-- Covid-19 and working from home, cities, urban structure -->
-Multi-layered digital divides may also intersect with material divides
+Meanwhile, multi-layered digital divides may also intersect with material divides
 and the economic geography of the UK.
 The regional economic resilience literature underlines the differentiated capacity 
 of cities and regions to escape or recover from economic crises 
@@ -291,7 +289,7 @@ how internet infrastructure quality, and reliability affects telecommuting,
 particularly in light of the high volumes of bandwidth-intensive 
 video conferencing required in order to avoid the face-to-face contact that could 
 increase the spread of infection.
-We seek to answer how internet service resilience could contributes to or reduce 
+We seek to answer how internet service resilience could contribute to or reduce 
 economic resilience when the latter is dependent upon the capability to 
 work from home.
 We also aim to improve our understanding of the impact of first level digital
@@ -853,9 +851,10 @@ the temporal clustering of internet resilience showed much greater variation,
 and was not spatially dependent upon distance to large urban areas, or relative
 location. Internet resilience supports a wide range of small and large urban 
 economies, but also fails, or at least frustrates a wide range of other urban 
-economies, as demonstrated by the number of tests per capita run in cluster $6$.
+economies, as demonstrated by the number of morning peak tests per capita run in 
+cluster $6$.
 Yet our analysis of the likelihood of furlough within the population, especially in 
-the smaller suburban clusters $7$, $3$, $5$, and also $8$ shows that digital divides 
+the smaller suburban clusters $7$, $3$, $5$, and $8$ shows that digital divides 
 were as likely to diverge as intersect during the pandemic, and did not necessarily 
 overlap with prior economic divides. With a much greater share of the population 
 likely to continue to work from home in the future, and with changing attitudes 
@@ -865,19 +864,6 @@ speeds as well as download speeds, and of greater spatial variation than might
 have previously been considered.
 
 # Discussion and Conclusions {#sec:5}
-
-This paper offers a new perspective on telecommuting from the viewpoint of the
-complex web of digital divides. We employ novel data regarding
-experienced upload speeds and time-series clustering methods,
-a family of unsupervised machine learning techniques which are rarely utilised
-in geographical research. Fast, reliable internet connections are
-necessary for the population to be able to work from home.
-Although not every place hosts individuals in occupations which allow for
-telecommuting nor with the necessary skills to effectively use the internet to
-telecommute, this paper raises the issue that places may depend upon good internet 
-reliability as well as connectivity to achieve economic resilience in a period like 
-the current pandemic when internet resilience is so vital.
-
 Our analysis demonstrated that the temporal profiles of seven of our
 nine clusters had slower upload speeds in the morning than in the evening.
 The opposite is likely to have been the norm prior to the pandemic, as level of
@@ -893,64 +879,94 @@ demand for telecommuting and operations such as video calls. Yet those in the
 largest cluster, $6$, clearly experienced lower upload speeds. 
 Their speeds were also less reliable, perhaps because they had higher levels of
 demand than the second largest cluster, $9$, where many more employees were
-furloughed.
-
-Almost all of the largest urban areas in the UK, as well as many smaller cities, 
-were split between the largest two clusters -- $6$ and $9$ -- and both contain LADs 
-that are centres of the knowledge economy, from Cambridge in the former to Oxford 
-in the latter, or have high concentrations of digital businesses, like Reading in 
-the former and Milton Keynes in the latter [@technation2017].
-Yet there are both intersections and divergences of digital and economic divides.
-LADs in cluster $9$ were able to benefit both from reliable internet connections and
-populations which were familiar with working from home and could capitalise on their 
-digital infrastructure, although overall, they appeared to have a lower rate of
-return in the pandemic, with far greater numbers furloughed. 
-Is this an indication of both historic economic division, as well as the third level 
-digital divide in cities in the North and Midlands unable to capitalise on their 
-digital infrastructure?
-Meanwhile, did the greater presence in London and the South of LADs in cluster $6$,
-as well as the inclusion of many rural areas less impacted by the pandemic help
-those in this cluster be more resilient and gain greater returns, despite using 
-less reliable internet services?
-The nuanced picture we gained through our analysis of the UK case study suggests
-that in cluster $1$ as well as $6$, being on the right side of the second level
-digital divide had a greater impact on economic resilience and therefore the third
-level digital divide, than having quality internet connectivity.
+furloughed. Indeed, those with the skills and jobs to work from home were
+often left with the least robust services and greatest slowdown.
 
 <!-- WFH broader consequences-->
-Digital infrastructure which considers upload speeds and working day reliability as 
-well as availability are likely to be particularly important in a future where
-telecommuting might be a more common means of accessing work and broadband services 
-must be fit for purpose, although the long-term effects of such drastic changes in 
-telecommuting and attitudes towards working from home are difficult to predict. 
-Nevertheless, they span various aspects of economy and society: from changes to
-transportation planning due to altered commuting patterns to changes in land
-use and urban planning to accommodate people who work from home
-[@BUDNITZ2020102713; @ELLDER2020102777], and from productivity
-and innovation changes to changes in agglomeration externalities and the
-attraction of large cities [@econobs].
+Therefore, home-based digital infrastructure which considers upload speeds and 
+working day reliability as well as availability are likely to be particularly 
+important in a future where telecommuting might be a more common means of accessing 
+work and broadband services must be fit for purpose. 
+Although the long-term effects of such drastic changes in telecommuting and 
+attitudes towards working from home are difficult to predict, the reliability of 
+home broadband services deserve more consideration than in the past. 
+This would represent a switch from previous broadband policies in the UK which 
+tended to be aimed at supporting small and medium enterprises on industrial estates 
+and business parks []. Such policies also made some assumptions about the quality of 
+service in residential markets that could be assured without government intervention 
+- an assumption which our analysis suggest is not entirely accurate. 
+
+Policy and development proposals should also consider how the potential changes 
+wrought by the pandemic span various aspects of economy and society. 
+Changes to transportation planning due to altered commuting patterns also imply 
+changes in land use and urban planning to accommodate 
+people who work from home [@BUDNITZ2020102713; @ELLDER2020102777].
+Productivity and innovation changes will reflect upon changes in agglomeration 
+externalities and the attraction of large cities [@econobs].
 Further research may be able to measure the economic resilience of the different
 clusters of places discussed in this paper once this pandemic is firmly past.
 However, our analysis demonstrates that the economic resilience made possible by
 working from home cannot be understood without considering the underpinning digital
 divides and cannot be achieved without planning for how the levels of digital,
-social and economic divides might intersect.
+social and economic divides might intersect. For example, our results suggest that 
+broadband policies cannot improve the economic resilience of places where the 
+industrial structure does not align with occupations that incorporate the digital 
+skills and capabilities to work from home. Such places instead experienced higher 
+proportions of their labour force being placed on furlough.
 
-Early research on Covid-19 and cities speculated the changes that potential extensive
-post-Covid working from home patterns might generate for spatial structure: from 
-more walkable cities to more localised production and consumption patterns and from
-more extensive urban sprawl to decline in public transportation and increased private 
-car usage [@batty2020editorial]. Despite the essential role it played during the 
-pandemic, less effort has been spent in understanding the current and future role
-of digital infrastructure. Our results indicate that probably for the first time 
-the future of cities and spatial structure are so much intertwined with digital 
-infrastructure. If the post-covid world is a world with extensive working from home, 
+Early research on Covid-19 and cities also speculated upon the changes that 
+potential extensive post-Covid working from home patterns might generate for 
+spatial structure: from more walkable cities and more localised production and 
+consumption patterns to more extensive urban sprawl, the decline in public 
+transportation and increased private car usage [@batty2020editorial]. 
+Despite the essential role it played during the pandemic, less effort has been spent 
+in understanding the current and future role of digital infrastructure. 
+Our results indicate that probably for the first time the future of cities and 
+spatial structure are so intertwined with digital infrastructure. 
+If the post-covid world is a world with extensive working from home, 
 then we need to build, among other things, resilient digital infrastructure capable 
 of bridging the first layer of the digital divide. Contrary to previous broadband 
 business and deployment plans, emphasis should be placed not only on download,
-but also on upload speeds [@brake2020lessons. In essence, Covid-19 accentuated the 
-old, but more valid than ever argument: digital infrastructure, just like any other 
+but also on upload speeds [@brake2020lessons]. In essence, Covid-19 accentuated the 
+old argument, now more valid than ever: digital infrastructure, just like any other 
 network infrastructure, only becomes visible when it stops working [@star1999; @tranos2013geography].
+
+On the other hand, the nuanced picture we gained through our analysis of the UK 
+case study suggests that being on the right side of the second level digital divide 
+had a greater impact on economic resilience and therefore the third level digital 
+divide, than having quality internet connectivity. 
+Our regressions results for cluster $1$ and $6$ are a demonstration of this. 
+Our analysis shows both the intersections and divergences of digital and economic 
+division.
+Almost all of the largest urban areas in the UK, as well as many smaller cities, 
+were split between the largest two clusters -- $6$ and $9$ -- and both contain LADs 
+that are centres of the knowledge economy, from Cambridge in the former to Oxford 
+in the latter, or have high concentrations of digital businesses, like Reading in 
+the former and Milton Keynes in the latter [@technation2017].
+Yet whilst LADs in cluster $9$ were able to benefit both from reliable internet 
+connections and populations familiar with working from home to capitalise on  their 
+digital infrastructure, they appeared to have a lower rate of return in 
+the pandemic, with far greater numbers furloughed. 
+Is this an indication of historic economic division, as well as the third level 
+digital divide, in cities in the North and Midlands unable to capitalise on their 
+digital infrastructure?
+Meanwhile, did the greater presence in London and the South of LADs in cluster $6$,
+as well as the inclusion of many rural areas less impacted by the pandemic help
+those in this cluster be more resilient and gain greater returns, despite using 
+less reliable internet services? Further research would be necessary to prise apart
+the detail, particularly in the largest clusters where averages are less distinct.
+
+In conclusion, this paper offers a new perspective on telecommuting from the 
+viewpoint of the complex web of digital divides. We employ novel data regarding
+experienced upload speeds and time-series clustering methods,
+a family of unsupervised machine learning techniques which are rarely utilised
+in geographical research. Fast, reliable internet connections are
+necessary for the population to be able to work from home.
+Although not every place hosts individuals in occupations which allow for
+telecommuting nor with the necessary skills to effectively use the internet to
+telecommute, this paper raises the issue that places may depend upon good internet 
+reliability as well as connectivity to achieve economic resilience in a period like 
+the current pandemic when internet resilience is so vital.
 
 <!-- # Acknowledgement(s) {-} -->
 
