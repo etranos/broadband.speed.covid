@@ -36,6 +36,7 @@ library(hrbrthemes)
 path <- find_rstudio_root_file()
 ```
 
+## Time variation plots (Figures 1 and 2)
 
 ```{r include = FALSE}
 
@@ -67,15 +68,20 @@ time.var.plot2020 <- timeVariation(TS2020, pollutant = "test frequency 2020", st
 
 #export time variation plots for paper
 out.plot <- paste(path, "/paper/v2_taylor_francis/figures/time.var.plot2019.png", sep = "")
-png(out.plot)
+png(out.plot, res = 100, width = 615, height = 615) # 72dpi default res. 480x480. 
+                                                    # ((100-72)/100)*480+480 = 615 
 time.var.plot2019
-dev.off() 
+dev.off() # if dev.off() doesn't work try dev.set(dev.next()) 2-3 times
 
 out.plot <- paste(path, "/paper/v2_taylor_francis/figures/time.var.plot2020.png", sep = "")
-png(out.plot)
+png(out.plot, res = 100, width = 615, height = 615)
 time.var.plot2020
-dev.off() 
+dev.off()
+```
 
+
+
+```{r}
 #join clusters to TS2020
 names(clusters) [1] <- "LAD19NM"
 TS2020 <- left_join(TS2020, clusters)
@@ -203,8 +209,9 @@ Download speeds are the most commonly used measure of the quality and reliabilit
 
 What is of greater interest, however, is where download speeds are slower in the morning peak when broadband is more likely to be used for work purposes than in the evening peak. This difference is most stark in some of the smaller clusters, although since there are only 11 Local Authorities and a little less than 1.2 million people in these clusters altogether, the differences in speeds may be a reflection of quite localised issues. The largest two clusters of Local Authorities, which are home to over 39 million people, have speeds only 1-3% slower in the AM peak, and a few clusters have faster download speeds in the AM peak. However, there are 4 clusters with over 9 million people in 47 Local Authorities with download speeds 5-8% lower in the morning peak than in the evening peak, a noticeable reduction and one equivalent to the contention monitored in the evening peak by OfCom to measure service performance. Is the 5% or greater reduction in download speeds in the morning peak compared to the evening peak suffered in more places by more people than suffer a similar reduction in upload speeds a result of ISP management to support reliable services for telecommuters? There are only eight Local Authorities where both upload and download speeds are more than 5% slower in the AM peak than the PM peak.
 
+## Summarise 2020 test frequency clusters by hour of each weekday and plot 
+
 ```{r }
-#summarise test frequency clusters by hour of each weekday and plot
 cluster.tests <- TS2020 %>%
   group_by(cluster.tests, weekday, hour) %>%
   summarise(n.tests = n())
@@ -256,8 +263,13 @@ TestCluster19 + geom_line() + labs(x = "Weekdays March-May 2019") +
                     "2020-03-05 15:00:00", "2020-03-06 15:00:00"), 
                     labels = "%a"), labels = 
                      c("Mon", "Tues", "Weds", "Thurs", "Fri")) + geom_point()
-#summarise upload speed clusters by hour of each weekday and plot
-#plot largest 6 clusters - all over 500k pop
+```
+
+## Summarise 2020 upload speed clusters by hour of each weekday and plot
+
+```{r}
+
+# plot largest 6 clusters - all over 500k pop
 cluster.up <- TS2020 %>%
   group_by(cluster.up, weekday, hour) %>%
   summarise(mean.up = mean(speedup))
@@ -266,7 +278,8 @@ names(LAD.cluster.up)[1] <- "clusterID"
 cluster.up <- left_join(cluster.up, LAD.cluster.up)
 cluster.up <- cluster.up[which(cluster.up$up.LADs > 4),]
 cluster.up$clusterID <- as.factor(cluster.up$clusterID)
-#add fake dates for plotting
+
+# add fake dates for plotting
 help.dates <- tibble(help.date.time = c(
   make_datetime(year = 2020, month = 3, day = 2),
   make_datetime(year = 2020, month = 3, day = 3),
@@ -277,7 +290,8 @@ help.dates <- tibble(help.date.time = c(
 cluster.up <- merge(cluster.up, help.dates, by = "weekday")
 cluster.up$hour <- paste(cluster.up$hour, ":00", sep="")
 cluster.up$help.date.time <- with(cluster.up, as.POSIXct(paste(help.date.time, hour), format="%Y-%m-%d %H:%M"))
-#plot cluster statistic for mean upload speed
+
+# plot cluster statistic for mean upload speed
 UpCluster <- ggplot(cluster.up, aes(help.date.time, mean.up, 
                                       colour = clusterID)) +
   theme_minimal() +
@@ -292,12 +306,13 @@ UpCluster <- ggplot(cluster.up, aes(help.date.time, mean.up,
   theme(legend.position = c(0.7, 0.08),
         legend.direction = "horizontal")
 
-#export UpClusterL plot for paper
+#export UpCluster plot for paper
 out.plot <- paste(path, "/paper/v2_taylor_francis/figures/UpCluster.png", sep = "")
 UpCluster
 ggsave(out.plot)
 
-#plot next 6 smaller clusters, but exclude 2 clusters with 1 LAD and under 100k pop
+# EXCLUDED from paper
+# plot next 6 smaller clusters, but exclude 2 clusters with 1 LAD and under 100k pop
 cluster.upS <- TS2020 %>%
   group_by(cluster.up, weekday, hour) %>%
   summarise(mean.up = mean(speedup))
@@ -306,7 +321,8 @@ names(LAD.cluster.up)[1] <- "clusterID"
 cluster.upS <- left_join(cluster.upS, LAD.cluster.up)
 cluster.upS <- cluster.upS[which(cluster.upS$up.LADs < 10 & cluster.upS$up.LADs > 1),]
 cluster.upS$clusterID <- as.factor(cluster.upS$clusterID)
-#add fake dates for plotting
+
+# add fake dates for plotting
 help.dates <- tibble(help.date.time = c(
   make_datetime(year = 2020, month = 3, day = 2),
   make_datetime(year = 2020, month = 3, day = 3),
@@ -317,7 +333,8 @@ help.dates <- tibble(help.date.time = c(
 cluster.upS <- merge(cluster.upS, help.dates, by = "weekday")
 cluster.upS$hour <- paste(cluster.upS$hour, ":00", sep="")
 cluster.upS$help.date.time <- with(cluster.upS, as.POSIXct(paste(help.date.time, hour), format="%Y-%m-%d %H:%M"))
-#plot cluster statistic for mean upload speed
+
+# plot cluster statistic for mean upload speed
 UpClusterS <- ggplot(cluster.upS, aes(help.date.time, mean.up, 
                                       colour = clusterID)) +
   theme_minimal() +
@@ -332,15 +349,66 @@ UpClusterS <- ggplot(cluster.upS, aes(help.date.time, mean.up,
   theme(legend.position = c(0.8, 0.08),
         legend.direction = "horizontal")
         
-# The figure with the small clusters is no included in the paper
+# The figure with the small clusters is not included in the paper
 #export UpClusterS plot for paper
 #out.plot <- paste(path, "/paper/v2_taylor_francis/figures/UpClusterS.png", sep = "")
 #png(out.plot)
 #UpClusterS
 #dev.off() 
+```
 
+## Summarise 2019 upload speed clusters by hour of each weekday and plot
 
+This is a test to compare 2020 vs. 2019 line graphs.
+
+```{r}
+
+# plot largest 6 clusters - all over 500k pop
+cluster.up <- TS2019 %>%
+  group_by(cluster.up, weekday, hour) %>%
+  summarise(mean.up = mean(speedup))
+names(cluster.up)[1] <- "clusterID"
+names(LAD.cluster.up)[1] <- "clusterID"
+cluster.up <- left_join(cluster.up, LAD.cluster.up)
+cluster.up <- cluster.up[which(cluster.up$up.LADs > 4),]
+cluster.up$clusterID <- as.factor(cluster.up$clusterID)
+
+# add fake dates for plotting
+help.dates <- tibble(help.date.time = c(
+  make_datetime(year = 2019, month = 3, day = 4),
+  make_datetime(year = 2019, month = 3, day = 5),
+  make_datetime(year = 2019, month = 3, day = 6),
+  make_datetime(year = 2019, month = 3, day = 7),
+  make_datetime(year = 2019, month = 3, day = 8)),
+                     weekday = c("Mon", "Tue", "Wed", "Thu", "Fri"))
+cluster.up <- merge(cluster.up, help.dates, by = "weekday")
+cluster.up$hour <- paste(cluster.up$hour, ":00", sep="")
+cluster.up$help.date.time <- with(cluster.up, as.POSIXct(paste(help.date.time, hour), format="%Y-%m-%d %H:%M"))
+
+# plot cluster statistic for mean upload speed
+UpCluster2019 <- ggplot(cluster.up, aes(help.date.time, mean.up, 
+                                      colour = clusterID)) +
+  theme_minimal() +
+  geom_line() + 
+  labs(x = "Weekdays March-May", y = "mean upload speed", col = "Cluster ID") + 
+  scale_x_datetime(breaks = as.POSIXct(c("2019-03-04 15:00:00", 
+                    "2019-03-05 15:00:00", "2019-03-06 15:00:00",
+                    "2019-03-07 15:00:00", "2019-03-08 15:00:00"), 
+                    labels = "%a"), labels = 
+                     c("Mon", "Tues", "Weds", "Thurs", "Fri")) + 
+  geom_point() +
+  theme(legend.position = c(0.7, 0.08),
+        legend.direction = "horizontal")
+
+#export UpCluster plot for paper
+out.plot <- paste(path, "/paper/v2_taylor_francis/figures/UpCluster2019.png", sep = "")
+UpCluster2019
+ggsave(out.plot)
+```
+
+```{r eval=F}
 # Not used in the paper
+
 #summarise download speed clusters by hour of each weekday and plot
 cluster.down <- TS2020 %>%
   group_by(cluster.down, weekday, hour) %>%

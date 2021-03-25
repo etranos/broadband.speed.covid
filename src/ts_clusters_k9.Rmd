@@ -101,7 +101,55 @@ ts.tests2019 <- TS2019 %>%
 
 ```
 
-### Upload speed
+## Line graphs for upload speed (not clusters) 2019 and 2020
+
+```{r}
+
+#test <- 
+line2020 <- ts.up2020 %>% 
+  mutate(day = recode(weekday, # these are dates from 2020
+                            Mon=2,
+                            Tue = 3,
+                            Wed = 4,
+                            Thu = 5,
+                            Fri = 6)) %>% 
+  mutate(help.date.time = make_datetime(year = 2020, month = 3, day = day),
+         hour = paste0(hour, ":00"),
+         help.date.time = (as.POSIXct(paste(help.date.time, hour), format="%Y-%m-%d %H:%M"))) %>% 
+  group_by(help.date.time) %>%
+  summarise(mean.up = mean(mean.up)) %>% 
+  ggplot(aes(x=help.date.time, y=mean.up), #, group = LAD19NM, colour = LAD19NM),
+         show.legend = F) + 
+  geom_line() + guides(colour=FALSE) +
+  xlab(2020)
+  # + xlab("Year") +
+  # ylab("Pareto exponent")  
+
+# library(plotly)
+# ggplotly(test,
+#          show.legend=F)
+
+line2019 <- ts.up2019 %>% 
+  mutate(day = recode(weekday, # these are dates from 2020
+                            Mon=2,
+                            Tue = 3,
+                            Wed = 4,
+                            Thu = 5,
+                            Fri = 6)) %>% 
+  mutate(help.date.time = make_datetime(year = 2020, month = 3, day = day),
+         hour = paste0(hour, ":00"),
+         help.date.time = (as.POSIXct(paste(help.date.time, hour), format="%Y-%m-%d %H:%M"))) %>% 
+  group_by(help.date.time) %>%
+  summarise(mean.up = mean(mean.up)) %>% 
+  ggplot(aes(x=help.date.time, y=mean.up), #, group = LAD19NM, colour = LAD19NM),
+         show.legend = F) + 
+  geom_line() + guides(colour=FALSE)+
+  xlab(2019) 
+
+grid.arrange(line2019, line2020, ncol = 1, nrow = 2) #legend
+```
+
+## Upload speed 2020
 
 ```{r eval=TRUE, echo=TRUE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
 
@@ -151,7 +199,7 @@ cluster_up <- data.frame(LAD=ts.wide.names,
                          cluster=pc_k@cluster)
 ```
 
-### Download speed
+## Download speed 2020
 
 ```{r eval=TRUE, echo=TRUE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
 
@@ -193,7 +241,7 @@ cluster_down <- data.frame(LAD=ts.wide.names,
                            cluster=pc_k@cluster)
 ```
 
-### N. of speed tests
+## N. of speed tests 2020
 
 ```{r eval=TRUE, echo=TRUE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
 
@@ -236,7 +284,7 @@ cluster_tests <- data.frame(LAD=ts.wide.names,
                             cluster=pc_k@cluster)
 ```
 
-### Upload speed diff 2019-2020
+## Upload speed diff 2019-2020
 
 ```{r eval=TRUE, echo=TRUE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
 
@@ -316,7 +364,7 @@ cluster_up.diff <- data.frame(LAD=ts.wide.names,
 
 ```
 
-### download speed diff 2019-2020
+## download speed diff 2019-2020
 
 ```{r eval=TRUE, echo=TRUE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
 
@@ -395,8 +443,57 @@ cluster_down.diff <- data.frame(LAD=ts.wide.names,
                                 cluster=pc_k@cluster)
 ```
 
+## Upload speed 2019
 
-## Mapping the clusters
+```{r eval=TRUE, echo=TRUE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
+
+# 2019
+
+# create a 'fake' week for a ts id
+help.dates <- tibble(help.date.time = c(make_datetime(year = 2019, month = 3, day = 4),
+                make_datetime(year = 2019, month = 3, day = 5),
+                make_datetime(year = 2019, month = 3, day = 6),
+                make_datetime(year = 2019, month = 3, day = 7),
+                make_datetime(year = 2019, month = 3, day = 8)),
+                weekday = c("Mon", "Tue", "Wed", "Thu", "Fri"))
+ts.wide2019 <- merge(ts.up2019, help.dates, by = "weekday")
+ts.wide2019$hour <- paste(ts.wide2019$hour, ":00", sep="")
+ts.wide2019$help.date.time <- with(ts.wide2019, as.POSIXct(paste(help.date.time, hour), format="%Y-%m-%d %H:%M"))
+
+ts.wide2019 <- ts.wide2019 %>%
+  dplyr::select(help.date.time, LAD19NM, mean.up) #%>%
+  #filter(date > "2020-2-15")
+
+# turn to a wide format
+ts.wide2019 <- ts_wide(ts.wide2019)
+
+# impute with means of each TS
+# TODO check sensitivity
+ts.wide2019 <- na_mean(ts.wide2019)
+#sapply(ts.wide, function(x) sum(is.na(x)))
+
+# extract names
+ts.wide2019.names <- names(ts.wide2019[,-1])
+ts.wide2019 <- ts.wide2019[,-1]
+
+# standardise
+ts.wide2019 <- zscore(ts.wide2019)
+
+# convert to list for tsclust
+ts.wide2019 <- split(ts.wide2019, rep(1:ncol(ts.wide2019), each = nrow(ts.wide2019)))
+
+# k = 9
+pc_k <- tsclust(ts.wide, k = 9, seed = 94L, 
+                type="partitional", 
+                distance = "dtw_basic", centroid = "pam", trace = T, 
+                args = tsclust_args(dist = list(window.size = 20L)))
+plot(pc_k)
+
+cluster_up.2019 <- data.frame(LAD=ts.wide2019.names,
+                           cluster=pc_k@cluster)
+```
+
+## Export clusters
 
 ```{r include=TRUE, echo=FALSE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
 
@@ -436,7 +533,16 @@ clusters.nodiff  %>% arrange(cluster.up) %>% kable()
 out.clusters <- paste(path, "/data/temp/clusters_nodiff_9.csv", sep = "")
 write_csv(clusters.nodiff, out.clusters)
 
+# 2019 upload cluster
+out.2019.clusters <- paste(path, "/data/temp/clusters_up2019.csv", sep = "")
+write_csv(cluster_up.2019, out.2019.clusters)
+```
+
+## Mapping the clusters: upload 2020
+
+```{r include=TRUE, echo=FALSE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
 # get LA 
+
 # this is the heaviest version:
 # (i) directly from the web
 #la <- readOGR("http://geoportal1-ons.opendata.arcgis.com/datasets/b6d2e15801de45328b760a4f55d74318_0.geojson?outSR={%22latestWkid%22:3857,%22wkid%22:102100}")#, layer="OGRGeoJSON")
@@ -483,6 +589,37 @@ ggplot(la.f, aes(x = long, y = lat)) +
 
 # Run only if needed
 # out.path.map <- paste0(path, "/paper/v2_taylor_francis/figures/map.up.clusters.png")
+# ggsave(out.path.map)
+#width = 210, #A4
+#height = 297, #A4
+#units = "mm")
+```
+
+## Mapping the clusters: upload 2019
+
+```{r include=TRUE, echo=FALSE, results= 'markup', message=FALSE, warning = FALSE, fig.height=10, fig.width=10}
+# get LA 
+
+# ggplot2 maps
+la.f <- broom::tidy(la, region = "lad19nm")
+la.f <- merge(la.f, cluster_up.2019, by.x = "id", by.y = "LAD")
+la.f <- la.f[order(la.f$order),] # if i don't order merge.nuts.f loses order and the map has gaps
+
+# using world.cities from `maps`
+cities <- world.cities %>% filter(country.etc=="UK")
+
+ggplot(la.f, aes(x = long, y = lat)) +
+  geom_polygon(aes( group = group, fill = as.factor(cluster))) +
+  #labs(title = "Upload clusters") +
+  scale_fill_brewer(palette="Set1", 
+                    direction = -1) +
+  geom_text_repel( data=cities %>% arrange(pop) %>% tail(10), aes(x=long, y=lat, label=name), size=4) +
+  geom_point( data=cities %>% arrange(pop) %>% tail(10), aes(x=long, y=lat), color="black", size=1) +
+  guides(fill=guide_legend(title="Clusters")) +
+  theme_void()
+
+# Run only if needed
+# out.path.map <- paste0(path, "/paper/v2_taylor_francis/figures/map.up.2019.clusters.png")
 # ggsave(out.path.map)
 #width = 210, #A4
 #height = 297, #A4
