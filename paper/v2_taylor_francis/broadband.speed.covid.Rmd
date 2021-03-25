@@ -412,7 +412,8 @@ units of time.
 Whilst there is an overall trend of increased testing
 from March to April and then a slight reduction from April to May,
 this trend masks substantial variation by not only the day of the week,
-but also time of day, as can be seen in Figure \ref{test2020}.
+but also time of day, as can be seen in Figure \ref{test2020}
+^[Figures \ref{test2020} and \ref{test2019} were created with the `R` package `openair` [@openair].].
 Thus, a daily aggregation of upload speeds would mask the variation in experienced
 service over the course of each weekday.
 Furthermore, the importance of this variation is highlighted by a comparison
@@ -639,6 +640,12 @@ morning internet speeds was more noticeable to those in cluster $1$, whilst thos
 in cluster $8$ experienced the lack of reliable service as a problem throughout 
 the day.
 
+It is worth noting here that clusters of LAD based on the upload speeds are very 
+different to the ones occur when we apply the same methods to upload speed data
+for the same time period in 2019 -- see Appendix [2](#appendix2). This drastic 
+difference between the LAD upload speed profiles before and during the pandemic is
+an indication of the changes in internet usage that took place during the pandemic.
+
 In summary, the reliability of internet services during the working day appears to
 have altered for the vast majority of locations due to increased use from residents 
 told to stay at home, and, if they were fortunate, work from home.
@@ -732,7 +739,9 @@ worse reliability than many of the other clusters. Hence, the results in Table
 
 First, we control for the number of speed tests run per cluster inhabitant
 between $9:00$-$10:59$ as well as the share of fast Virgin Media internet
-connections. Regarding the former, we expect people in LADs with more unreliable
+connections
+^[See Appendix [3](#appendix3) for the descriptive statistics.].
+Regarding the former, we expect people in LADs with more unreliable
 connections to test their internet speeds more often, and the results show that 
 those in cluster $6$ are by far the most concerned about reliability at that time 
 of day. Meanwhile, those in clusters $2$, $3$, and $9$ benefit from a higher 
@@ -890,11 +899,14 @@ work and broadband services must be fit for purpose.
 Although the long-term effects of such drastic changes in telecommuting and 
 attitudes towards working from home are difficult to predict, the reliability of 
 home broadband services deserve more consideration than in the past. 
-This would represent a switch from previous broadband policies in the UK which 
-tended to be aimed at supporting small and medium enterprises on industrial estates 
-and business parks []. Such policies also made some assumptions about the quality of 
+This would represent a switch from previous demand-side broadband policies in the UK
+which tended to be aimed at supporting small and medium enterprises [@HENDERSON2020102024].
+SUch policies were based on previous research regarding the productivity effects 
+of broadband infrastructure [@DESTEFANO2018110]. However, this stream of research 
+tended not to consider residential locations as places that host economic activity.
+Such policies also made some assumptions about the quality of 
 service in residential markets that could be assured without government intervention 
-- an assumption which our analysis suggest is not entirely accurate. 
+-- an assumption which our analysis suggest is not entirely accurate. 
 
 Policy and development proposals should also consider how the potential changes 
 wrought by the pandemic span various aspects of economy and society. 
@@ -972,7 +984,7 @@ the current pandemic when internet resilience is so vital.
 
 <!-- An unnumbered section, e.g.\ `\section*{Acknowledgements}`, may be used for thanks, etc.\ if required and included _in the non-anonymous version_ before any Notes or References. -->
 
-<!-- \pagebreak -->
+\pagebreak
 
 # Appendix 1 {- #appendix1}
 
@@ -1127,6 +1139,15 @@ cat(paste(shQuote(cluster9, type="cmd2"), collapse=", "))
 
 # Appendix 2 {- #appendix2}
 
+```{r echo=FALSE, out.width = "100%",fig.cap="\\label{map.up.2019.clusters}Upload speed clusters for LADs in before the pandemic (2019)"}
+img_path <- "figures/map.up.2019.clusters.png"
+include_graphics(img_path)
+```
+
+\pagebreak
+
+# Appendix 3 {- #appendix3}
+
 ```{r echo=FALSE, message=FALSE, results = "asis"}
 
 # Descriptive statistics table
@@ -1176,3 +1197,7 @@ stargazer(for.descr,
           #notes = "",
           title = "Descriptive statistics for the auxiliary regression explanatory variables\\label{descr.aux}")
 ```
+
+\pagebreak
+
+# References

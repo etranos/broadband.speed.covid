@@ -161,8 +161,15 @@ to exclude $NVQ4+$ from the regression.
 
 > 3. Although Fig. 1 and 2 exhibit different speed tests patterns in 2019 and 2020, the data mining outcome lacks a baseline (prior to 2020) to compare with. It is very likely that the clusters in 2019 would be different from that in 2020. It will make the results more robust. Of course, I will not push this given the page limit. But some insights may be helpful in the Discussion (however, a Discussion section is missing).
 
-ET: after we finalise k, we can rerun k-means for 2019 and decide - could also show mean speeds on a map for 2019 - this would be part of the response to reviewer 1 q2 and q6.
-**Let's discuss this**
+This is useful. We have not added a new Appendix 2, which plots the clusters for 
+the same period in 2019. The picture is very different, which is an indication of 
+the changes in internet usage during the pandemic.
+
+"It is worth noting here that clusters of LAD based on the upload speeds are very 
+different to the ones occur when we apply the same methods to upload speed data
+for the same time period in 2019 -- see Appendix 2. This drastic 
+difference between the LAD upload speed profiles before and during the pandemic is
+an indication of the changes in internet usage that took place during the pandemic."
 
 > 4. No discussion was included in this manuscript. I expect some insights into various important issues, such as problem causes, any broadband policies and socioeconomic solutions, equitable development, and research uncertainties.
 

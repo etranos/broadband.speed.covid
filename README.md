@@ -1,8 +1,6 @@
 # Working from home and digital divides: resilience during the pandemic
 
-Hannah Budnitz[^1] and Emmanouil Tranos[^2]\*
-
-[Hannah Budnitz](https://www.tsu.ox.ac.uk/people/hbudnitz.html)<sup>1</sup> and [Emmanouil Tranos](https://etranos.info/)<sup>2</sup> 
+[Hannah Budnitz](https://www.tsu.ox.ac.uk/people/hbudnitz.html)<sup>1</sup> and [Emmanouil Tranos](https://etranos.info/)<sup>2</sup>\* 
 
 <sup>1</sup> Transport Studies Unit, University of Oxford,
 [hannah.budnitz@ouce.ox.ac.uk](mailto:hannah.budnitz@ouce.ox.ac.uk)
