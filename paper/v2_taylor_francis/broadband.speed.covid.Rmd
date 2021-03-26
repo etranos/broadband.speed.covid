@@ -226,8 +226,8 @@ in various advanced economies. Rural areas, predictably, fare worse.
 This finding broadly applies in the UK, where studies that also analysed broadband 
 speed checks concluded that average speeds are lower in rural areas, something that
 has not been improved by policy measures to increase competition [@riddlesden2014broadband; @nardotto2015unbundling].
-In contrast, @riddlesden2014broadband found that levels of deprivation did not correlate with 
-first level digital divides.
+In contrast, @riddlesden2014broadband found that levels of deprivation did not 
+correlate with first level digital divides.
 
 However, as @blank2018local highlight, variation in individual internet 
 availability and uptake is a product of more complex spatial and 
@@ -622,7 +622,14 @@ The results also confirm that those in cluster $9$ experienced a consistently be
 service during lockdown than those in cluster $6$, in terms of both average speed 
 and reliability.
 
-Of the smaller clusters, cluster $7$ experiences quite similar mean speeds to 
+Of the smaller clusters, the $15$ LADs in clusters $1$ and $8$, home to over $1.4$ 
+million people, not only experience fairly average upload speeds and high ratios of 
+standard deviation to the mean, but also experience much lower speeds during 
+the morning peak than the evening peak. From the large spikes and dips shown on
+Figure \ref{UpCluster}, it is likely that this poor reliability or consistency of 
+morning internet speeds was more noticeable to those in cluster $1$, whilst those 
+in cluster $8$ experienced the lack of reliable service as a problem throughout 
+the day. Meanwhile, cluster $7$ experiences quite similar mean speeds to 
 cluster $9$, and a not too dissimilar standard deviation, but mean speeds in the 
 morning peak are almost $10$% lower than the evening peak.
 Cluster $3$ boasts speeds almost $1$Mb/s higher again, but suffers from even greater
@@ -631,20 +638,13 @@ little less than half a million people, experience not only above average mean
 speeds, but also faster speeds in the morning peak compared to the evening.
 Thus, in the five LADs in these two clusters, the temporal profile of internet use 
 may be closer to what might have been expected pre-pandemic.
-In comparison, the $15$ LADs in clusters $1$ and $8$, home to over $1.4$ million 
-people, not only experience fairly average upload speeds and high ratios of 
-standard deviation to the mean, but also experience much lower speeds during 
-the morning peak than the evening peak. From the large spikes and dips shown on
-Figure \ref{UpCluster}, it is likely that this poor reliability or consistency of 
-morning internet speeds was more noticeable to those in cluster $1$, whilst those 
-in cluster $8$ experienced the lack of reliable service as a problem throughout 
-the day.
 
-It is worth noting here that clusters of LAD based on the upload speeds are very 
-different to the ones occur when we apply the same methods to upload speed data
-for the same time period in 2019 -- see Appendix [2](#appendix2). This drastic 
-difference between the LAD upload speed profiles before and during the pandemic is
-an indication of the changes in internet usage that took place during the pandemic.
+It is worth noting here that when we apply the same methods to upload speed data for 
+the same time period in 2019, the spatial distribution and composition of the nine 
+clusters of LADs are very different -- see Appendix [2](#appendix2). This 
+difference is an indication of the changes in the temporal profile of internet usage 
+that took place during the pandemic, and which would be independent of any wider
+trend in improving internet services.
 
 In summary, the reliability of internet services during the working day appears to
 have altered for the vast majority of locations due to increased use from residents 

@@ -7,10 +7,12 @@ bibliography: bibliography.bib
 Dear Prof. Bian,
 
 Thank you for providing the opportunity to revise and resubmit our paper.
-We found the reviewer comments very useful and constructive and we believe they enabled us to improve the paper.
-We were also very pleased to see that the reviewers found our paper ...
+We found the reviewer comments very useful and constructive and we believe they 
+enabled us to improve the paper and clarify its findings.
+We were also very pleased to see that the reviewers found our paper a timely and
+important topic of research, and that we have addressed all their questions and 
+concerns below and in the paper itself.
 
-blah blah
 
 Kind Regards,
 
@@ -45,11 +47,11 @@ to address this in some areas. However, we assume that your comment refers to Ta
 and the differences in mean network speed between clusters? Whilst these differences
 are not large, the range for upload speeds is smaller than for download speeds,
 and a difference of 1-2Mbps slower may well be noticeable at the wrong moment.
-Importantly, we only consider the test which took place during working hours, so
-when speed drops during, let's say, a work Zoom call or when uploading large files,
+Importantly, we only consider the tests which took place during working hours, so
+when speed drops, let's say, during a work Zoom call or when uploading large files,
 it will be noticeable. This is why we created the clusters by how the time series
 of speeds changes by day of the week and hour of the day, rather than focusing our
-analysis on mean speeds.
+analysis on mean speeds for the period as a whole.
 
 > 3. The relevance to pandemic is not very straightforward. This may be improved by adding some studies, e.g., how the clusters impact the effectiveness of work from home through survey. Or relates to the employment rate.
 
@@ -58,10 +60,12 @@ As we say in the introduction, prior to the pandemic, the demand for telecommuti
 would not have put a strain on internet connection speeds. We have clarified this 
 with the addition of the following sentence:
 "High levels of demand are one of the main causes of reduced reliability and slower connection speeds, as network bandwidth becomes congested".
+
 We also have added a variable to the auxiliary regression tracking the share of
 the population that was put on furlough. This was the scheme in the UK which, at
 least initially, prevented much change in the employment rate, but did show who
 could work and who could not at the height of the first wave of the pandemic.
+
 Finally, as we note at the end of the methods and data section, an auxiliary 
 regression was the preferred methodology because:
 "Such individual data could be found though surveys, but these offer less
@@ -103,7 +107,8 @@ In section 2.2 of the literature review, we have added additional detail specifi
 
 "This finding broadly applies in the UK, where studies that also analysed broadband
 speed checks concluded that average speeds are lower in rural areas, something that
-has not been improved by policy measures to increase competition [@riddlesden2014broadband; @nardotto2015unbundling].
+has not been improved by policy measures to increase competition 
+[@riddlesden2014broadband; @nardotto2015unbundling]. In contrast,
 @riddlesden2014broadband found that levels of deprivation did not correlate with
 first level digital divides".
 
@@ -155,38 +160,44 @@ large to allow for communicable LAD clusters. Instead we opted for a smaller $k 
 which led to a rather similar spatial pattern and, importantly, to a much higher
 R-squared in the subsequent explanatory regression ($0.44$ instead of $0.34$)."
 
-Regarding multicolinearity, the highest correlations were observed between $NVQ4+$
+Regarding multicolinearity, the highest correlations were observed between $NVQ4+$, 
+which is a measure of being educated to degree level or higher,
 and $professional jobs$ ($0.78$) and $NVQ4+$ and earnings ($0.69$). Hence, we decided
 to exclude $NVQ4+$ from the regression.
 
 > 3. Although Fig. 1 and 2 exhibit different speed tests patterns in 2019 and 2020, the data mining outcome lacks a baseline (prior to 2020) to compare with. It is very likely that the clusters in 2019 would be different from that in 2020. It will make the results more robust. Of course, I will not push this given the page limit. But some insights may be helpful in the Discussion (however, a Discussion section is missing).
 
-This is useful. We have not added a new Appendix 2, which plots the clusters for 
+This is useful. We have added a new Appendix 2, which plots the clusters for 
 the same period in 2019. The picture is very different, which is an indication of 
-the changes in internet usage during the pandemic.
+the changes in the temporal profiles of internet usage during the pandemic, as 
+we say towards the end of section 4.1:
 
-"It is worth noting here that clusters of LAD based on the upload speeds are very 
-different to the ones occur when we apply the same methods to upload speed data
-for the same time period in 2019 -- see Appendix 2. This drastic 
-difference between the LAD upload speed profiles before and during the pandemic is
-an indication of the changes in internet usage that took place during the pandemic."
+"It is worth noting here that when we apply the same methods to upload speed data for 
+the same time period in 2019, the spatial distribution and composition of the nine 
+clusters of LADs are very different -- see Appendix [2](#appendix2). This 
+difference is an indication of the changes in the temporal profile of internet usage 
+that took place during the pandemic, and which would be independent of any wider
+trend in improving internet services."
 
 > 4. No discussion was included in this manuscript. I expect some insights into various important issues, such as problem causes, any broadband policies and socioeconomic solutions, equitable development, and research uncertainties.
 
-We have tightened up the results section, and begun this discussion in the last
-paragraph of the results section and then expanded the conclusion section to include
-a more in-depth discussion of the results and how they link to some of the issues you 
-suggest at the start. We mention some uncertainties or avenues for future research,
+We have tightened up the results section, which had to be re-written for the nine
+clusters instead of 13, and begin our discussion of insights in the last paragraph 
+of the results section. We then expand the conclusion section to include
+a more in-depth discussion of how the results link to some of the issues you 
+suggest. 
+
+We mention some uncertainties or avenues for future research in this final section,
 but also see our response to Reviewer 1, point 1 for an explanation of biases.
 
 > 5.  There are three levels of digital divide. According to the last paragraph in Section 2, only the intersection of level-1 and level-3 was included in this research. I am wondering how level-2 may fit in the general research framework. Could education and demographic variables be used to represent level-2 digital divide?
 
 We clarify that the occupations included in the regression are more about the level-2
-digital divide, whereas the average earnings and, particularly during the pandemic
-the % furloughed, are indications of level-3 digital divides. We did have education
+digital divide, providing an indication of not only education, but digital
+skills. The average earnings and, particularly during the pandemic, the new variable 
+-- % furloughed, are indications of level-3 digital divides. We did have education
 in the previous submission (NVQ4+), but have removed it due to multicollinearity
--- see response for point 2, which give more indication of not only education, but digital
-skills.
+-- see response for point 2.
 
 > 6. A few suggestions on the figures. Fig 1 and 2 have crowded tick labels for x-axis month and weekday. Fig 3 and 4 may be placed side by side with the same y-axis for easy comparison. Actually, I feel “Figure 3 shows that the high standard deviation” may be inaccurate as Fig 4 appears to exhibit higher variability. Fig 5 maps may include the locations of metropolitan or major cities to help interpretation. The warmer-cooler color scheme may match the population size instead of the ordinal cluster numbers. The current color scheme does not help interpretation at all.
 
