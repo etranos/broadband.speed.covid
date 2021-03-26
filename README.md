@@ -20,32 +20,37 @@ This paper offers a new perspective on telecommuting from the viewpoint of the c
 
 1. `/src/Data_Spatial.Rmd` creates a tidy data set: `/data/temp/TSbb19_20sp.csv`
 
-2. `/src/ts_clusters.Rmd` applies the time-series clustering and produces:
+2. `/src/ts_clusters_k9.Rmd` applies the time-series clustering for $k = 9$ and produces:
 
     - `/data/temp/clusters_nodiff.csv` based on the level data used for the next step
 
     - `/data/temp/clusters.csv`, which also includes clusters based on the 2019-2020 difference not used here
+    
+    - `/data/temp/clusters_up2019.csv` the 2019 clusters for Appendix 2 
 
-    - clusters map (Figure 5)
+    - `/paper/v2_taylor_francis/figures/map.up.clusters.png` clusters map (Figure 4)
 
 3. `/src/descriptive_Clusters.Rmd` provides descriptive statistics for the clusters and:
 
     - speed test plots for 2019 and 2020 (Figure 1 and 2)
 
-    - time variation plots for 2019 and 2020 (Figure 3 and 4)
+    - time variation plots for 2019 and 2020 (Figure 3)
 
-4. `/src/LA_Clusters.Rmd` performs the auxiliary regression.
+4. `/src/LA_Clusters_k9.Rmd` performs the auxiliary regression.
+
+It loads the data created from the previous `LA_CLusers.Rmd` based on the optimal *k*.
+
 It creates:
 
-    - the data for regressions as a backup `/data/temp/data_for_aux.csv`
+    - the data for regressions as a backup `/data/temp/data_for_aux_k9.csv`
 
-    - all models are saved in `/data/temp/LAs_Clusters.RData`, which is then used in the paper `.Rmd` file
+    - all models are saved in `/data/temp/LAs_Clusters_k9.RData`, which is then used in the paper `.Rmd` file
     to produce Tables 2 and 3.
 
-5. paper/v1/broadband.speed.covd.Rmd is the paper .Rmd. It uses:
+5. `paper/v2_taylor_francis/broadband.speed.covid.Rmd` is the paper .Rmd. It uses:
 
-    - the `.png` files for the plots (`/paper/v1/figures`)
+    - the `.png` files for the plots (`/paper/v2_taylor_francis/figures`)
 
-    - the `/data/temp/LAs_Clusters.RData` for the tables for the tables, and
+    - the `/data/temp/LAs_Clusters_k9.RData` for the tables for the tables, and
 
     - `/data/temp/clusters_nodiff.csv` for Appendix 1

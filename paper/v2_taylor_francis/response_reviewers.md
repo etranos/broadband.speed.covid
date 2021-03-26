@@ -2,21 +2,8 @@
 output:
   pdf_document: default
 bibliography: bibliography.bib
+suppress-bibliography: true
 ---
-
-Dear Prof. Bian,
-
-Thank you for providing the opportunity to revise and resubmit our paper.
-We found the reviewer comments very useful and constructive and we believe they 
-enabled us to improve the paper and clarify its findings.
-We were also very pleased to see that the reviewers found our paper a timely and
-important topic of research, and that we have addressed all their questions and 
-concerns below and in the paper itself.
-
-
-Kind Regards,
-
-[removed for anonymity]
 
 ## Reviewer: 1
 
@@ -40,7 +27,7 @@ identifying data is included other than the geolocation of the test.
 
 > 2. The results for network speed for the different regions are not very different with 1-2 out of 10Mbps difference and probably can not reflect the social disparities. Not sure if this is the facts in U.K. If so, then it's not a problem?
 
-Firstly, mean speeds are not likely to be that different between regions of the UK
+We have no reasons to expect that mean speeds are that different between regions of the UK
 (e.g. North or South England). The greater differences are between urban, built-up
 areas, and more rural areas within regions, although there are some local initiatives
 to address this in some areas. However, we assume that your comment refers to Table 1
@@ -59,11 +46,12 @@ Regrettably, we did not have the opportunity to run a survey.
 As we say in the introduction, prior to the pandemic, the demand for telecommuting 
 would not have put a strain on internet connection speeds. We have clarified this 
 with the addition of the following sentence:
-"High levels of demand are one of the main causes of reduced reliability and slower connection speeds, as network bandwidth becomes congested".
+"High levels of demand are one of the main causes of reduced reliability and slower 
+connection speeds, as network bandwidth becomes congested".
 
 We also have added a variable to the auxiliary regression tracking the share of
 the population that was put on furlough. This was the scheme in the UK which, at
-least initially, prevented much change in the employment rate, but did show who
+least until now, prevented much change in the employment rate, but did show who
 could work and who could not at the height of the first wave of the pandemic.
 
 Finally, as we note at the end of the methods and data section, an auxiliary 
@@ -121,7 +109,7 @@ between providers, such as between new entrants and Virgin Media cable connectio
 available to only $45$% of premises in the UK [@ofcom2016], where the more
 lucrative and competitive market originally attracted the cable TV provider".
 
-The latter bit about Virgin Media is moved from the results section, in response to reviewer 2, q7.
+The latter bit about Virgin Media is moved from the results section, in response to Reviewer 2, q7.
 
 > 7. The first part introduction can be shorted to reflect the importance of network bandwidth to resilience of pandemic impacted life.
 
@@ -145,7 +133,7 @@ Please see our response to the next point.
 
 Following your suggestion, we have now opted to present the cluster analysis and
 the subsequent multinomial regression using $k = 9$. We indeed believe that the
-results are more clear now. we have added the following justification in the Methods
+results are clearer now. We have added the following justification in the Methods
 and Data section:
 
 "We initially run the algorithm for $k \in \mathbb{N} \bigcap [5,15]$, calculated
@@ -201,21 +189,19 @@ in the previous submission (NVQ4+), but have removed it due to multicollinearity
 
 > 6. A few suggestions on the figures. Fig 1 and 2 have crowded tick labels for x-axis month and weekday. Fig 3 and 4 may be placed side by side with the same y-axis for easy comparison. Actually, I feel “Figure 3 shows that the high standard deviation” may be inaccurate as Fig 4 appears to exhibit higher variability. Fig 5 maps may include the locations of metropolitan or major cities to help interpretation. The warmer-cooler color scheme may match the population size instead of the ordinal cluster numbers. The current color scheme does not help interpretation at all.
 
-x-axis for Figures 1 and 2 have been amended accordingly.
+- x-axis for Figures 1 and 2 have been amended accordingly.
 
-The temporal profiles of the upload clusters are now included in Figure 3.  
+- The temporal profiles of the upload clusters are now included in Figure 3.  
 
-Figure 5 now labelled Figure 4: the map has now been redesigned using a different
+- Figure 5, which is now labeled Figure 4: the map has now been redesigned using a different
 colour palette to better reflect the discrete nature of the underpinning data --
 the time-series clusters. Points and labels of the main UK cities were also added.
 
 > 7. A few minor things. In Sec 2.2, the statement “These returns have been even greater …” appears to be controversial. LAD acronym appears before it was defined. Virgin Media as a major broadband provider should be briefly introduced in the manuscript.
 
-We have toned down the statement on returns to say:
+- We have toned down the statement on returns to say:
 "In some aspects, these returns may have increased during the Covid-19 crisis..."
 
-Apologies on LAD acronym, now corrected.
+- Apologies on LAD acronym, now corrected.
 
-We also moved and integrated introduction of Virgin Media to the literature review s2.2. See also response to reviewer 1, q6.
-
-## References
+- We also moved and integrated introduction of Virgin Media to the literature review s2.2. See also response to Reviewer 1, q6.
