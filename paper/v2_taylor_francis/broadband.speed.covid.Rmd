@@ -208,10 +208,17 @@ The third level focuses on the heterogenous returns of internet usage among
 different socioeconomic groups and, consequently, how digital technologies can
 assist in bridging or further enhancing existing socioeconomic divides.
 [@stern2009levels; @van2014digital; @van2015third].
-The capability to telecommute is related to all three levels of digital divides,
-but more importantly leads to differentiated outcomes regarding the economic
-resilience of people and places to overcome a systemic shock such as the current
-pandemic.
+The potential for these different levels of digital divide to interact is growing in 
+parallel with the digitisation of various sectors of the economy and society.
+For example, @li2020challenges highlights how the intersection of new demands upon
+ICT infrastructure and a paucity of end users means that some areas are being left
+behind in the roll-out of smart applications and services. They argue that this 
+could create a geospatial 'smart divide', with areas unable to capitalise on the 
+opportunities offered by such applications and services.
+Likewise, the capability to telecommute is related to all three levels of 
+digital divides, but more importantly leads to differentiated outcomes regarding 
+the economic resilience of people and places to overcome a systemic shock such as 
+the current pandemic.
 
 Our understanding of telecommuting as a product of enabled occupations can be
 described as a manifestation of the third level digital divide, as those who are able
@@ -222,8 +229,8 @@ In some aspects, these returns may have increased during the Covid-19 crisis,
 when those with the capability to telecommute also have the ability to maintain
 their employment whilst protecting their health.
 However, the success of these arrangements has been dependent upon the first
-level digital divide, which is associated with access to and quality of internet
-connectivity.
+level digital divide, which is associated with geospatial access to and quality 
+of internet connectivity.
 @SALEMINK2017360 provides a systematic review of the pre-pandemic,
 first level digital divide in infrastructure quality between urban and rural areas
 in various advanced economies. Rural areas, predictably, fare worse.
@@ -231,21 +238,22 @@ This finding broadly applies in the UK, where studies that also analysed broadba
 speed checks concluded that average speeds are lower in rural areas, something that
 has not been improved by policy measures to increase competition [@riddlesden2014broadband; @nardotto2015unbundling].
 In contrast, @riddlesden2014broadband found that levels of deprivation did not 
-correlate with first level digital divides.
+correlate with first level digital divides, perhaps because many deprived areas 
+benefit from spillover effects of quality installed infrastructure nearby.
 
 However, as @blank2018local highlight, variation in individual internet 
-availability and uptake is a product of more complex spatial and 
-demographic characteristics than simple rurality or urbanisation.
+availability and uptake is a product of more complex geospatial and 
+demographic characteristics than simple rurality, urbanisation or levels of deprivation.
 Dense urban areas were shown to suffer more from slowdown during peak hours, 
 although these services were more likely to be improved by increased competition 
 between providers, such as between new entrants and Virgin Media cable connections
 [@riddlesden2014broadband; @nardotto2015unbundling]. The latter were historically 
 available to only $45$% of premises in the UK [@ofcom2016], where the more
 lucrative and competitive market originally attracted the cable TV provider. 
-Whether the variation in infrastructure quality and reliability affects the 
-spatial footprint of telecommuting has not previously been investigated, in part 
-because telecommuting has not previously been a cause of concentrated demand and 
-pressure on internet services. 
+Whether the geospatial variation in infrastructure quality and reliability affects 
+the spatial footprint of telecommuting has not previously been investigated, 
+in part because telecommuting has not previously been a cause of concentrated 
+demand and pressure on internet services. 
 
 Other intersections between digital divides have been subject to study.
 There are indications that those who purchase high speed connections consume
@@ -297,8 +305,9 @@ We seek to answer how internet service resilience could contribute to or reduce
 economic resilience when the latter is dependent upon the capability to 
 work from home.
 We also aim to improve our understanding of the impact of first level digital
-divisions on telecommuting, and whether this results in more fundamental third
-level digital divisions than has previously been perceived.
+divisions on telecommuting, in terms of both geospatial and temporal quality of 
+service, and whether this results in more fundamental third level digital divisions 
+between local geographies than has previously been perceived.
 
 # Methods and data {#sec:3}
 
@@ -905,7 +914,7 @@ attitudes towards working from home are difficult to predict, the reliability of
 home broadband services deserve more consideration than in the past. 
 This would represent a switch from previous demand-side broadband policies in the UK
 which tended to be aimed at supporting small and medium enterprises [@HENDERSON2020102024].
-SUch policies were based on previous research regarding the productivity effects 
+Such policies were based on previous research regarding the productivity effects 
 of broadband infrastructure [@DESTEFANO2018110]. However, this stream of research 
 tended not to consider residential locations as places that host economic activity.
 Such policies also made some assumptions about the quality of 
