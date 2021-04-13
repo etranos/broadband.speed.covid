@@ -122,12 +122,6 @@ line2020 <- ts.up2020 %>%
          show.legend = F) + 
   geom_line() + guides(colour=FALSE) +
   xlab(2020)
-  # + xlab("Year") +
-  # ylab("Pareto exponent")  
-
-# library(plotly)
-# ggplotly(test,
-#          show.legend=F)
 
 line2019 <- ts.up2019 %>% 
   mutate(day = recode(weekday, # these are dates from 2020
@@ -549,12 +543,14 @@ write_csv(cluster_up.2019, out.2019.clusters)
 # or, (ii) from the json I saved locally
 # path.json <- paste(path, "./data/raw/Local_Authority_Districts_(April_2019)_Boundaries_UK_BFE.geojson", sep = "")
 # la <- readOGR(path.json)#, layer="OGRGeoJSON")
+
 # UK BGC: 
 la <- readOGR("https://opendata.arcgis.com/datasets/0e07a8196454415eab18c40a54dfbbef_0.geojson")
-# UK BFC: la <- readOGR("https://opendata.arcgis.com/datasets/1d78d47c87df4212b79fe2323aae8e08_0.geojson") 
-
-# source: https://data.gov.uk/dataset/7c387c64-d25f-474a-b07e-b933578caea2/local-authority-districts-april-2019-boundaries-uk-bfe
 # also saved locally \data\raw\Local_Authority_Districts_(December_2019)_Boundaries_UK_BGC.geojson
+# source: https://geoportal.statistics.gov.uk/
+
+# fully generalised
+#la <- readOGR("https://opendata.arcgis.com/datasets/3a4fa2ce68f642e399b4de07643eeed3_0.geojson")
 
 # spatial transformations
 la <- spTransform(la, CRS("+init=epsg:4326"))
@@ -586,13 +582,6 @@ ggplot(la.f, aes(x = long, y = lat)) +
   geom_point( data=cities %>% arrange(pop) %>% tail(10), aes(x=long, y=lat), color="black", size=1) +
   guides(fill=guide_legend(title="Clusters")) +
   theme_void()
-
-# Run only if needed
-# out.path.map <- paste0(path, "/paper/v2_taylor_francis/figures/map.up.clusters.png")
-# ggsave(out.path.map)
-#width = 210, #A4
-#height = 297, #A4
-#units = "mm")
 ```
 
 ## Mapping the clusters: upload 2019
