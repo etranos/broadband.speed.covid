@@ -1,0 +1,168 @@
+---
+title: "Online Appendix"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    social: menu
+knit: (function(inputFile, encoding) {
+    rmarkdown::render(inputFile, encoding = encoding, output_dir = "../paper/v2_taylor_francis/")
+  })
+---
+
+```{r, echo=FALSE, warning=FALSE, results='hide', message=FALSE}
+library(rmarkdown)
+library(tidyverse)
+library(plotly)
+library(lubridate)
+library(gridExtra)
+library(openair)
+library(rgdal)
+library(maps)
+library(rprojroot)
+library(kableExtra)
+#library(cowplot)
+library(ggthemes)
+
+path <- find_rstudio_root_file()
+```
+
+```{r, echo=FALSE, warning=FALSE, results='hide', message=FALSE}
+# load the data created by Data_Spatial.Rmd
+
+path.data <- paste(path, "/data/temp/TSbb19_20sp.csv", sep = "")
+
+TSbb19_20sp <- read_csv(path.data)
+
+#split by year before create stats by each hour of each day of the week
+TS2019 <- selectByDate(TSbb19_20sp, year = 2019) #272248 obs
+TS2020 <- selectByDate(TSbb19_20sp, year = 2020) #343268 obs
+
+# save clusters file
+path.clusters <- paste(path, "/data/temp/clusters_nodiff_9.csv", sep = "")
+clusters.nodiff <- read_csv(path.clusters)
+```
+
+Column 
+-----------------------------------------------------------------------
+
+### LAD, Upload speed clusters, 2020 
+
+```{r, echo=FALSE, warning=FALSE, message = FALSE, error=FALSE, fig.height=10}
+#out.width='100%'
+
+# LAD fully generalised
+la <- readOGR("https://opendata.arcgis.com/datasets/3a4fa2ce68f642e399b4de07643eeed3_0.geojson",
+              verbose = FALSE)
+# saved locally in /data/raw/Local_Authority_Districts_(December_2019)_Boundaries_UK_BUC.geojson
+
+# spatial transformations
+la <- spTransform(la, CRS("+init=epsg:4326"))
+#la@data$LAD19NM <- as.character(la@data$LAD19NM)
+la@data$lad19nm <- as.character(la@data$lad19nm)
+
+# upload metrics
+for.tip.mean.up.am <- TS2020 %>% # raw data, individual tests
+  filter(hour(date)==9 | hour(date)==10) %>% 
+  group_by(LAD19NM) %>%
+  summarise(mean.up.am = mean(speedup)) %>% 
+  mutate(rank = dense_rank(desc(mean.up.am)))
+
+# not used
+# for.tip.mean.up.pm <- TS2020 %>% # raw data, individual tests
+#   filter(hour(date)==19 | hour(date)==20) %>% 
+#   group_by(LAD19NM) %>%
+#   summarise(mean.up.pm = mean(speedup)) 
+# 
+# for.tip.mean.up <- TS2020 %>% # raw data, individual tests
+#   group_by(LAD19NM) %>%
+#   summarise(mean.up = mean(speedup)) 
+# 
+# # download metrics
+# for.tip.mean.down.am <- TS2020 %>% # raw data, individual tests
+#   filter(hour(date)==9 | hour(date)==10) %>% 
+#   group_by(LAD19NM) %>%
+#   summarise(mean.down.am = mean(speeddown)) 
+# 
+# for.tip.mean.up.pm <- TS2020 %>% # raw data, individual tests
+#   filter(hour(date)==19 | hour(date)==20) %>% 
+#   group_by(LAD19NM) %>%
+#   summarise(mean.down.pm = mean(speeddown)) 
+# 
+# for.tip.mean.up <- TS2020 %>% # raw data, individual tests
+#   group_by(LAD19NM) %>%
+#   summarise(mean.down = mean(speeddown)) 
+
+
+# fortify
+la.f <- broom::tidy(la, region = "lad19nm")
+la.f <- merge(la.f, clusters.nodiff, by.x = "id", by.y = "LAD")
+
+# create the text to tooltip
+la.f <- merge(la.f, for.tip.mean.up.am, by.x = "id", by.y = "LAD19NM", all.x=T)
+#sapply(la.f, function(x) sum(is.na(x)))
+#No am data points for Isles of Scilly
+la.f$tip <- paste0(la.f$id, "<br>",
+                   "Upload AM speed: ", round(la.f$mean.up.am), " Kbps", "<br>",
+                   "Rank: ", la.f$rank)
+la.f <- la.f[order(la.f$order),] # if i don't order merge.nuts.f loses order and the map has gaps
+
+# using world.cities from `maps`
+cities <- world.cities %>% filter(country.etc=="UK")
+
+p <- ggplot(la.f, aes(x = long, y = lat)) +
+  geom_polygon(aes(group = group, fill = as.factor(cluster.up), 
+                   text = tip)) +# ,text =paste("test1", long, "test2", lat)
+  #labs(title = "Upload clusters") +
+  scale_fill_brewer(palette="Set1", 
+                    direction = -1) +
+  #geom_text_repel( data=cities %>% arrange(pop) %>% tail(10), aes(x=long, y=lat, label=name), size=4) +
+  geom_point( data=cities %>% arrange(pop) %>% tail(10), aes(x=long, y=lat), color="black", size=0.5) +
+  geom_text( data=cities %>% arrange(pop) %>% tail(10), aes(x=long, y=lat, label=name), size=3) +
+  
+  guides(fill=guide_legend(title="Cluster")) +
+  theme_map()
+#   theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+# panel.grid.minor = element_blank())
+
+p %>%
+  ggplotly(tooltip = "text") %>%
+  style(hoverlabel = list(bgcolor = "white"), hoveron = "fill")
+```
+
+Column
+-----------------------------------------------------------------------
+
+### LAD mean AM upload speeds and ranking
+
+```{r, echo=FALSE, warning=FALSE, message = FALSE, error=FALSE,fig.height=10}
+for.tip.mean.up.am <- merge(for.tip.mean.up.am, clusters.nodiff, 
+                            by.x = "LAD19NM", by.y = "LAD", all.x = T)
+
+for.tip.mean.up.am %>% 
+  select(-cluster.down, -cluster.tests) %>% 
+  arrange(rank) %>% 
+  kable(digits = 0,
+        format.args = list(big.mark = ","),
+        col.names = c("Local Authority",
+                      "Mean AM upload sped",
+                      "Rank",
+                      "Cluster")) %>% 
+  kable_styling("striped", full_width = F) %>% 
+  scroll_box() #width = "500px", height = "400px"
+```
+
+### Description
+
+The below map illustrates the different clusters of LAD based on the upload 
+experienced internet speeds. Hovering over the LAD polygons, the map also presents
+the mean AM upload internet speed and the relevant ranking in the country for each 
+LAD.
+
+**Is there a chance to briefly describe the clusters with 1-2 words?**
+
+- Cluster 1: 
+
+- Cluster 2: 
+
+...
