@@ -1,10 +1,9 @@
 ---
 title: "Online Appendix"
-output: 
-  flexdashboard::flex_dashboard:
-    orientation: columns
-    vertical_layout: fill
-    social: menu
+author: ""
+output: html_document
+header-includes:
+- \usepackage{multirow}
 knit: (function(inputFile, encoding) {
     rmarkdown::render(inputFile, encoding = encoding, output_dir = "../paper/v2_taylor_francis/")
   })
@@ -42,14 +41,22 @@ TS2020 <- selectByDate(TSbb19_20sp, year = 2020) #343268 obs
 path.clusters <- paste(path, "/data/temp/clusters_nodiff_9.csv", sep = "")
 clusters.nodiff <- read_csv(path.clusters)
 ```
+## Local Authority Districts
 
-Column 
------------------------------------------------------------------------
+The below map illustrates the different clusters of LAD based on the upload 
+experienced internet speeds. Hovering over the LAD polygons, the map also presents
+the mean AM upload internet speed and the relevant ranking in the country for each 
+LAD.
 
-### LAD, Upload speed clusters, 2020 
+**Is there a chance to briefly describe the clusters with 1-2 words?**
 
-```{r, echo=FALSE, warning=FALSE, message = FALSE, error=FALSE, fig.height=10}
-#out.width='100%'
+- Cluster 1: 
+
+- Cluster 2: 
+...
+
+<br>
+```{r, echo=FALSE, warning=FALSE, message = FALSE, error=FALSE,fig.height=10}
 
 # LAD fully generalised
 la <- readOGR("https://opendata.arcgis.com/datasets/3a4fa2ce68f642e399b4de07643eeed3_0.geojson",
@@ -103,7 +110,7 @@ la.f <- merge(la.f, for.tip.mean.up.am, by.x = "id", by.y = "LAD19NM", all.x=T)
 #sapply(la.f, function(x) sum(is.na(x)))
 #No am data points for Isles of Scilly
 la.f$tip <- paste0(la.f$id, "<br>",
-                   "Upload AM speed: ", round(la.f$mean.up.am), " Kbps", "<br>",
+                   "Upload am: ", round(la.f$mean.up.am), " Kbps", "<br>",
                    "Rank: ", la.f$rank)
 la.f <- la.f[order(la.f$order),] # if i don't order merge.nuts.f loses order and the map has gaps
 
@@ -120,7 +127,7 @@ p <- ggplot(la.f, aes(x = long, y = lat)) +
   geom_point( data=cities %>% arrange(pop) %>% tail(10), aes(x=long, y=lat), color="black", size=0.5) +
   geom_text( data=cities %>% arrange(pop) %>% tail(10), aes(x=long, y=lat, label=name), size=3) +
   
-  guides(fill=guide_legend(title="Cluster")) +
+  guides(fill=guide_legend(title="Clusters")) +
   theme_map()
 #   theme(panel.border = element_blank(), panel.grid.major = element_blank(),
 # panel.grid.minor = element_blank())
@@ -130,39 +137,12 @@ p %>%
   style(hoverlabel = list(bgcolor = "white"), hoveron = "fill")
 ```
 
-Column
------------------------------------------------------------------------
-
-### LAD mean AM upload speeds and ranking
-
 ```{r, echo=FALSE, warning=FALSE, message = FALSE, error=FALSE,fig.height=10}
-for.tip.mean.up.am <- merge(for.tip.mean.up.am, clusters.nodiff, 
-                            by.x = "LAD19NM", by.y = "LAD", all.x = T)
-
 for.tip.mean.up.am %>% 
-  select(-cluster.down, -cluster.tests) %>% 
-  arrange(rank) %>% 
+    arrange(rank) %>% 
   kable(digits = 0,
-        format.args = list(big.mark = ","),
-        col.names = c("Local Authority",
-                      "Mean AM upload sped",
-                      "Rank",
-                      "Cluster")) %>% 
+        format.args = list(big.mark = ",")) %>% 
   kable_styling("striped", full_width = F) %>% 
-  scroll_box() #width = "500px", height = "400px"
+  scroll_box(width = "500px", height = "400px")
+
 ```
-
-### Description
-
-The below map illustrates the different clusters of LAD based on the upload 
-experienced internet speeds. Hovering over the LAD polygons, the map also presents
-the mean AM upload internet speed and the relevant ranking in the country for each 
-LAD.
-
-**Is there a chance to briefly describe the clusters with 1-2 words?**
-
-- Cluster 1: 
-
-- Cluster 2: 
-
-...
