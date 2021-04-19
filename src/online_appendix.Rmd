@@ -166,16 +166,22 @@ LAD.
 
 **Is there a chance to briefly describe the clusters with 1-2 words?**
 
-- Cluster 1: 
+- Cluster 1: Medium sized mostly rural cluster; slow mean upload speeds; high workday temporal variation.
 
-- Cluster 2: 
+- Cluster 2: Small rural cluster; highest mean upload speeds; slowdown more in evening.
 
-- Cluster 3: 
+- Cluster 3: Medium sized mixed cluster; fast mean upload speeds; medium temporal variation.
 
-- Cluster 4:
+- Cluster 4: Rural reference LAD; medium mean upload speeds; high temporal variation.
 
-- Cluster 5:
+- Cluster 5: Small suburban cluster; fast mean upload speeds; slowdown more in evening.
 
-- Cluster 6: 
+- Cluster 6: Large mixed cluster; slowest aggregate mean upload speeds; low workday temporal variation.
+
+- Cluster 7: Small suburban cluster; fast mean upload speeds; medium temporal variation.
+
+- Cluster 8: Small mainly surburban cluster; slow mean upload speeds; high workday temporal variation.
+
+- Cluster 9: Large, more urban cluster; fast mean upload speeds; lowest workday temporal variation.
 
 ...
