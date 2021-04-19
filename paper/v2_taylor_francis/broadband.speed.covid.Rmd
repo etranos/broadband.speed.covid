@@ -993,9 +993,16 @@ telecommute, this paper raises the issue that places may depend upon good intern
 reliability as well as connectivity to achieve economic resilience in a period like 
 the current pandemic when internet resilience is so vital.
 
-<!-- # Acknowledgement(s) {-} -->
+# Supplemental Material {-}
 
-<!-- An unnumbered section, e.g.\ `\section*{Acknowledgements}`, may be used for thanks, etc.\ if required and included _in the non-anonymous version_ before any Notes or References. -->
+The LAD upload clusters as well as the mean AM and PM upload speeds are presented 
+in the Supplemental Material. Download the .html file and open it using your internet
+browser. Hovering over the LAD polygons provides the mean internet speeds.
+
+# Acknowledgement {-}
+
+The authors would like to thank [https://www.broadbandspeedchecker.co.uk/](https://www.broadbandspeedchecker.co.uk/)
+for providing the main data used for this paper.
 
 \pagebreak
 
