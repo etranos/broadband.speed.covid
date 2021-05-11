@@ -579,11 +579,11 @@ clustersLADup <- read_csv(path.clustersLADup)
 clustersLADup <- clustersLADup %>%
   mutate(across(4:7, round, 0))
 
-path.out = paste0(path, "/paper/v2_taylor_francis_for_proof/tables/table_1.txt")
+path.out = paste0(path, "/paper/v2_taylor_francis_for_proof/tables/table_1.tex")
 
 stargazer(clustersLADup[1:7],
           summary = F,
-          type = "text",
+          type = "latex",
           out = path.out,
           font.size = "footnotesize",
           header = F,
@@ -688,10 +688,10 @@ This potential will be explored in the next section.
 path.LAs_Clusters <- paste0(path, "/data/temp/LAs_Clusters_k9.RData")
 load(path.LAs_Clusters)
 
-path.out = paste0(path, "/paper/v2_taylor_francis_for_proof/tables/table_2.txt")
+path.out = paste0(path, "/paper/v2_taylor_francis_for_proof/tables/table_2.tex")
 
 stargazer(aux.up,
-          type = "text",
+          type = "latex",
           out = path.out,
           nobs = T,
           digits = 3,
@@ -1195,13 +1195,13 @@ for.descr <- data %>%
          'furlough/pop' = furlough/pop) %>%
   dplyr::select(-total.busi, -LAD.tests.am20, -furlough)
 
-path.out = paste0(path, "/paper/v2_taylor_francis_for_proof/tables/table_A1.txt")
+path.out = paste0(path, "/paper/v2_taylor_francis_for_proof/tables/table_A1.tex")
 
 stargazer(for.descr,
           summary = T,
           out = path.out,
           font.size = "footnotesize",
-          type = "text",
+          type = "latex",
           header = F,
           digit.separator = ",",
           digit.separate = c(3,3),
