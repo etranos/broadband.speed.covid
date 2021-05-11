@@ -1,5 +1,5 @@
 ---
-title: "Online Appendix"
+title: "Supplemental Material"
 output: 
   flexdashboard::flex_dashboard:
     orientation: columns
