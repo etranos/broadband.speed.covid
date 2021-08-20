@@ -1,9 +1,9 @@
 ---
-title: "Supplemental Material"
+title: 'Working from home and digital divides: resilience during the pandemic. Supplemental Material.'
 output: 
   flexdashboard::flex_dashboard:
-    orientation: columns
     vertical_layout: fill
+    orientation: columns
     social: menu
 knit: (function(inputFile, encoding) {
     rmarkdown::render(inputFile, encoding = encoding, output_dir = "../paper/v2_taylor_francis/")
@@ -13,7 +13,6 @@ knit: (function(inputFile, encoding) {
 ```{r, echo=FALSE, warning=FALSE, results='hide', message=FALSE}
 library(rmarkdown)
 library(tidyverse)
-library(plotly)
 library(lubridate)
 library(gridExtra)
 library(openair)
@@ -23,6 +22,7 @@ library(rprojroot)
 library(kableExtra)
 #library(cowplot)
 library(ggthemes)
+library(leaflet)
 
 path <- find_rstudio_root_file()
 ```
@@ -38,27 +38,29 @@ TSbb19_20sp <- read_csv(path.data)
 TS2019 <- selectByDate(TSbb19_20sp, year = 2019) #272248 obs
 TS2020 <- selectByDate(TSbb19_20sp, year = 2020) #343268 obs
 
-# save clusters file
+# read clusters file
 path.clusters <- paste(path, "/data/temp/clusters_nodiff_9.csv", sep = "")
 clusters.nodiff <- read_csv(path.clusters)
 ```
 
-Column 
+Column {data-width=800}
 -----------------------------------------------------------------------
 
-### LAD, Upload speed clusters, 2020 
+### Upload speed clusters for Local Authority Districts, 2020. See [Budnitz and Tranos (2021)](https://doi.org/10.1080/24694452.2021.1939647) for more details. 
 
-```{r, echo=FALSE, warning=FALSE, message = FALSE, error=FALSE, fig.height=10, fig.asp=T}
-#out.width='100%'
+```{r, echo=FALSE, warning=FALSE, message = FALSE, error=FALSE, fig.asp=T}
 
 # LAD fully generalised
-la <- readOGR("https://opendata.arcgis.com/datasets/3a4fa2ce68f642e399b4de07643eeed3_0.geojson",
-              verbose = FALSE)
+# la <- readOGR("https://opendata.arcgis.com/datasets/3a4fa2ce68f642e399b4de07643eeed3_0.geojson",
+#               verbose = FALSE)
 # saved locally in /data/raw/Local_Authority_Districts_(December_2019)_Boundaries_UK_BUC.geojson
+
+path.geojson <- paste0(path, "/data/raw/Local_Authority_Districts_(December_2019)_Boundaries_UK_BGC.geojson")
+la <- readOGR(path.geojson, verbose = FALSE)
 
 # spatial transformations
 la <- spTransform(la, CRS("+init=epsg:4326"))
-#la@data$LAD19NM <- as.character(la@data$LAD19NM)
+
 la@data$lad19nm <- as.character(la@data$lad19nm)
 
 # upload metrics
@@ -94,48 +96,65 @@ for.tip.mean.up.pm <- TS2020 %>% # raw data, individual tests
 #   summarise(mean.down = mean(speeddown)) 
 
 
-# fortify
-la.f <- broom::tidy(la, region = "lad19nm")
-la.f <- merge(la.f, clusters.nodiff, by.x = "id", by.y = "LAD")
+# merge with the data
+la <- sp::merge(la, clusters.nodiff, by.x = "lad19nm", by.y = "LAD")
 
 # create the text to tooltip
-la.f <- merge(la.f, for.tip.mean.up.am, by.x = "id", by.y = "LAD19NM", all.x=T)
-la.f <- merge(la.f, for.tip.mean.up.pm, by.x = "id", by.y = "LAD19NM", all.x=T)
+la <- sp::merge(la, for.tip.mean.up.am, by.x = "lad19nm", by.y = "LAD19NM", all.x=T)
+la <- sp::merge(la, for.tip.mean.up.pm, by.x = "lad19nm", by.y = "LAD19NM", all.x=T)
 
-#sapply(la.f, function(x) sum(is.na(x)))
+#sapply(la@data, function(x) sum(is.na(x)))
 #No am data points for Isles of Scilly
-la.f$tip <- paste0(la.f$id, "<br>",
-                   "Mean upload AM speed: ", round(la.f$mean.up.am), " Kbps", "<br>",
-                   "Mean upload PM speed: ", round(la.f$mean.up.pm), " Kbps")
-la.f <- la.f[order(la.f$order),] # if i don't order merge.nuts.f loses order and the map has gaps
+
+# text for labels
+la@data$tip <- paste0(la@data$lad19nm, "<br>",
+                   "Mean upload AM speed: ", round(la@data$mean.up.am), " Kbps", "<br>",
+                   "Mean upload PM speed: ", round(la@data$mean.up.pm), " Kbps") %>% 
+  lapply(htmltools::HTML)
 
 # using world.cities from `maps`
-cities <- world.cities %>% filter(country.etc=="UK")
+cities <- world.cities %>% 
+  filter(country.etc=="UK") %>% 
+  arrange(pop) %>% tail(10)
 
-p <- ggplot(la.f, aes(x = long, y = lat)) +
-  geom_polygon(aes(group = group, fill = as.factor(cluster.up), 
-                   text = tip)) +# ,text =paste("test1", long, "test2", lat)
-  #labs(title = "Upload clusters") +
-  scale_fill_brewer(palette="Set1", 
-                    direction = -1) +
-  #geom_text_repel( data=cities %>% arrange(pop) %>% tail(10), aes(x=long, y=lat, label=name), size=4) +
-  geom_point( data=cities %>% arrange(pop) %>% tail(10), aes(x=long, y=lat), color="black", size=0.5) +
-  geom_text( data=cities %>% arrange(pop) %>% tail(10), aes(x=long, y=lat, label=name), size=3) +
-  
-  guides(fill=guide_legend(title="Cluster")) +
-  theme_map()
-#   theme(panel.border = element_blank(), panel.grid.major = element_blank(),
-# panel.grid.minor = element_blank())
+# Create a color palette for the map:
+mypalette <- colorFactor(palette="Set1", 
+                         domain=la$cluster.up, 
+                         na.color="transparent",
+                         reverse = T)
 
-p %>%
-  ggplotly(tooltip = "text") %>%
-  style(hoverlabel = list(bgcolor = "white"), hoveron = "fill")
+leaflet(la) %>% 
+  addTiles()  %>% 
+  fitBounds(-5.7, 50, -1.2, 58.7) %>% 
+  addPolygons(fillColor = ~mypalette(cluster.up), 
+              stroke=T,
+              color = "white",
+              weight = .8,
+              opacity = .3,
+              fillOpacity = .5,
+              label = ~tip) %>% 
+  addCircles(lng = cities$long, lat = cities$lat,
+             weight = 2, radius = 5, color = "black",
+             label = cities$name,
+             labelOptions = labelOptions(noHide = T, direction = 'right', 
+                                         textOnly = TRUE, permanent = F),
+             options = markerOptions(riseOnHover = TRUE)) %>% 
+  # addLabelOnlyMarkers(data = cities,
+  #                   lng = ~long, lat = ~lat, label = ~name,
+  #                   labelOptions = labelOptions(noHide = T, direction = 'auto', textOnly = TRUE)) %>%
+  addProviderTiles(providers$Esri.WorldTerrain) %>% 
+  addLegend(pal = mypalette,
+            values = ~cluster.up,
+            position = "topleft",
+            opacity = .5,
+            title = "Upload speed<br>clusters")
+
 ```
 
-Column
+Column 
 -----------------------------------------------------------------------
 
-### LAD mean AM and PM upload speeds
+### Local Authority District mean AM and PM upload speeds
 
 ```{r, echo=FALSE, warning=FALSE, message = FALSE, error=FALSE,fig.height=10}
 for.tip.mean.up.am <- merge(for.tip.mean.up.am, clusters.nodiff, 

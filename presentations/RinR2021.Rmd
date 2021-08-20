@@ -40,7 +40,7 @@ path <- find_rstudio_root_file()
 Budnitz, H., and E. Tranos (2021) Working from home and digital divides: resilience during the pandemic. *Annals of the AAG*. In press. [link](https://doi.org/10.1080/24694452.2021.1939647)
 <br>
 <br>
-[etranos.info/post/rir2021](https://etranos.info/post/rir2021)
+[etranos.info/post/rinr2021](https://etranos.info/post/rinr2021)
 
 
 ## Contents
@@ -60,20 +60,26 @@ Budnitz, H., and E. Tranos (2021) Working from home and digital divides: resilie
 - Almost $50$% in the US, $37$% could be permanently moved online [@brynjolfsson2020covid; @NBERw26948]
 
 ## WFH / Telecommuting
-- WFM = economic resilience during Covid-19
-- capability to WFM:
+- WFH = economic resilience during Covid-19
+
+- Capability to WFH:
   - occupations
   - quality digital infrastructure
+
 - Spatial clustering and dependence
 
 ## Digital divides
 - 1st level: availability and quality of internet connectivity
+
 - 2nd level: skills to effectively utilise digital technologies
+
 - 3rd level: returns of internet usage
+
 - Cross-level interactions
 
 ## Our approach
 - Intersection of digital and material divides
+
 - Economic resilience of places as digital technologies became an essential
 tool of productivity during the pandemic
 <br>
@@ -118,21 +124,27 @@ knitr::include_graphics(path.image)
 ```
 
 ## Experienced Broadband Speeds 
-- An overall trend of increased testing from March to April and then a slight reduction from April to May
+- An overall trend of increased testing from March to April and then a slight reduction from April to May in 2020, compared to less testing as Spring progresses in 2019
+
 - $2019$ evening peak of testing, leisure activities, download speeds
-- $2020$ **new morning peak**
+- $2020$ **new morning peak** $\Rightarrow$ flatter hourly temporal profile
 
 # Analysis
 
 ## Aggregation 
 - Relatively scarce data to analyse as stream
+
 - Composite week time series
+
 - Mon-Friday, hourly $6:00$ -- $24:00$, excl. bank holidays
+
 - $18$ hourly data points $x$ $5$ weekdays ($90$) for each local authority ($382$)
+
 - Focus on upload speeds
 
 ## Time series clustering
 - *Aim*: create clusters of local authorities with similar temporal signatures of internet speed
+
 - Shape-based approach
 - Match two separate time-series objects based on the similarity of their shapes 
 - Distances between the shapes
@@ -344,9 +356,9 @@ stargazer(aux.up,
 #                             n.obs, n.obs, n.obs
 #                             , n.obs, n.obs))))
 ```
-## Clusters 6 and 9
+## Cluster 6 
 
-- LADs in Cluster 6 are more likely to hold managerial, tech and professional jobs
+- Workers are more likely to hold managerial, tech and professional jobs
 - Least likely to be furloughed
 - Slow and less reliable speeds
 - High job density
@@ -355,15 +367,19 @@ stargazer(aux.up,
 
 - Although speeds were slow and not as reliable during the morning peak as in cluster 9, the skills that enabled telecommuting
 also enabled **greater returns** from doing so ($\Downarrow$ furloughed)
+
 - LADs in cluster 9 were able to benefit both from reliable internet connections and populations
 able to work from home to capitalise on their digital infrastructure
+
 - But **lower returns** in the pandemic $\Rightarrow$ greater numbers furloughed
 
 ## Being on the right side of digital divides
 
 - Clusters 3, 7 and 9 are on the right side of the 1st layer of digital divide
-- Internet resilience supports, but also frustrates a wide range of other urban economies: 
+
+- Internet resilience supports, but also frustrates urban economies in different geographies: 
   - $\Uparrow$ morning peak tests per capita run in cluster 6
+
 - Being on the right side of the 2nd level digital divide had a **greater impact on economic resilience** (3rd level digital divide), than having quality internet connectivity 
   - $\Rightarrow$ cluster 1 and 6
 
@@ -384,9 +400,9 @@ which changed the temporal profile of internet activity throughout the UK
 
 - Quality of internet infrastructure
 
-- Νot every place hosts individuals with the necessary *skills* and in *occupations* to effectively use the internet to telecommute
-
 - Places may depend upon good internet reliability and connectivity to achieve economic resilience in a period like the current pandemic
+
+- Νot every place hosts individuals with the necessary *skills* and in *occupations* to effectively use the internet to telecommute
 
 
 ```{css eval=FALSE, echo=FALSE, message=FALSE}
@@ -402,4 +418,4 @@ which changed the temporal profile of internet activity throughout the UK
 
 ```
 
-## References {.allowframebreaks}
+# References {.allowframebreaks}
