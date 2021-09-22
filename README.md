@@ -20,7 +20,7 @@ This paper offers a new perspective on telecommuting from the viewpoint of the c
 
 1. `/src/Data_Spatial.Rmd` creates a tidy data set: `/data/temp/TSbb19_20sp.csv`
 
-2. `/src/ts_clusters_k9.Rmd` applies the time-series clustering for $k = 9$ and produces:
+2. `/src/ts_clusters_k9.Rmd` applies the time-series clustering for k = 9 and produces:
 
     - `/data/temp/clusters_nodiff.csv` based on the level data used for the next step
 
@@ -37,9 +37,7 @@ This paper offers a new perspective on telecommuting from the viewpoint of the c
     - time variation plots for 2019 and 2020 (Figure 3)
 
 4. `/src/LA_Clusters_k9.Rmd` performs the auxiliary regression.
-
-It loads the data created from the previous `LA_CLusers.Rmd` based on the optimal *k*.
-
+It loads the data created from the previous `LA_CLusers.Rmd` based on k=9.
 It creates:
 
     - the data for regressions as a backup `/data/temp/data_for_aux_k9.csv`
@@ -53,4 +51,6 @@ It creates:
 
     - the `/data/temp/LAs_Clusters_k9.RData` for the tables for the tables, and
 
-    - `/data/temp/clusters_nodiff.csv` for Appendix 1
+    - `/data/temp/clusters_nodiff.csv` for Appendix
+    
+6. `/src/online_appendix.Rmd` for the [Supplemental Material](https://etranos.info/lad_upload_clusters/)
