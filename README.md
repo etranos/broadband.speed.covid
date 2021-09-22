@@ -13,6 +13,7 @@
 This is the depository for the 'Working from home and digital divides: resilience during the pandemic' paper.
 
 To cite this article:
+
 Hannah Budnitz & Emmanouil Tranos (2021) Working from Home and Digital Divides: Resilience during the Pandemic, *Annals of the American Association of Geographers*, [DOI: 10.1080/24694452.2021.1939647](https://www.tandfonline.com/doi/full/10.1080/24694452.2021.1939647)
 
 ```
